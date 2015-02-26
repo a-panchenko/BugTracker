@@ -10,8 +10,12 @@ import java.util.List;
 
 public class ProjectServiceImpl implements ProjectService{
     @Override
-    public void addProject(Project project) {
-        new DaoFactory().getProjectDao().addProject(project);
+    public void addProject(Project project) throws DaoException {
+        try {
+            new DaoFactory().getProjectDao().addProject(project);
+        } catch (NoConnectionException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
