@@ -19,6 +19,7 @@ BEGIN
     INTO :new.project_id
     FROM dual;
 END;
+/
 
 INSERT INTO PROJECT (project_title, start_date)
 VALUES ('Project1', '01/01/2015');

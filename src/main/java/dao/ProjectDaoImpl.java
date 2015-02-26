@@ -49,7 +49,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public List<Project> getAllProjects() throws NoConnectionException {
-        String sql = "SELECT * FROM PROJECT;";
+        String sql = "SELECT * FROM PROJECT";
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
