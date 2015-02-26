@@ -1,11 +1,15 @@
 package model;
 
+import java.util.Date;
+
 public class Project {
 
     private int id;
     private String title;
+    private Date startDate;
+    private Date endDate;
 
-    public Project(int id, String title) {
+    public Project(int id, String title, Date startDate) {
         setId(id);
         setTitle(title);
     }
@@ -24,5 +28,21 @@ public class Project {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 }
