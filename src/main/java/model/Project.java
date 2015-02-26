@@ -12,6 +12,7 @@ public class Project {
     public Project(int id, String title, Date startDate) {
         setId(id);
         setTitle(title);
+        setStartDate(startDate);
     }
 
     public void setId(int id) {

@@ -11,7 +11,7 @@ public interface ProjectDao {
 
     public List<Project> getAllProjects() throws NoConnectionException;
 
-    public void addProject(Project project);
+    public void addProject(Project project) throws NoConnectionException;
 
     public void removeProject(int projectId);
 

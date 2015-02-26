@@ -23,18 +23,22 @@ public class ProjectDaoImpl implements ProjectDao {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
-        QueryExecException exception = null;
         try {
             connection = Utils.getDataSource().getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1, projectId);
             result = statement.executeQuery();
-            result.next();
-            int id = result.getInt("project_id");
-            String title = result.getString("project_title");
-            Date start = result.getDate("start_date");
-            Project project = new Project(id, title, start);
-            return project;
+            if (result.isBeforeFirst()) {
+                result.next();
+                int id = result.getInt("project_id");
+                String title = result.getString("project_title");
+                Date start = result.getDate("start_date");
+                Project project = new Project(id, title, start);
+                return project;
+            }
+            else {
+                return null;
+            }
         }
         catch (SQLException se) {
             LOGGER.error(se);
@@ -53,7 +57,6 @@ public class ProjectDaoImpl implements ProjectDao {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
-        QueryExecException exception = null;
         try {
             connection = Utils.getDataSource().getConnection();
             statement = connection.prepareStatement(sql);
@@ -80,8 +83,28 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void addProject(Project project) {
-
+    public void addProject(Project project) throws NoConnectionException {
+        String sql = "INSERT INTO PROJECT (project_title, start_date) VALUES (?, ?)";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Utils.getDataSource().getConnection();
+            statement = connection.prepareStatement(sql);
+            String title = project.getTitle();
+            java.util.Date date = project.getStartDate();
+            java.sql.Date start = new java.sql.Date(date.getTime());
+            statement.setString(1, title);
+            statement.setDate(2, start);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            throw new QueryExecException(se);
+        }
+        finally {
+            releaseResource(connection);
+            releaseResource(statement);
+        }
     }
 
     @Override
