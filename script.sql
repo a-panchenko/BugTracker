@@ -1,5 +1,7 @@
 DROP TABLE PROJECT;
+DROP TABLE ISSUE;
 DROP SEQUENCE proj_seq;
+DROP SEQUENCE issue_seq;
 
 CREATE TABLE PROJECT (
     project_id    NUMBER(10)     NOT NULL,
@@ -19,7 +21,29 @@ BEGIN
     INTO :new.project_id
     FROM dual;
 END;
-/
 
 INSERT INTO PROJECT (project_title, start_date)
 VALUES ('Project1', '01/01/2015');
+
+CREATE TABLE ISSUE (
+    issue_id      NUMBER(10)    NOT NULL,
+    project_id    NUMBER(10)    NOT NULL,
+    issue_title   VARCHAR2(50)  NOT NULL,
+    description   VARCHAR2(150) NOT NULL,
+    priority      VARCHAR2(10)  NOT NULL,
+    status        VARCHAR2(10)  NOT NULL,
+    creation_date DATE          NOT NULL,
+    solving_date  DATE,
+    CONSTRAINT issue_pk PRIMARY KEY (issue_id),
+    CONSTRAINT issue_fk FOREIGN KEY (project_id) REFERENCES PROJECT(project_id));
+    
+CREATE SEQUENCE issue_seq;
+
+CREATE OR REPLACE TRIGGER issue_seq_trg
+BEFORE INSERT ON ISSUE
+FOR EACH ROW
+BEGIN
+    SELECT issue_seq.NEXTVAL
+    INTO :new.issue_id
+    FROM dual;
+END;

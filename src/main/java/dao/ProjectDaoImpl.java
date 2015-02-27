@@ -33,7 +33,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 int id = result.getInt("project_id");
                 String title = result.getString("project_title");
                 Date start = result.getDate("start_date");
-                Project project = new Project(id, title, start);
+                Project project = new Project(id, title, start, null);
                 return project;
             }
             else {
@@ -66,7 +66,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 int id = result.getInt("project_id");
                 String title = result.getString("project_title");
                 Date start = result.getDate("start_date");
-                Project project = new Project(id, title, start);
+                Project project = new Project(id, title, start, null);
                 projects.add(project);
             }
             return projects;
@@ -108,13 +108,59 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void removeProject(int projectId) {
-
+    public void removeProject(int projectId) throws NoConnectionException {
+        String sql = "DELETE FROM PROJECT WHERE project_id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Utils.getDataSource().getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, projectId);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            throw new QueryExecException(se);
+        }
+        finally {
+            releaseResource(connection);
+            releaseResource(statement);
+        }
     }
 
     @Override
-    public void updateProject(int projectId, Project project) {
-
+    public void updateProject(int projectId, Project project) throws NoConnectionException {
+        String sql = "UPDATE PROJECT SET project_title = ?, start_date = ?, end_date = ? WHERE project_id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Utils.getDataSource().getConnection();
+            statement = connection.prepareStatement(sql);
+            String title = project.getTitle();
+            java.util.Date startUtilDate = project.getStartDate();
+            java.sql.Date startSqlDate = null;
+            if (startUtilDate != null) {
+                startSqlDate = new java.sql.Date(startUtilDate.getTime());
+            }
+            java.util.Date endUtilDate = project.getEndDate();
+            java.sql.Date endSqlDate = null;
+            if (endUtilDate != null) {
+                endSqlDate = new java.sql.Date(endUtilDate.getTime());
+            }
+            statement.setString(1, title);
+            statement.setDate(2, startSqlDate);
+            statement.setDate(3, endSqlDate);
+            statement.setInt(4, projectId);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            throw new QueryExecException(se);
+        }
+        finally {
+            releaseResource(connection);
+            releaseResource(statement);
+        }
     }
 
     private void releaseResource(Object resourse) {
