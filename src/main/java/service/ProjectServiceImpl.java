@@ -19,13 +19,21 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public void editProject(int project_id, Project project) {
-        new DaoFactory().getProjectDao().updateProject(project_id, project);
+    public void editProject(int project_id, Project project) throws DaoException {
+        try {
+            new DaoFactory().getProjectDao().updateProject(project_id, project);
+        } catch (NoConnectionException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
-    public void removeProject(int project_id) {
-        new DaoFactory().getProjectDao().removeProject(project_id);
+    public void removeProject(int project_id) throws DaoException {
+        try {
+            new DaoFactory().getProjectDao().removeProject(project_id);
+        } catch (NoConnectionException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
