@@ -1,7 +1,5 @@
 package dao;
 
-import dao.exceptions.NoConnectionException;
-import dao.exceptions.QueryExecException;
 import model.Project;
 import org.apache.log4j.Logger;
 
@@ -18,7 +16,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
 
     @Override
-    public Project getProject(int projectId) throws NoConnectionException {
+    public Project getProject(int projectId) {
         String sql = "SELECT * FROM PROJECT WHERE project_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -42,7 +40,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return null;
         }
         finally {
             releaseResource(connection);
@@ -52,7 +50,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> getAllProjects() throws NoConnectionException {
+    public List<Project> getAllProjects() {
         String sql = "SELECT * FROM PROJECT";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -73,7 +71,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return new ArrayList<Project>();
         }
         finally {
             releaseResource(connection);
@@ -83,7 +81,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void addProject(Project project) throws NoConnectionException {
+    public void addProject(Project project) {
         String sql = "INSERT INTO PROJECT (project_title, start_date) VALUES (?, ?)";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -99,7 +97,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return;
         }
         finally {
             releaseResource(connection);
@@ -108,7 +106,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void removeProject(int projectId) throws NoConnectionException {
+    public void removeProject(int projectId) {
         String sql = "DELETE FROM PROJECT WHERE project_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -120,7 +118,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return;
         }
         finally {
             releaseResource(connection);
@@ -129,7 +127,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void updateProject(int projectId, Project project) throws NoConnectionException {
+    public void updateProject(int projectId, Project project) {
         String sql = "UPDATE PROJECT SET project_title = ?, start_date = ?, end_date = ? WHERE project_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -155,7 +153,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return;
         }
         finally {
             releaseResource(connection);

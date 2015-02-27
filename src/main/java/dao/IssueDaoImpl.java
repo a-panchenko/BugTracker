@@ -1,7 +1,5 @@
 package dao;
 
-import dao.exceptions.NoConnectionException;
-import dao.exceptions.QueryExecException;
 import model.Issue;
 import org.apache.log4j.Logger;
 
@@ -18,7 +16,7 @@ public class IssueDaoImpl implements IssueDao {
     private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
 
     @Override
-    public Issue getIssue(int issueId) throws NoConnectionException {
+    public Issue getIssue(int issueId) {
         String sql = "SELECT * FROM ISSUE WHERE issue_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -48,7 +46,7 @@ public class IssueDaoImpl implements IssueDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return null;
         }
         finally {
             releaseResource(connection);
@@ -58,7 +56,7 @@ public class IssueDaoImpl implements IssueDao {
     }
 
     @Override
-    public List<Issue> getIssues(int projectId) throws NoConnectionException {
+    public List<Issue> getIssues(int projectId) {
         String sql = "SELECT * FROM ISSUE WHERE project_id = ?";
         Connection connection = null;
         PreparedStatement statement = null;
@@ -86,7 +84,7 @@ public class IssueDaoImpl implements IssueDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecException(se);
+            return new ArrayList<Issue>();
         }
         finally {
             releaseResource(connection);
@@ -96,17 +94,17 @@ public class IssueDaoImpl implements IssueDao {
     }
 
     @Override
-    public void addIssue(Issue issue) throws NoConnectionException {
+    public void addIssue(Issue issue) {
 
     }
 
     @Override
-    public void removeIssue(int issueId) throws NoConnectionException {
+    public void removeIssue(int issueId) {
 
     }
 
     @Override
-    public void updateIssue(int issueId, Issue issue) throws NoConnectionException {
+    public void updateIssue(int issueId, Issue issue) {
 
     }
 

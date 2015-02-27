@@ -1,6 +1,5 @@
 package dao;
 
-import dao.exceptions.NoConnectionException;
 import org.apache.log4j.Logger;
 
 import javax.naming.Context;
@@ -16,7 +15,7 @@ public class Utils {
     private static String SERVER_URL = "t3://localhost:7001";
     private static String DATASOURCE = "jndi_jdbc_ds";
 
-    static DataSource getDataSource() throws NoConnectionException {
+    static DataSource getDataSource() {
         Context context = null;
         try {
             Hashtable ht = new Hashtable();
@@ -28,7 +27,7 @@ public class Utils {
         }
         catch (Exception e) {
             LOGGER.error(e);
-            throw new NoConnectionException(e);
+            return null;
         }
         finally {
             try {
