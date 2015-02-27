@@ -14,7 +14,7 @@ public class Issue {
     private Date solvingDate;
 
     public Issue(int id, int projectId, String title, String description, String priority,
-                 String status, Date creationDate) {
+                 String status, Date creationDate, Date solvingDate) {
         setId(id);
         setProjectId(projectId);
         setTitle(title);
