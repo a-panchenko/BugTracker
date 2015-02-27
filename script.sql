@@ -47,3 +47,12 @@ BEGIN
     INTO :new.issue_id
     FROM dual;
 END;
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (3, 'Issue1', 'Description1', 'Priority1', 'Status1', '01/01/2015');
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (3, 'Issue2', 'Description2', 'Priority2', 'Status2', '02/02/2015');
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (4, 'Issue3', 'Description3', 'Priority3', 'Status3', '02/01/2015');
