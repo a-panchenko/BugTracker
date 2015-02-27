@@ -11,17 +11,17 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService{
     @Override
     public void addProject(Project project) {
-
+        new DaoFactory().getProjectDao().addProject(project);
     }
 
     @Override
-    public boolean editProject(int project_id, Project project) {
-        return false;
+    public void editProject(int project_id, Project project) {
+        new DaoFactory().getProjectDao().updateProject(project_id, project);
     }
 
     @Override
-    public boolean removeProject(int project_id) {
-        return false;
+    public void removeProject(int project_id) {
+        new DaoFactory().getProjectDao().removeProject(project_id);
     }
 
     @Override
@@ -35,7 +35,11 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public Project getProject(int project_id) {
-        return null;
+    public Project getProject(int project_id) throws DaoException {
+        try {
+            return new DaoFactory().getProjectDao().getProject(project_id);
+        } catch (NoConnectionException e) {
+            throw new DaoException(e);
+        }
     }
 }

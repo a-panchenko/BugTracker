@@ -15,13 +15,14 @@ import java.util.List;
 public class ProjectListController extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(ProjectListController.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<Project> projectList = new ProjectServiceImpl().getAll();
             logger.debug("Size of projectList is:   " + projectList.size());
         } catch (DaoException e) {
-            logger.debug(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 }
