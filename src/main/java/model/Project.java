@@ -9,10 +9,11 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
-    public Project(int id, String title, Date startDate) {
+    public Project(int id, String title, Date startDate, Date endDate) {
         setId(id);
         setTitle(title);
         setStartDate(startDate);
+        setEndDate(endDate);
     }
 
     public void setId(int id) {

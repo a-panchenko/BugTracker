@@ -13,7 +13,7 @@ public interface ProjectDao {
 
     public void addProject(Project project) throws NoConnectionException;
 
-    public void removeProject(int projectId);
+    public void removeProject(int projectId) throws NoConnectionException;
 
-    public void updateProject(int projectId, Project project);
+    public void updateProject(int projectId, Project project) throws NoConnectionException;
 }
