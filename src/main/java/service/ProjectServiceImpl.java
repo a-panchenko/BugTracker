@@ -1,57 +1,40 @@
 package service;
 
-import dao.DaoFactory;
 import dao.ProjectDao;
-import dao.exceptions.NoConnectionException;
+import dao.ProjectDaoImpl;
 import model.Project;
-import service.Exception.DaoException;
 
 import java.util.List;
 
 public class ProjectServiceImpl implements ProjectService{
     @Override
-    public void addProject(Project project) throws DaoException {
-        try {
-            new DaoFactory().getProjectDao().addProject(project);
-        } catch (NoConnectionException e) {
-            throw new DaoException(e);
-        }
+    public void addProject(Project project) {
+        ProjectDao projectDao = new ProjectDaoImpl();
+        projectDao.addProject(project);
     }
 
     @Override
-    public void editProject(int project_id, Project project) throws DaoException {
-        try {
-            new DaoFactory().getProjectDao().updateProject(project_id, project);
-        } catch (NoConnectionException e) {
-            throw new DaoException(e);
-        }
+    public void editProject(int project_id, Project project) {
+        ProjectDao projectDao = new ProjectDaoImpl();
+        projectDao.updateProject(project_id, project);
     }
 
     @Override
-    public void removeProject(int project_id) throws DaoException {
-        try {
-            new DaoFactory().getProjectDao().removeProject(project_id);
-        } catch (NoConnectionException e) {
-            throw new DaoException(e);
-        }
+    public void removeProject(int project_id) {
+        ProjectDao projectDao = new ProjectDaoImpl();
+        projectDao.removeProject(project_id);
     }
 
     @Override
-    public List<Project> getAll() throws DaoException {
-        ProjectDao projectDao = new DaoFactory().getProjectDao();
-        try {
+    public List<Project> getAll() {
+        ProjectDao projectDao = new ProjectDaoImpl();
             return projectDao.getAllProjects();
-        } catch (NoConnectionException e) {
-            throw new DaoException(e);
-        }
+
     }
 
     @Override
-    public Project getProject(int project_id) throws DaoException {
-        try {
-            return new DaoFactory().getProjectDao().getProject(project_id);
-        } catch (NoConnectionException e) {
-            throw new DaoException(e);
-        }
+    public Project getProject(int project_id) {
+        ProjectDao projectDao = new ProjectDaoImpl();
+        return projectDao.getProject(project_id);
     }
 }
