@@ -35,4 +35,8 @@ public class Utils {
             }
         }
     }
+
+    static java.sql.Date utilDateToSql(java.util.Date utilDate) {
+        return new java.sql.Date(utilDate.getTime());
+    }
 }

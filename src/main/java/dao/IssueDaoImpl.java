@@ -18,112 +18,115 @@ public class IssueDaoImpl implements IssueDao {
     @Override
     public Issue getIssue(int issueId) {
         String sql = "SELECT * FROM ISSUE WHERE issue_id = ?";
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = Utils.getDataSource().getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, issueId);
-            result = statement.executeQuery();
-            if (result.isBeforeFirst()) {
-                result.next();
-                int id = result.getInt("issue_id");
-                int projectId = result.getInt("project_id");
-                String title = result.getString("issue_title");
-                String description = result.getString("description");
-                String priority = result.getString("priority");
-                String status = result.getString("status");
-                Date creationDate = result.getDate("creation_date");
-                Date solvingDate = result.getDate("solving_date");
-                Issue issue = new Issue(id, projectId, title, description, priority,
-                        status, creationDate, solvingDate);
-                return issue;
-            }
-            else {
-                return null;
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.isBeforeFirst()) {
+                    result.next();
+                    int projectId = result.getInt(2);
+                    String title = result.getString(3);
+                    String description = result.getString(4);
+                    String priority = result.getString(5);
+                    String status = result.getString(6);
+                    Date creationDate = result.getDate(7);
+                    Date solvingDate = result.getDate(8);
+                    return new Issue(issueId, projectId, title, description, priority,
+                            status, creationDate, solvingDate);
+                }
+                else {
+                    return null;
+                }
             }
         }
         catch (SQLException se) {
             LOGGER.error(se);
             return null;
         }
-        finally {
-            releaseResource(connection);
-            releaseResource(statement);
-            releaseResource(result);
-        }
     }
 
     @Override
     public List<Issue> getIssues(int projectId) {
         String sql = "SELECT * FROM ISSUE WHERE project_id = ?";
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = Utils.getDataSource().getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, projectId);
-            result = statement.executeQuery();
-            List<Issue> issues = new ArrayList<Issue>();
-            while (result.next()) {
-                int id = result.getInt("issue_id");
-                int projId = result.getInt("project_id");
-                String title = result.getString("issue_title");
-                String description = result.getString("description");
-                String priority = result.getString("priority");
-                String status = result.getString("status");
-                Date creationDate = result.getDate("creation_date");
-                Date solvingDate = result.getDate("solving_date");
-                Issue issue = new Issue(id, projId, title, description, priority,
-                        status, creationDate, solvingDate);
-                issues.add(issue);
+            try (ResultSet result = statement.executeQuery()) {
+                List<Issue> issues = new ArrayList<Issue>();
+                while (result.next()) {
+                    int id = result.getInt(1);
+                    String title = result.getString(3);
+                    String description = result.getString(4);
+                    String priority = result.getString(5);
+                    String status = result.getString(6);
+                    Date creationDate = result.getDate(7);
+                    Date solvingDate = result.getDate(8);
+                    Issue issue = new Issue(id, projectId, title, description, priority,
+                            status, creationDate, solvingDate);
+                    issues.add(issue);
+                }
+                return issues;
             }
-            return issues;
         }
         catch (SQLException se) {
             LOGGER.error(se);
             return new ArrayList<Issue>();
         }
-        finally {
-            releaseResource(connection);
-            releaseResource(statement);
-            releaseResource(result);
-        }
     }
 
     @Override
     public void addIssue(Issue issue) {
-
+        String sql = "INSERT INTO ISSUE (project_id, issue_title, description, " +
+                "priority, status, creation_date) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, issue.getProjectId());
+            statement.setString(2, issue.getTitle());
+            statement.setString(3, issue.getDescription());
+            statement.setString(4, issue.getPriority());
+            statement.setString(5, issue.getStatus());
+            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
+        }
     }
 
     @Override
     public void removeIssue(int issueId) {
-
+        String sql = "DELETE FROM ISSUE WHERE issue_id = ?";
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, issueId);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
+        }
     }
 
     @Override
     public void updateIssue(int issueId, Issue issue) {
-
-    }
-
-    private void releaseResource(Object resourse) {
-        try {
-            if (resourse != null) {
-                if (resourse instanceof Connection) {
-                    ((Connection) resourse).close();
-                }
-                if (resourse instanceof PreparedStatement) {
-                    ((PreparedStatement) resourse).close();
-                }
-                if (resourse instanceof ResultSet) {
-                    ((ResultSet) resourse).close();
-                }
-            }
+        String sql = "UPDATE ISSUE SET project_id = ?, issue_title = ?, description = ? priority = ? " +
+                "status = ? creation_date = ? solving_date = ? WHERE issue_id = ?";
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, issue.getProjectId());
+            statement.setString(2, issue.getTitle());
+            statement.setString(3, issue.getDescription());
+            statement.setString(4, issue.getPriority());
+            statement.setString(5, issue.getStatus());
+            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
+            statement.setDate(7, Utils.utilDateToSql(issue.getSolvingDate()));
+            statement.setInt(8, issueId);
+            statement.executeUpdate();
         }
-        catch (Exception e) {
-            LOGGER.error(e);
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
         }
     }
 }
