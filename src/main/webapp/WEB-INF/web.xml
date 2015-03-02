@@ -6,7 +6,7 @@
   <display-name>BugTracker</display-name>
     <servlet>
         <servlet-name>projectListServlet</servlet-name>
-        <servlet-class>controller.ProjectListController</servlet-class>
+        <servlet-class>controller.projectController.ProjectListController</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
