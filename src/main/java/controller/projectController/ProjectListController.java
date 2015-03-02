@@ -23,7 +23,7 @@ public class ProjectListController extends HttpServlet {
         writer.println("<html> " +
         "<head><title>" +
                 "ProjectController" +
-                "</title</head><body>");
+                "</title></head><body>");
         for(Project p : projectList){
             writer.print(p.getId() + "  " + p.getTitle() + "  " + p.getStartDate());
         }
