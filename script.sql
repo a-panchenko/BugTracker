@@ -1,6 +1,6 @@
-DROP TABLE PROJECT;
-DROP TABLE ISSUE;
 DROP TABLE REPLY;
+DROP TABLE ISSUE;
+DROP TABLE PROJECT;
 DROP SEQUENCE proj_seq;
 DROP SEQUENCE issue_seq;
 DROP SEQUENCE reply_seq;
@@ -23,9 +23,12 @@ BEGIN
     INTO :new.project_id
     FROM dual;
 END;
+/
 
-INSERT INTO PROJECT (project_title, start_date)
-VALUES ('Project1', '01/01/2015');
+INSERT INTO PROJECT (project_title, start_date) VALUES ('Project1', '01/01/2015');
+INSERT INTO PROJECT (project_title, start_date) VALUES ('Project2', '02/01/2015');
+INSERT INTO PROJECT (project_title, start_date) VALUES ('Project3', '03/02/2015');
+INSERT INTO PROJECT (project_title, start_date) VALUES ('Project4', '04/05/2015');
 
 CREATE TABLE ISSUE (
     issue_id      NUMBER(10)    NOT NULL,
@@ -49,6 +52,19 @@ BEGIN
     INTO :new.issue_id
     FROM dual;
 END;
+/
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (1, 'Issue1', 'Description1', 'Priority1', 'Status1', '01/01/2015');
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (1, 'Issue', 'Description1', 'Priority1', 'Status1', '01/01/2015');
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (1, 'Issue01', 'Description1', 'Priority1', 'Status1', '01/01/2015');
+
+INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
+VALUES (2, 'Issue1', 'Description', 'Priority1', 'Status1', '01/01/2015');
 
 INSERT INTO ISSUE (project_id, issue_title, description, priority, status, creation_date)
 VALUES (3, 'Issue1', 'Description1', 'Priority1', 'Status1', '01/01/2015');
@@ -77,6 +93,7 @@ BEGIN
     INTO :new.reply_id
     FROM dual;
 END;
+/
 
 INSERT INTO REPLY (issue_id, message, post_date)
 VALUES (3, 'Reply1', '02/01/2015');

@@ -9,10 +9,18 @@
         <servlet-class>controller.projectController.ProjectListController</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>projectServlet</servlet-name>
+        <servlet-class>controller.projectController.ProjectController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
         <url-pattern>/index.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>projectServlet</servlet-name>
+        <url-pattern>/project</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

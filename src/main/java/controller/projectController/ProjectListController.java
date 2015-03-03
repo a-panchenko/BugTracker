@@ -22,10 +22,10 @@ public class ProjectListController extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         writer.println("<html> " +
         "<head><title>" +
-                "ProjectController" +
+                "ProjectListController" +
                 "</title></head><body>");
         for(Project p : projectList){
-            writer.print(p.getId() + "  " + p.getTitle() + "  " + p.getStartDate());
+            writer.print("<a href=\"project?id=" + p.getId() + "\">" + "  " + p.getTitle() +  "</a>"  + "  " + p.getStartDate());
         }
         writer.println("</body></html>");
     }
