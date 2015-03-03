@@ -1,5 +1,7 @@
 package dao;
 
+import dao.resultparser.IssueResultParser;
+import dao.resultparser.ResultParser;
 import model.Issue;
 import org.apache.log4j.Logger;
 
@@ -8,64 +10,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class IssueDaoImpl implements IssueDao {
+public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
 
     private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
+    private final ResultParser<Issue> issueResultParser = new IssueResultParser();
 
     @Override
     public Issue getIssue(int issueId) {
-        String sql = "SELECT * FROM ISSUE WHERE issue_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, issueId);
-            try (ResultSet result = statement.executeQuery()) {
-                if (result.isBeforeFirst()) {
-                    result.next();
-                    int projectId = result.getInt(2);
-                    String title = result.getString(3);
-                    String description = result.getString(4);
-                    String priority = result.getString(5);
-                    String status = result.getString(6);
-                    Date creationDate = result.getDate(7);
-                    Date solvingDate = result.getDate(8);
-                    return new Issue(issueId, projectId, title, description, priority,
-                            status, creationDate, solvingDate);
-                }
-                else {
-                    return null;
-                }
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return null;
-        }
+        return selectById(issueId, Utils.SELECT_PROJECT_BY_ISSUE_ID, issueResultParser);
     }
 
     @Override
     public List<Issue> getIssues(int projectId) {
-        String sql = "SELECT * FROM ISSUE WHERE project_id = ?";
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_ISSUES_BY_PROJECT_ID)) {
             statement.setInt(1, projectId);
             try (ResultSet result = statement.executeQuery()) {
-                List<Issue> issues = new ArrayList<Issue>();
-                while (result.next()) {
-                    int id = result.getInt(1);
-                    String title = result.getString(3);
-                    String description = result.getString(4);
-                    String priority = result.getString(5);
-                    String status = result.getString(6);
-                    Date creationDate = result.getDate(7);
-                    Date solvingDate = result.getDate(8);
-                    Issue issue = new Issue(id, projectId, title, description, priority,
-                            status, creationDate, solvingDate);
-                    issues.add(issue);
-                }
-                return issues;
+                return issueResultParser.extractAll(result);
             }
         }
         catch (SQLException se) {

@@ -10,14 +10,20 @@ import javax.sql.DataSource;
 public class Utils {
 
     private static final Logger LOGGER = Logger.getLogger(Utils.class);
-    private static String DATASOURCE = "jndi_jdbc_ds";
+    private static final String DATASOURCE = "jndi_jdbc_ds";
+
+    public static final String SELECT_PROJECT_BY_PROJECT_ID = "SELECT * FROM PROJECT WHERE project_id = ?";
+    public static final String SELECT_ALL_PROJECTS = "SELECT * FROM PROJECT";
+    public static final String SELECT_PROJECT_BY_ISSUE_ID = "SELECT * FROM ISSUE WHERE issue_id = ?";
+    public static final String SELECT_ISSUES_BY_PROJECT_ID = "SELECT * FROM ISSUE WHERE project_id = ?";
+    public static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
+    public static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
 
     static DataSource getDataSource() {
         Context context = null;
         try {
             context = new InitialContext();
-            DataSource dataSource = (DataSource) context.lookup(DATASOURCE);
-            return dataSource;
+            return (DataSource) context.lookup(DATASOURCE);
         }
         catch (Exception e) {
             LOGGER.error(e);

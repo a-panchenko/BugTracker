@@ -1,5 +1,7 @@
 package dao;
 
+import dao.resultparser.ProjectResultParser;
+import dao.resultparser.ResultParser;
 import model.Project;
 import org.apache.log4j.Logger;
 
@@ -8,53 +10,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class ProjectDaoImpl implements ProjectDao {
+public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
 
     private final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
+    private final ResultParser<Project> projectResultParser = new ProjectResultParser();
 
     @Override
     public Project getProject(int projectId) {
-        String sql = "SELECT * FROM PROJECT WHERE project_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, projectId);
-            try (ResultSet result = statement.executeQuery()) {
-                if (result.isBeforeFirst()) {
-                    result.next();
-                    String title = result.getString(2);
-                    Date start = result.getDate(3);
-                    return new Project(projectId, title, start, null);
-                }
-                else {
-                    return null;
-                }
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return null;
-        }
+        return selectById(projectId, Utils.SELECT_PROJECT_BY_PROJECT_ID, projectResultParser);
     }
 
     @Override
     public List<Project> getAllProjects() {
-        String sql = "SELECT * FROM PROJECT";
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet result = statement.executeQuery()) {
-                List<Project> projects = new ArrayList<Project>();
-                while (result.next()) {
-                    int id = result.getInt(1);
-                    String title = result.getString(2);
-                    Date start = result.getDate(3);
-                    Project project = new Project(id, title, start, null);
-                    projects.add(project);
-                }
-                return projects;
-            }
+             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_ALL_PROJECTS);
+             ResultSet result = statement.executeQuery()) {
+            return projectResultParser.extractAll(result);
         }
         catch (SQLException se) {
             LOGGER.error(se);
@@ -64,11 +37,12 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public void addProject(Project project) {
-        String sql = "INSERT INTO PROJECT (project_title, start_date) VALUES (?, ?)";
+        String sql = "INSERT INTO PROJECT (project_title, project_description, start_date) VALUES (?, ?, ?)";
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, project.getTitle());
-            statement.setDate(2, Utils.utilDateToSql(project.getStartDate()));
+            statement.setString(2, project.getDescription());
+            statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
             statement.executeUpdate();
         }
         catch (SQLException se) {
@@ -93,13 +67,14 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public void updateProject(int projectId, Project project) {
-        String sql = "UPDATE PROJECT SET project_title = ?, start_date = ?, end_date = ? WHERE project_id = ?";
+        String sql = "UPDATE PROJECT SET project_title = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ?";
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, project.getTitle());
-            statement.setDate(2, Utils.utilDateToSql(project.getStartDate()));
-            statement.setDate(3, Utils.utilDateToSql(project.getEndDate()));
-            statement.setInt(4, projectId);
+            statement.setString(2, project.getDescription());
+            statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
+            statement.setDate(4, Utils.utilDateToSql(project.getEndDate()));
+            statement.setInt(5, projectId);
             statement.executeUpdate();
         }
         catch (SQLException se) {
