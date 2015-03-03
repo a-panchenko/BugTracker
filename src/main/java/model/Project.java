@@ -6,14 +6,12 @@ public class Project {
 
     private int id;
     private String title;
+    private String description;
     private Date startDate;
     private Date endDate;
 
-    public Project(int id, String title, Date startDate, Date endDate) {
+    public Project(int id) {
         setId(id);
-        setTitle(title);
-        setStartDate(startDate);
-        setEndDate(endDate);
     }
 
     public void setId(int id) {
@@ -46,5 +44,13 @@ public class Project {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

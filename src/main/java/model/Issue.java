@@ -13,16 +13,8 @@ public class Issue {
     private Date creationDate;
     private Date solvingDate;
 
-    public Issue(int id, int projectId, String title, String description, String priority,
-                 String status, Date creationDate, Date solvingDate) {
+    public Issue(int id) {
         setId(id);
-        setProjectId(projectId);
-        setTitle(title);
-        setDescription(description);
-        setPriority(priority);
-        setStatus(status);
-        setCreationDate(creationDate);
-        setSolvingDate(solvingDate);
     }
 
     public void setId(int id) {

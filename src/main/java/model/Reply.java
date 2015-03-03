@@ -9,11 +9,8 @@ public class Reply {
     private String message;
     private Date date;
 
-    public Reply(int id, int issueId, String message, Date date) {
+    public Reply(int id) {
         setId(id);
-        setIssueId(issueId);
-        setMessage(message);
-        setDate(date);
     }
 
     public void setId(int id) {
