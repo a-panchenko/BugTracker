@@ -16,10 +16,27 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
 
     private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
     private final ResultParser<Issue> issueResultParser = new IssueResultParser();
+    private final PlaceholderCompleter<Issue> placeholderCompleter = new PlaceholderCompleter<Issue>() {
+        @Override
+        public void completeAdd(PreparedStatement statement, Issue issue) throws SQLException {
+            statement.setInt(1, issue.getProjectId());
+            statement.setString(2, issue.getTitle());
+            statement.setString(3, issue.getDescription());
+            statement.setString(4, issue.getPriority());
+            statement.setString(5, issue.getStatus());
+            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
+        }
+        @Override
+        public void completeUpdate(PreparedStatement statement, int id, Issue issue) throws SQLException {
+            completeAdd(statement, issue);
+            statement.setDate(7, Utils.utilDateToSql(issue.getSolvingDate()));
+            statement.setInt(8, id);
+        }
+    };
 
     @Override
     public Issue getIssue(int issueId) {
-        return selectById(issueId, Utils.SELECT_PROJECT_BY_ISSUE_ID, issueResultParser);
+        return selectById(issueId, Utils.SELECT_ISSUE_BY_ISSUE_ID, issueResultParser);
     }
 
     @Override
@@ -39,57 +56,16 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
 
     @Override
     public void addIssue(Issue issue) {
-        String sql = "INSERT INTO ISSUE (project_id, issue_title, description, " +
-                "priority, status, creation_date) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, issue.getProjectId());
-            statement.setString(2, issue.getTitle());
-            statement.setString(3, issue.getDescription());
-            statement.setString(4, issue.getPriority());
-            statement.setString(5, issue.getStatus());
-            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        insert(issue, Utils.INSERT_INTO_ISSUE, placeholderCompleter);
     }
 
     @Override
     public void removeIssue(int issueId) {
-        String sql = "DELETE FROM ISSUE WHERE issue_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, issueId);
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        deleteById(issueId, Utils.DELETE_ISSUE_BY_ISSUE_ID);
     }
 
     @Override
     public void updateIssue(int issueId, Issue issue) {
-        String sql = "UPDATE ISSUE SET project_id = ?, issue_title = ?, description = ? priority = ? " +
-                "status = ? creation_date = ? solving_date = ? WHERE issue_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, issue.getProjectId());
-            statement.setString(2, issue.getTitle());
-            statement.setString(3, issue.getDescription());
-            statement.setString(4, issue.getPriority());
-            statement.setString(5, issue.getStatus());
-            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
-            statement.setDate(7, Utils.utilDateToSql(issue.getSolvingDate()));
-            statement.setInt(8, issueId);
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        update(issueId, issue, Utils.UPDATE_ISSUE, placeholderCompleter);
     }
 }

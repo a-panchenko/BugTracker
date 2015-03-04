@@ -31,4 +31,39 @@ public class AbstractDao<T> {
         }
     }
 
+    void insert(T entity, String sql, PlaceholderCompleter<T> placeholderCompleter) {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            placeholderCompleter.completeAdd(statement, entity);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
+        }
+    }
+
+    void update(int id, T entity, String sql, PlaceholderCompleter<T> placeholderCompleter) {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            placeholderCompleter.completeUpdate(statement, id, entity);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
+        }
+    }
+
+    void deleteById(int id, String sql) {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return;
+        }
+    }
 }
