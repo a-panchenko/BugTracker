@@ -26,7 +26,7 @@ public class AbstractDao<T> {
             }
         }
         catch (SQLException se) {
-            LOGGER.error(se);
+            LOGGER.error(sql, se);
             return null;
         }
     }
@@ -38,7 +38,7 @@ public class AbstractDao<T> {
             statement.executeUpdate();
         }
         catch (SQLException se) {
-            LOGGER.error(se);
+            LOGGER.error(sql, se);
             return;
         }
     }
@@ -50,7 +50,7 @@ public class AbstractDao<T> {
             statement.executeUpdate();
         }
         catch (SQLException se) {
-            LOGGER.error(se);
+            LOGGER.error(sql, se);
             return;
         }
     }
@@ -62,7 +62,7 @@ public class AbstractDao<T> {
             statement.executeUpdate();
         }
         catch (SQLException se) {
-            LOGGER.error(se);
+            LOGGER.error(sql, se);
             return;
         }
     }
