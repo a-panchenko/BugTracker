@@ -16,6 +16,19 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
     private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
     private final ResultParser<Reply> replyResultParser = new ReplyResultParser();
+    private final PlaceholderCompleter<Reply> placeholderCompleter = new PlaceholderCompleter<Reply>() {
+        @Override
+        public void completeAdd(PreparedStatement statement, Reply reply) throws SQLException {
+            statement.setInt(1, reply.getIssueId());
+            statement.setString(2, reply.getMessage());
+            statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
+        }
+        @Override
+        public void completeUpdate(PreparedStatement statement, int id, Reply reply) throws SQLException {
+            completeAdd(statement, reply);
+            statement.setInt(4, id);
+        }
+    };
 
     @Override
     public Reply getReply(int replyId) {
@@ -39,48 +52,16 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
     @Override
     public void addReply(Reply reply) {
-        String sql = "INSERT INTO REPLY (issue_id, message, post_date) VALUES (?, ?, ?)";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, reply.getIssueId());
-            statement.setString(2, reply.getMessage());
-            statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        insert(reply, Utils.INSERT_INTO_REPLY, placeholderCompleter);
     }
 
     @Override
     public void removeReply(int replyId) {
-        String sql = "DELETE FROM REPLY WHERE reply_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, replyId);
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        deleteById(replyId, Utils.DELETE_REPLY_BY_REPLY_ID);
     }
 
     @Override
     public void updateReply(int replyId, Reply reply) {
-        String sql = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ? WHERE reply_id = ?";
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, reply.getIssueId());
-            statement.setString(2, reply.getMessage());
-            statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
-            statement.setInt(4, replyId);
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return;
-        }
+        update(replyId, reply, Utils.UPDATE_REPLY, placeholderCompleter);
     }
 }
