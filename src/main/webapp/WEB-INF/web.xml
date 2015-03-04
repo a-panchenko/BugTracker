@@ -13,6 +13,11 @@
         <servlet-name>projectServlet</servlet-name>
         <servlet-class>controller.projectController.ProjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>issueController</servlet-name>
+        <servlet-class>controller.issueController.IssueController</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -21,6 +26,10 @@
     <servlet-mapping>
         <servlet-name>projectServlet</servlet-name>
         <url-pattern>/project</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>issueController</servlet-name>
+        <url-pattern>/issue</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

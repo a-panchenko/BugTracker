@@ -37,7 +37,7 @@ public class ProjectController extends HttpServlet{
                     + p.getId() + "  " + p.getTitle() + "  " + p.getStartDate() + "<br>"
             );
             for(Issue i : issues){
-                writer.println(i.getTitle() + " " + i.getDescription() + " " + i.getCreationDate() + " " +
+                writer.println("<a href=\"issue?id=" + i.getId() + "\">" + i.getTitle() + "</a>" + i.getDescription() + " " + i.getCreationDate() + " " +
                 i.getPriority() + " " + i.getSolvingDate());
             }
             writer.print("</body></html>");
