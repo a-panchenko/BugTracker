@@ -70,6 +70,22 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE TRIGGER before_delete_issue
+BEFORE DELETE ON ISSUE
+FOR EACH ROW
+BEGIN
+    DELETE FROM REPLY WHERE issue_id = :old.issue_id;
+END;
+/
+
+CREATE OR REPLACE TRIGGER before_delete_project
+BEFORE DELETE ON PROJECT
+FOR EACH ROW
+BEGIN
+    DELETE FROM ISSUE WHERE project_id = :old.project_id;
+END;
+/
+
 INSERT INTO PROJECT (project_title, project_description, start_date)
 VALUES ('Project1', 'Description1', '01/01/2015');
 
