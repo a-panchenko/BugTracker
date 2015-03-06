@@ -40,12 +40,19 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
     }
 
     @Override
-    public List<Issue> getIssues(int projectId) {
+    public List<Issue> getIssues(int projectId, int page) {
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_ISSUES_BY_PROJECT_ID)) {
+             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_ISSUES)) {
             statement.setInt(1, projectId);
+            statement.setInt(2, page * Utils.ROWS_PER_PAGE);
+            statement.setInt(3, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
-                return issueResultParser.extractAll(result);
+                if (result.next()) {
+                    return issueResultParser.extractAll(result);
+                }
+                else {
+                    return new ArrayList<Issue>();
+                }
             }
         }
         catch (SQLException se) {

@@ -8,7 +8,7 @@ public interface IssueDao {
 
     public Issue getIssue(int issueId);
 
-    public List<Issue> getIssues(int projectId);
+    public List<Issue> getIssues(int projectId, int page);
 
     public void addIssue(Issue issue);
 
