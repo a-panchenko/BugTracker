@@ -1,7 +1,10 @@
-package dao;
+package dao.reply;
 
-import dao.resultparser.ReplyResultParser;
-import dao.resultparser.ResultParser;
+import dao.AbstractDao;
+import dao.PlaceholderCompleter;
+import dao.Utils;
+import dao.issue.IssueDaoImpl;
+import dao.ResultParser;
 import model.Reply;
 import org.apache.log4j.Logger;
 

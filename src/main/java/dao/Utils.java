@@ -35,7 +35,7 @@ public class Utils {
     public static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ? WHERE reply_id = ?";
     public static final int ROWS_PER_PAGE = 20;
 
-    static DataSource getDataSource() {
+    public static DataSource getDataSource() {
         Context context = null;
         try {
             context = new InitialContext();
@@ -58,7 +58,7 @@ public class Utils {
         }
     }
 
-    static java.sql.Date utilDateToSql(java.util.Date utilDate) {
+    public static java.sql.Date utilDateToSql(java.util.Date utilDate) {
         return new java.sql.Date(utilDate.getTime());
     }
 }

@@ -1,5 +1,6 @@
-package dao.resultparser;
+package dao.reply;
 
+import dao.ResultParser;
 import model.Reply;
 
 import java.sql.ResultSet;

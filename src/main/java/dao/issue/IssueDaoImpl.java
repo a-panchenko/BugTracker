@@ -1,7 +1,9 @@
-package dao;
+package dao.issue;
 
-import dao.resultparser.IssueResultParser;
-import dao.resultparser.ResultParser;
+import dao.AbstractDao;
+import dao.PlaceholderCompleter;
+import dao.Utils;
+import dao.ResultParser;
 import model.Issue;
 import org.apache.log4j.Logger;
 
@@ -47,12 +49,7 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
             statement.setInt(2, page * Utils.ROWS_PER_PAGE);
             statement.setInt(3, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
-                if (result.next()) {
-                    return issueResultParser.extractAll(result);
-                }
-                else {
-                    return new ArrayList<Issue>();
-                }
+                return issueResultParser.extractAll(result);
             }
         }
         catch (SQLException se) {

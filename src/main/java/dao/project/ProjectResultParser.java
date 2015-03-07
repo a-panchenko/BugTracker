@@ -1,5 +1,6 @@
-package dao.resultparser;
+package dao.project;
 
+import dao.ResultParser;
 import model.Project;
 
 import java.sql.ResultSet;

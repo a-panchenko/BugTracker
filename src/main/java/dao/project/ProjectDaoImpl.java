@@ -1,7 +1,9 @@
-package dao;
+package dao.project;
 
-import dao.resultparser.ProjectResultParser;
-import dao.resultparser.ResultParser;
+import dao.AbstractDao;
+import dao.PlaceholderCompleter;
+import dao.Utils;
+import dao.ResultParser;
 import model.Project;
 import org.apache.log4j.Logger;
 
@@ -43,12 +45,7 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
             statement.setInt(1, page * Utils.ROWS_PER_PAGE);
             statement.setInt(2, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
-                if (result.next()) {
-                    return projectResultParser.extractAll(result);
-                }
-                else {
-                    return new ArrayList<Project>();
-                }
+                return projectResultParser.extractAll(result);
             }
         }
         catch (SQLException se) {

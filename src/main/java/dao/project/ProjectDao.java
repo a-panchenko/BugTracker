@@ -1,4 +1,4 @@
-package dao;
+package dao.project;
 
 import model.Project;
 
