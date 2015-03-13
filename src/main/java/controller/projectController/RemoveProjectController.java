@@ -1,7 +1,7 @@
 package controller.projectController;
 
-import dao.ProjectDao;
-import dao.ProjectDaoImpl;
+import dao.project.ProjectDao;
+import dao.project.ProjectDaoImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class RemoveProjectController extends HttpServlet {
             projectDao.removeProject(id);
             PrintWriter writer = resp.getWriter();
             writer.print("Project with id " + id + " was removed");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e){
             logger.error(e);
         }
     }

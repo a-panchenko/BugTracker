@@ -18,15 +18,21 @@ public class ProjectListController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Project> projectList = new ProjectServiceImpl().getAll();
-        PrintWriter writer = resp.getWriter();
-        writer.println("<html> " +
-        "<head><title>" +
-                "ProjectListController" +
-                "</title></head><body>");
-        for(Project p : projectList){
-            writer.print("<a href=\"project?id=" + p.getId() + "\">" + "  " + p.getTitle() +  "</a>"  + "  " + p.getStartDate());
+        try{
+            String pageValue = req.getParameter("page");
+            Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
+            PrintWriter writer = resp.getWriter();
+            List<Project> projectList = new ProjectServiceImpl().getProjects((page!=null) ? page : 1);
+            writer.println("<html> " +
+            "<head><title>" +
+                    "ProjectListController" +
+                    "</title></head><body>");
+            for(Project p : projectList){
+                writer.print("<a href=\"project?id=" + p.getId() + "\">" + "  " + p.getTitle() +  "</a>"  + "  " + p.getStartDate());
+            }
+            writer.println("</body></html>");
+        } catch (IllegalArgumentException e){
+            logger.error(e);
         }
-        writer.println("</body></html>");
     }
 }

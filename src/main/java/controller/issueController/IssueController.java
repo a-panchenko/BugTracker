@@ -1,9 +1,7 @@
 package controller.issueController;
 
-import dao.IssueDao;
-import dao.IssueDaoImpl;
-import dao.ReplyDao;
-import dao.ReplyDaoImpl;
+import dao.issue.*;
+import dao.reply.*;
 import model.Issue;
 import model.Reply;
 import org.apache.log4j.Logger;

@@ -1,9 +1,7 @@
 package controller.projectController;
 
-import dao.IssueDao;
-import dao.IssueDaoImpl;
-import dao.ProjectDao;
-import dao.ProjectDaoImpl;
+import dao.issue.*;
+import dao.project.*;
 import model.Issue;
 import model.Project;
 import org.apache.log4j.Logger;
@@ -24,10 +22,12 @@ public class ProjectController extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Integer id = Integer.valueOf(req.getParameter("id"));
+            String pageValue= req.getParameter("page");
+            Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
             ProjectDao projectDao = new ProjectDaoImpl();
             Project p = projectDao.getProject(id);
             IssueDao issueDao = new IssueDaoImpl();
-            List<Issue> issues = issueDao.getIssues(id);
+            List<Issue> issues = issueDao.getIssues(id, (page!=null) ? page : 1);
             PrintWriter writer = resp.getWriter();
             // Only for testing
             writer.print("<html> " +
@@ -38,7 +38,7 @@ public class ProjectController extends HttpServlet{
             );
             for(Issue i : issues){
                 writer.println("<a href=\"issue?id=" + i.getId() + "\">" + i.getTitle() + "</a>" + i.getDescription() + " " + i.getCreationDate() + " " +
-                i.getPriority() + " " + i.getSolvingDate());
+                i.getPriority() + " " + i.getSolvingDate() + "<br>");
             }
             writer.print("</body></html>");
         }catch (IllegalArgumentException e){

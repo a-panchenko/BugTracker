@@ -1,7 +1,6 @@
 package service;
 
-import dao.ProjectDao;
-import dao.ProjectDaoImpl;
+import dao.project.*;
 import model.Project;
 
 import java.util.List;
@@ -26,9 +25,9 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public List<Project> getAll() {
+    public List<Project> getProjects(int page) {
         ProjectDao projectDao = new ProjectDaoImpl();
-            return projectDao.getAllProjects();
+            return projectDao.getProjects(page);
 
     }
 
