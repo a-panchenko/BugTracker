@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IssueService {
     public void addIssue(Issue issue);
-    public boolean editIssue(int issue_id, Issue issue);
-    public boolean removeIssue(int issue_id);
-    public List<Issue> getAll();
+    public void editIssue(int issue_id, Issue issue);
+    public void removeIssue(int issue_id);
+    public List<Issue> getIssues(int projectId, int page);
     public Issue getIssue(int issue_id);
 }

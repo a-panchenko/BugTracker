@@ -3,35 +3,83 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>BugTracker</display-name>
+    <display-name>BugTracker</display-name>
+
     <servlet>
         <servlet-name>projectListServlet</servlet-name>
         <servlet-class>controller.projectController.ProjectListController</servlet-class>
-        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>myProjects</servlet-name>
+        <jsp-file>myprojects.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>createProject</servlet-name>
+        <jsp-file>createproject.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>createProjectServlet</servlet-name>
+        <servlet-class>controller.projectController.CreateProjectController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>projectServlet</servlet-name>
         <servlet-class>controller.projectController.ProjectController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>issueController</servlet-name>
-        <servlet-class>controller.issueController.IssueController</servlet-class>
+        <servlet-name>project</servlet-name>
+        <jsp-file>project.jsp</jsp-file>
     </servlet>
-
+    <servlet>
+        <servlet-name>editProjectServlet</servlet-name>
+        <servlet-class>controller.projectController.EditProjectController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editProject</servlet-name>
+        <jsp-file>editproject.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>removeProjectServlet</servlet-name>
+        <servlet-class>controller.projectController.RemoveProjectController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
-        <url-pattern>/index.html</url-pattern>
+        <url-pattern>/myprojects</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myProjects</servlet-name>
+        <url-pattern>/myprojects.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createProject</servlet-name>
+        <url-pattern>/createproject.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createProjectServlet</servlet-name>
+        <url-pattern>/createproject</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>projectServlet</servlet-name>
         <url-pattern>/project</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>issueController</servlet-name>
-        <url-pattern>/issue</url-pattern>
+        <servlet-name>project</servlet-name>
+        <url-pattern>/project.jsp</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProjectServlet</servlet-name>
+        <url-pattern>/editproject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProject</servlet-name>
+        <url-pattern>/editproject.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeProjectServlet</servlet-name>
+        <url-pattern>/removeproject</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

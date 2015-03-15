@@ -27,8 +27,7 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public List<Project> getProjects(int page) {
         ProjectDao projectDao = new ProjectDaoImpl();
-            return projectDao.getProjects(page);
-
+        return projectDao.getProjects(page);
     }
 
     @Override

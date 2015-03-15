@@ -10,6 +10,10 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
+    public Project() {
+
+    }
+
     public Project(int id) {
         setId(id);
     }

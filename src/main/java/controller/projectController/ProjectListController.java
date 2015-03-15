@@ -4,12 +4,13 @@ import model.Project;
 import org.apache.log4j.Logger;
 import service.ProjectServiceImpl;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 public class ProjectListController extends HttpServlet {
@@ -17,22 +18,21 @@ public class ProjectListController extends HttpServlet {
     private static final Logger logger = Logger.getLogger(ProjectListController.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
-            String pageValue = req.getParameter("page");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String pageValue = request.getParameter("page");
             Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
-            PrintWriter writer = resp.getWriter();
-            List<Project> projectList = new ProjectServiceImpl().getProjects((page!=null) ? page : 1);
-            writer.println("<html> " +
-            "<head><title>" +
-                    "ProjectListController" +
-                    "</title></head><body>");
-            for(Project p : projectList){
-                writer.print("<a href=\"project?id=" + p.getId() + "\">" + "  " + p.getTitle() +  "</a>"  + "  " + p.getStartDate());
-            }
-            writer.println("</body></html>");
-        } catch (IllegalArgumentException e){
+            List<Project> projectList = new ProjectServiceImpl().getProjects(page);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("myProjects", projectList);
+        }
+        catch (IllegalArgumentException e){
             logger.error(e);
+        }
+        finally {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("myprojects.jsp");
+            dispatcher.forward(request, response);
         }
     }
 }
