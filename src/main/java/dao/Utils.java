@@ -15,6 +15,7 @@ public class Utils {
     public static final String SELECT_PROJECT_BY_PROJECT_ID = "SELECT * FROM PROJECT WHERE project_id = ?";
     public static final String SELECT_PROJECTS = "SELECT * FROM (SELECT a.*, ROWNUM rnum FROM " +
             "(SELECT * FROM PROJECT ORDER BY project_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
+    public static final String SELECT_ALL_PROJECTS = "SELECT * FROM PROJECT";
     public static final String SELECT_ISSUE_BY_ISSUE_ID = "SELECT * FROM ISSUE WHERE issue_id = ?";
     public static final String SELECT_ISSUES = "SELECT * FROM (SELECT a.*, ROWNUM rnum FROM " +
             "(SELECT * FROM ISSUE WHERE project_id = ? ORDER BY issue_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
@@ -28,9 +29,9 @@ public class Utils {
     public static final String UPDATE_PROJECT = "UPDATE PROJECT " +
             "SET project_title = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ?";
     public static final String INSERT_INTO_ISSUE = "INSERT INTO " +
-            "ISSUE (project_id, issue_title, description, priority, status, creation_date) VALUES (?, ?, ?, ?, ?, ?)";
+            "ISSUE (project_id, issue_title, issue_description, priority, status, creation_date) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String UPDATE_ISSUE = "UPDATE ISSUE SET project_id = ?, issue_title = ?, " +
-            "description = ? priority = ? status = ? creation_date = ? solving_date = ? WHERE issue_id = ?";
+            "issue_description = ?, priority = ?, status = ?, creation_date = ?, solving_date = ? WHERE issue_id = ?";
     public static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date) VALUES (?, ?, ?)";
     public static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ? WHERE reply_id = ?";
     public static final int ROWS_PER_PAGE = 20;

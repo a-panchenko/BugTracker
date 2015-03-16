@@ -24,7 +24,7 @@
                     <a href="/BugTracker/createproject.jsp">Create Project</a>
                 </td>
                 <td> <%
-                    List<Project> projectList = (List<Project>) session.getAttribute("myProjects");
+                    List<Project> projectList = (List<Project>) request.getAttribute("myProjects");
                     if ((projectList != null) && (projectList.size() > 0)) { %>
                         <table width="50%" height="5%" border="1" cellspacing="0"> <%
                         for (Project project : projectList) { %>

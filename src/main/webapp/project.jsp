@@ -25,6 +25,7 @@
             <a href="/BugTracker/createproject.jsp">Create Project</a> <%
             Project project = (Project) request.getAttribute("project");
             if (project != null) { %>
+                <br><a href="/BugTracker/createissue?id=<%= project.getId() %>">Create Issue</a>
                 <br><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a>
                 <br><a href="/BugTracker/removeproject?id=<%= project.getId() %>">Remove Project</a> <%
             } %>
@@ -41,7 +42,7 @@
                         for (Issue issue : issues) { %>
                             <tr>
                                 <td> <%= issue.getId() %> </td>
-                                <td> <%= issue.getTitle() %> </td>
+                                <td> <a href="/BugTracker/issue?id=<%= issue.getId() %>"><%= issue.getTitle() %></a> </td>
                                 <td> <%= issue.getDescription() %> </td>
                                 <td> <%= issue.getPriority() %> </td>
                                 <td> <%= issue.getStatus() %> </td>

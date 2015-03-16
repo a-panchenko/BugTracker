@@ -5,7 +5,7 @@ import model.Project;
 
 import java.util.List;
 
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
     @Override
     public void addProject(Project project) {
         ProjectDao projectDao = new ProjectDaoImpl();
@@ -13,15 +13,15 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public void editProject(int project_id, Project project) {
+    public void editProject(int projectId, Project project) {
         ProjectDao projectDao = new ProjectDaoImpl();
-        projectDao.updateProject(project_id, project);
+        projectDao.updateProject(projectId, project);
     }
 
     @Override
-    public void removeProject(int project_id) {
+    public void removeProject(int projectId) {
         ProjectDao projectDao = new ProjectDaoImpl();
-        projectDao.removeProject(project_id);
+        projectDao.removeProject(projectId);
     }
 
     @Override
@@ -31,8 +31,14 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public Project getProject(int project_id) {
+    public List<Project> getAllProjects() {
         ProjectDao projectDao = new ProjectDaoImpl();
-        return projectDao.getProject(project_id);
+        return projectDao.getProjects();
+    }
+
+    @Override
+    public Project getProject(int projectId) {
+        ProjectDao projectDao = new ProjectDaoImpl();
+        return projectDao.getProject(projectId);
     }
 }

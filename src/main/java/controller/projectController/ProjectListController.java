@@ -24,11 +24,7 @@ public class ProjectListController extends HttpServlet {
             String pageValue = request.getParameter("page");
             Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
             List<Project> projectList = new ProjectServiceImpl().getProjects(page);
-            HttpSession session = request.getSession(true);
-            session.setAttribute("myProjects", projectList);
-        }
-        catch (IllegalArgumentException e){
-            logger.error(e);
+            request.setAttribute("myProjects", projectList);
         }
         finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher("myprojects.jsp");

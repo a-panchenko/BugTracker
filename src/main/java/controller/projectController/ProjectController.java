@@ -29,9 +29,6 @@ public class ProjectController extends HttpServlet{
             List<Issue> issues = new IssueServiceImpl().getIssues(id, page);
             request.setAttribute("issues", issues);
         }
-        catch (IllegalArgumentException e){
-            logger.error(e);
-        }
         finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher("project.jsp");
             dispatcher.forward(request, response);

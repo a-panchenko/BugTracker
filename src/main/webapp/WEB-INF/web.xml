@@ -41,6 +41,34 @@
         <servlet-name>removeProjectServlet</servlet-name>
         <servlet-class>controller.projectController.RemoveProjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>issueServlet</servlet-name>
+        <servlet-class>controller.issueController.IssueController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>issue</servlet-name>
+        <jsp-file>issue.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>editIssueServlet</servlet-name>
+        <servlet-class>controller.issueController.EditIssueController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editIssue</servlet-name>
+        <jsp-file>editissue.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>removeIssueServlet</servlet-name>
+        <servlet-class>controller.issueController.RemoveIssueController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createIssueServlet</servlet-name>
+        <servlet-class>controller.issueController.CreateIssueController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createIssue</servlet-name>
+        <jsp-file>createissue.jsp</jsp-file>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -77,6 +105,34 @@
     <servlet-mapping>
         <servlet-name>removeProjectServlet</servlet-name>
         <url-pattern>/removeproject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>issueServlet</servlet-name>
+        <url-pattern>/issue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>issue</servlet-name>
+        <url-pattern>/issue.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editIssueServlet</servlet-name>
+        <url-pattern>/editissue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editIssue</servlet-name>
+        <url-pattern>/editissue.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeIssueServlet</servlet-name>
+        <url-pattern>/removeissue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createIssueServlet</servlet-name>
+        <url-pattern>/createissue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createIssue</servlet-name>
+        <url-pattern>/createissue.jsp</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

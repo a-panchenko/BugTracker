@@ -32,7 +32,7 @@ CREATE TABLE ISSUE (
     issue_title         VARCHAR2(50)  NOT NULL,
     issue_description   VARCHAR2(150) NOT NULL,
     priority            VARCHAR2(10)  NOT NULL,
-    status              VARCHAR2(10)  NOT NULL,
+    status              VARCHAR2(20)  NOT NULL,
     creation_date       DATE          NOT NULL,
     solving_date        DATE,
     CONSTRAINT issue_pk PRIMARY KEY (issue_id),

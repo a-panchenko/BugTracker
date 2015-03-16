@@ -39,6 +39,20 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
     }
 
     @Override
+    public List<Project> getProjects() {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_ALL_PROJECTS)) {
+            try (ResultSet result = statement.executeQuery()) {
+                return projectResultParser.extractAll(result);
+            }
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+            return new ArrayList<Project>();
+        }
+    }
+
+    @Override
     public List<Project> getProjects(int page) {
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(Utils.SELECT_PROJECTS)) {

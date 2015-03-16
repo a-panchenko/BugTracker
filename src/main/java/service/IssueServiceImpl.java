@@ -13,14 +13,14 @@ public class IssueServiceImpl implements IssueService {
         issueDao.addIssue(issue);
     }
 
-    public void editIssue(int issue_id, Issue issue) {
+    public void editIssue(int issueId, Issue issue) {
         IssueDao issueDao = new IssueDaoImpl();
-        issueDao.updateIssue(issue_id, issue);
+        issueDao.updateIssue(issueId, issue);
     }
 
-    public void removeIssue(int issue_id) {
+    public void removeIssue(int issueId) {
         IssueDao issueDao = new IssueDaoImpl();
-        issueDao.removeIssue(issue_id);
+        issueDao.removeIssue(issueId);
     }
 
     public List<Issue> getIssues(int projectId, int page) {
@@ -28,8 +28,8 @@ public class IssueServiceImpl implements IssueService {
         return issueDao.getIssues(projectId, page);
     }
 
-    public Issue getIssue(int issue_id) {
+    public Issue getIssue(int issueId) {
         IssueDao issueDao = new IssueDaoImpl();
-        return issueDao.getIssue(issue_id);
+        return issueDao.getIssue(issueId);
     }
 }

@@ -13,6 +13,10 @@ public class Issue {
     private Date creationDate;
     private Date solvingDate;
 
+    public Issue() {
+
+    }
+
     public Issue(int id) {
         setId(id);
     }

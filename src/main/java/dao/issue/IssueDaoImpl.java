@@ -7,10 +7,7 @@ import dao.ResultParser;
 import model.Issue;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +28,12 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
         @Override
         public void completeUpdate(PreparedStatement statement, int id, Issue issue) throws SQLException {
             completeAdd(statement, issue);
-            statement.setDate(7, Utils.utilDateToSql(issue.getSolvingDate()));
+            if (issue.getSolvingDate() == null) {
+                statement.setNull(7, Types.DATE);
+            }
+            else {
+                statement.setDate(7, Utils.utilDateToSql(issue.getSolvingDate()));
+            }
             statement.setInt(8, id);
         }
     };
