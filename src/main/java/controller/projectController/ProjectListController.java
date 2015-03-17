@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ProjectListController extends HttpServlet {
@@ -30,8 +29,6 @@ public class ProjectListController extends HttpServlet {
             request.setAttribute("myProjects", projectList);
             request.setAttribute("currentPage", page);
             int pagesCount = (int) Math.ceil(((double) projectService.getAllProjects().size()) / Utils.ROWS_PER_PAGE);
-            System.out.println(projectService.getAllProjects().size());
-            System.out.println(pagesCount);
             request.setAttribute("pagesCount", pagesCount);
         }
         finally {

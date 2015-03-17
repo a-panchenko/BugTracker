@@ -9,6 +9,10 @@ public class Reply {
     private String message;
     private Date date;
 
+    public Reply() {
+
+    }
+
     public Reply(int id) {
         setId(id);
     }

@@ -46,7 +46,8 @@
                     </textarea> <%
                 } %>
                 <form action="postreply" method="post">
-                    <br><textarea name="reply" rows="10" cols="50" placeholder="post reply"></textarea>
+                    <br><textarea name="message" rows="10" cols="50" placeholder="post reply"></textarea>
+                    <input type="hidden" name="issueId" value="<%= issue.getId() %>">
                     <br><input type="submit" value="Submit"/>
                 </form> <%
             } %>

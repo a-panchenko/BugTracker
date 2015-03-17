@@ -69,6 +69,10 @@
         <servlet-name>createIssue</servlet-name>
         <jsp-file>createissue.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>postReplyServlet</servlet-name>
+        <servlet-class>controller.replyController.PostReplyController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -133,6 +137,10 @@
     <servlet-mapping>
         <servlet-name>createIssue</servlet-name>
         <url-pattern>/createissue.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>postReplyServlet</servlet-name>
+        <url-pattern>/postreply</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
