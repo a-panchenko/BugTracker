@@ -1,7 +1,9 @@
 package controller.projectController;
 
+import dao.Utils;
 import model.Project;
 import org.apache.log4j.Logger;
+import service.ProjectService;
 import service.ProjectServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -9,8 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProjectListController extends HttpServlet {
@@ -23,8 +25,14 @@ public class ProjectListController extends HttpServlet {
         try {
             String pageValue = request.getParameter("page");
             Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
-            List<Project> projectList = new ProjectServiceImpl().getProjects(page);
+            ProjectService projectService = new ProjectServiceImpl();
+            List<Project> projectList = projectService.getProjects(page);
             request.setAttribute("myProjects", projectList);
+            request.setAttribute("currentPage", page);
+            int pagesCount = (int) Math.ceil(((double) projectService.getAllProjects().size()) / Utils.ROWS_PER_PAGE);
+            System.out.println(projectService.getAllProjects().size());
+            System.out.println(pagesCount);
+            request.setAttribute("pagesCount", pagesCount);
         }
         finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher("myprojects.jsp");
