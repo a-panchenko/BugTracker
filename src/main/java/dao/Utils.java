@@ -13,11 +13,11 @@ public class Utils {
     private static final String DATASOURCE = "jndi_jdbc_ds";
 
     public static final String SELECT_PROJECT_BY_PROJECT_ID = "SELECT * FROM PROJECT WHERE project_id = ?";
-    public static final String SELECT_PROJECTS = "SELECT * FROM (SELECT a.*, ROWNUM rnum FROM " +
+    public static final String SELECT_PROJECTS = "SELECT * FROM (SELECT /*+ FIRST_ROWS(20) */ a.*, ROWNUM rnum FROM " +
             "(SELECT * FROM PROJECT ORDER BY project_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
     public static final String SELECT_ALL_PROJECTS = "SELECT * FROM PROJECT";
     public static final String SELECT_ISSUE_BY_ISSUE_ID = "SELECT * FROM ISSUE WHERE issue_id = ?";
-    public static final String SELECT_ISSUES = "SELECT * FROM (SELECT a.*, ROWNUM rnum FROM " +
+    public static final String SELECT_ISSUES = "SELECT * FROM (SELECT /*+ FIRST_ROWS(20) */ a.*, ROWNUM rnum FROM " +
             "(SELECT * FROM ISSUE WHERE project_id = ? ORDER BY issue_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
     public static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
     public static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
