@@ -1,11 +1,12 @@
 DROP TABLE REPLY;
 DROP TABLE ISSUE;
 DROP TABLE PROJECT;
+DROP TABLE GROUPMEMBERS;
+DROP TABLE GROUPS;
 DROP TABLE USERS;
 DROP SEQUENCE proj_seq;
 DROP SEQUENCE issue_seq;
 DROP SEQUENCE reply_seq;
-DROP SEQUENCE user_seq;
 
 CREATE TABLE PROJECT (
     project_id             NUMBER(10)     NOT NULL,
@@ -105,6 +106,42 @@ ADD CONSTRAINT FK1_GROUPMEMBERS
 FOREIGN KEY ( G_NAME )
 REFERENCES GROUPS (G_NAME)
 ON DELETE CASCADE;
+
+insert into users (u_name, u_password, u_description)
+values ('user1', 'password1', 'description1');
+
+insert into users (u_name, u_password, u_description)
+values ('user2', 'password2', 'description2');
+
+insert into users (u_name, u_password, u_description)
+values ('user3', 'password3', 'description3');
+
+insert into users (u_name, u_password, u_description)
+values ('user4', 'password4', 'description4');
+
+insert into groups (g_name, g_description)
+values ('administrators', 'group for admins');
+
+insert into groups (g_name, g_description)
+values ('project-managers', 'group for project managers');
+
+insert into groups (g_name, g_description)
+values ('debugers', 'group for debugers');
+
+insert into groups (g_name, g_description)
+values ('testers', 'group for testers');
+
+insert into groupmembers (g_name, g_member)
+values ('administrators', 'user1');
+
+insert into groupmembers (g_name, g_member)
+values ('project-managers', 'user2');
+
+insert into groupmembers (g_name, g_member)
+values ('debugers', 'user3');
+
+insert into groupmembers (g_name, g_member)
+values ('testers', 'user4');
 
 CREATE OR REPLACE TRIGGER before_delete_issue
 BEFORE DELETE ON ISSUE

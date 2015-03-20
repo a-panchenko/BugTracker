@@ -20,6 +20,14 @@
     <servlet>
         <servlet-name>createProjectServlet</servlet-name>
         <servlet-class>controller.projectController.CreateProjectController</servlet-class>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+            <role-link>administrator</role-link>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>project-manager</role-name>
+            <role-link>project-manager</role-link>
+        </security-role-ref>
     </servlet>
     <servlet>
         <servlet-name>projectServlet</servlet-name>
@@ -153,7 +161,7 @@
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>valid-users</role-name>
+            <role-name>valid-user</role-name>
         </auth-constraint>
     </security-constraint>
     
@@ -162,7 +170,23 @@
     </login-config>
 
     <security-role>
-        <role-name>valid-users</role-name>
+        <role-name>valid-user</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>administrator</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>project-manager</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>debuger</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>tester</role-name>
     </security-role>
 
 </web-app>

@@ -2,7 +2,30 @@
                       xmlns:wls="http://www.bea.com/ns/weblogic/weblogic-web-app"
                       xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app.xsd">
     <security-role-assignment>
-        <role-name>valid-users</role-name>
-        <principal-name>Users</principal-name>
+        <role-name>valid-user</role-name>
+        <principal-name>administrators</principal-name>
+        <principal-name>project-managers</principal-name>
+        <principal-name>debugers</principal-name>
+        <principal-name>testers</principal-name>
+    </security-role-assignment>
+
+    <security-role-assignment>
+        <role-name>administrator</role-name>
+        <principal-name>administrators</principal-name>
+    </security-role-assignment>
+
+    <security-role-assignment>
+        <role-name>project-manager</role-name>
+        <principal-name>project-managers</principal-name>
+    </security-role-assignment>
+
+    <security-role-assignment>
+        <role-name>debuger</role-name>
+        <principal-name>debugers</principal-name>
+    </security-role-assignment>
+
+    <security-role-assignment>
+        <role-name>tester</role-name>
+        <principal-name>testers</principal-name>
     </security-role-assignment>
 </wls:weblogic-web-app>
