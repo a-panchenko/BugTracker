@@ -36,7 +36,7 @@
                                 <br><textarea name="description" rows="10" cols="50" required><%= project.getDescription() %></textarea>
                             </p>
                             <input type="hidden" name="start" value="<%= project.getStartDate().getTime() %>">
-                            <p>Close: <input name="close" type="checkbox"></p>
+                            <p>Close: <input name="close" type="checkbox" <% if (project.getEndDate() != null) { %> checked="checked" <% } %> ></p>
                             <input type="submit" value="Edit Project"/>
                         </form> <%
                     } %>

@@ -49,20 +49,27 @@
                             <p>Description:
                                 <br><textarea name="description" rows="10" cols="50" required><%= issue.getDescription() %></textarea>
                             </p>
+                            <%! private String createOptions(String[] values, String selected) {
+                                StringBuilder builder = new StringBuilder();
+                                for (String value : values) {
+                                    builder.append("<option value=\"" + value + "\"");
+                                    if (value.equals(selected)) {
+                                        builder.append(" selected");
+                                    }
+                                    builder.append(">" + value + "</option>");
+                                }
+                                return builder.toString();
+                            } %>
                             <p>Priority:
                                 <select name="priority">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <% String[] priorityValues = {"1", "2", "3"}; %>
+                                    <%= createOptions(priorityValues, issue.getPriority()) %>
                                 </select>
                             </p>
                             <p>Status:
                                 <select name="status">
-                                    <option value="open">open</option>
-                                    <option value="in progress">in progress</option>
-                                    <option value="resolved">resolved</option>
-                                    <option value="ready for testing">ready for testing</option>
-                                    <option value="closed">closed</option>
+                                    <% String[] statusValues = {"open", "in progress", "resolved", "ready for testing", "closed"}; %>
+                                    <%= createOptions(statusValues, issue.getStatus()) %>
                                 </select>
                             </p>
                             <input type="hidden" name="startDate" value="<%= issue.getCreationDate().getTime() %>">
