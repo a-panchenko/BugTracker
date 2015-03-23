@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class RemoveProjectController extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(RemoveProjectController.class);
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {

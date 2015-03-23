@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-public class EditProjectController extends HttpServlet{
+public class EditProjectController extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(EditProjectController.class);
+    private final Logger LOGGER = Logger.getLogger(EditProjectController.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,6 +28,8 @@ public class EditProjectController extends HttpServlet{
         finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher("editproject.jsp");
             dispatcher.forward(request, response);
+            LOGGER.debug(request.toString());
+            LOGGER.debug(response.toString());
         }
     }
 
@@ -51,6 +53,8 @@ public class EditProjectController extends HttpServlet{
         finally {
             RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
+            LOGGER.debug(request.toString());
+            LOGGER.debug(response.toString());
         }
     }
 }

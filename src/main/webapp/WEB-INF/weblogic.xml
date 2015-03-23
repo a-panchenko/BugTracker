@@ -1,6 +1,10 @@
 <wls:weblogic-web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xmlns:wls="http://www.bea.com/ns/weblogic/weblogic-web-app"
                       xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app.xsd">
+    <container-descriptor>
+        <relogin-enabled>true</relogin-enabled>
+    </container-descriptor>
+
     <security-role-assignment>
         <role-name>valid-user</role-name>
         <principal-name>administrators</principal-name>
@@ -28,4 +32,5 @@
         <role-name>tester</role-name>
         <principal-name>testers</principal-name>
     </security-role-assignment>
+
 </wls:weblogic-web-app>

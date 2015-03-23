@@ -20,14 +20,6 @@
     <servlet>
         <servlet-name>createProjectServlet</servlet-name>
         <servlet-class>controller.projectController.CreateProjectController</servlet-class>
-        <security-role-ref>
-            <role-name>administrator</role-name>
-            <role-link>administrator</role-link>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>project-manager</role-name>
-            <role-link>project-manager</role-link>
-        </security-role-ref>
     </servlet>
     <servlet>
         <servlet-name>projectServlet</servlet-name>
@@ -80,6 +72,10 @@
     <servlet>
         <servlet-name>postReplyServlet</servlet-name>
         <servlet-class>controller.replyController.PostReplyController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -150,6 +146,10 @@
         <servlet-name>postReplyServlet</servlet-name>
         <url-pattern>/postreply</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -157,8 +157,59 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>SecureArea</web-resource-name>
+            <web-resource-name>Secure Area</web-resource-name>
             <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>valid-user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Create Project</web-resource-name>
+            <url-pattern>/createproject</url-pattern>
+            <url-pattern>/createproject.jsp</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Edit Project</web-resource-name>
+            <url-pattern>/editproject</url-pattern>
+            <url-pattern>/editproject.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>administrator</role-name>
+            <role-name>project-manager</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Remove Project</web-resource-name>
+            <url-pattern>/removeproject</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Remove Issue</web-resource-name>
+            <url-pattern>/removeissue</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>administrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Create Issue</web-resource-name>
+            <url-pattern>/createissue</url-pattern>
+            <url-pattern>/createissue.jsp</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Edit Issue</web-resource-name>
+            <url-pattern>/editissue</url-pattern>
+            <url-pattern>/editissue.jsp</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Post Reply</web-resource-name>
+            <url-pattern>/postreply</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>valid-user</role-name>

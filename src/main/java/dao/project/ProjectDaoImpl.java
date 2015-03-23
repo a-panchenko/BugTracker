@@ -7,10 +7,7 @@ import dao.ResultParser;
 import model.Project;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +25,12 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
         @Override
         public void completeUpdate(PreparedStatement statement, int id, Project project) throws SQLException {
             completeAdd(statement, project);
-            statement.setDate(4, Utils.utilDateToSql(project.getEndDate()));
+            if (project.getEndDate() == null) {
+                statement.setNull(4, Types.DATE);
+            }
+            else {
+                statement.setDate(4, Utils.utilDateToSql(project.getEndDate()));
+            }
             statement.setInt(5, id);
         }
     };

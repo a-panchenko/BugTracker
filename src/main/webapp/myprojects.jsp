@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>My Projects</title>
+        <title>Projects</title>
         <style>
             body {
                 font: 11pt Arial, Helvetica, sans-serif;
@@ -13,26 +13,36 @@
         </style>
     </head>
     <body>
-        <table width="100%" height="100%" border="1" cellpadding="4" cellspacing="0">
+        <table width="100%" height="100%" border="1" cellpadding="20%">
             <tr>
-                <td colspan="2" height="10%" align="center">
-                    <a href="/BugTracker/myprojects">My Projects</a>
+                <td colspan="2" height="10%">
+                    <div align="right"><%= request.getRemoteUser() %></div>
+                    <div align="center"><a href="/BugTracker/myprojects">Projects</a></div>
+                    <div align="right"><a href="/BugTracker/logout">Logout</a></div>
                 </td>
             </tr>
-            <tr>
-                <td width="20%">
-                    <a href="/BugTracker/createproject.jsp">Create Project</a>
+            <tr valign="top">
+                <td width="20%"> <%
+                    if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) { %>
+                        <div align="center"><a href="/BugTracker/createproject.jsp">Create Project</a></div> <%
+                    } %>
                 </td>
                 <td> <%
                     List<Project> projectList = (List<Project>) request.getAttribute("myProjects");
                     if ((projectList != null) && (projectList.size() > 0)) { %>
-                        <table width="50%" height="5%" border="1" cellspacing="0"> <%
+                        <table width="50%" height="5%" border="1" cellspacing="0">
+                            <tr align="center">
+                                <td> Title </td>
+                                <td> Description </td>
+                                <td> Start date </td>
+                                <td> End date </td>
+                            </tr> <%
                         for (Project project : projectList) { %>
                             <tr>
-                                <td> <a href="/BugTracker/project?id=<%= project.getId() %>"><%= project.getTitle() %></a> </td>
-                                <td> <%= project.getDescription() %> </td>
-                                <td> <%= project.getStartDate() %> </td>
-                                <td> <%= project.getEndDate() %> </td>
+                                <td width="30%"> <a href="/BugTracker/project?id=<%= project.getId() %>"><%= project.getTitle() %></a> </td>
+                                <td width="30%"> <%= project.getDescription() %> </td>
+                                <td width="20%"> <%= project.getStartDate() %> </td>
+                                <td width="20%"> <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </td>
                             </tr> <%
                         } %>
                         </table> <%

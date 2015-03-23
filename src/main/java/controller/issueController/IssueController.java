@@ -28,7 +28,7 @@ public class IssueController extends HttpServlet{
                 Issue issue = new IssueServiceImpl().getIssue(id);
                 request.setAttribute("issue", issue);
                 Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
-                request.setAttribute("projectTitle", project.getTitle());
+                request.setAttribute("project", project);
                 List<Reply> replies = new ReplyServiceImpl().getReplies(id);
                 request.setAttribute("replies", replies);
             }

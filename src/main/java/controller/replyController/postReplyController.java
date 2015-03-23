@@ -26,8 +26,7 @@ public class PostReplyController extends HttpServlet {
             new ReplyServiceImpl().addReply(reply);
         }
         finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("/BugTracker/issue?id=" + request.getParameter("issueId"));
         }
     }
 }
