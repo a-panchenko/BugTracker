@@ -23,6 +23,8 @@ public class PostReplyController extends HttpServlet {
             String message = request.getParameter("message");
             reply.setMessage(message);
             reply.setDate(new Date());
+            String poster = request.getParameter("poster");
+            reply.setPoster(poster);
             new ReplyServiceImpl().addReply(reply);
         }
         finally {

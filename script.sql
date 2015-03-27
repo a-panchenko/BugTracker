@@ -23,8 +23,8 @@ CREATE TABLE GROUPMEMBERS (
   G_NAME    VARCHAR2(50)  NOT NULL,
   G_MEMBER  VARCHAR2(50)  NOT NULL,
   CONSTRAINT PK_GROUPMEMBERS  PRIMARY KEY (G_NAME, G_MEMBER),
-  CONSTRAINT FK1_GROUPMEMBERS FOREIGN KEY (G_NAME) REFERENCES GROUPS (G_NAME) ON DELETE CASCADE,
-  CONSTRAINT FK2_GROUPMEMBERS FOREIGN KEY (G_MEMBER) REFERENCES USERS (U_NAME) ON DELETE CASCADE);
+  CONSTRAINT FK1_GROUPMEMBERS FOREIGN KEY (G_NAME)    REFERENCES GROUPS (G_NAME)  ON DELETE CASCADE,
+  CONSTRAINT FK2_GROUPMEMBERS FOREIGN KEY (G_MEMBER)  REFERENCES USERS (U_NAME)   ON DELETE CASCADE);
 
 CREATE TABLE PROJECT (
     project_id             NUMBER(10)        NOT NULL,
@@ -78,8 +78,10 @@ CREATE TABLE REPLY (
     issue_id     NUMBER(10)       NOT NULL,
     message      VARCHAR2(2000)   NOT NULL,
     post_date    DATE             NOT NULL,
-    CONSTRAINT reply_pk PRIMARY KEY (reply_id),
-    CONSTRAINT reply_fk FOREIGN KEY (issue_id) REFERENCES ISSUE (issue_id) ON DELETE CASCADE);
+    poster       VARCHAR2(50)     NOT NULL,
+    CONSTRAINT reply_pk       PRIMARY KEY (reply_id),
+    CONSTRAINT reply_fk1      FOREIGN KEY (issue_id)  REFERENCES ISSUE (issue_id) ON DELETE CASCADE,
+    CONSTRAINT reply_fk2      FOREIGN KEY (poster)    REFERENCES USERS (u_name) ON DELETE CASCADE);
     
 CREATE SEQUENCE reply_seq;
 
@@ -126,12 +128,6 @@ VALUES (3, 'Issue6', 'Description6', 'Priority2', 'Status2', '02/02/2015');
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
 VALUES (4, 'Issue7', 'Description7', 'Priority3', 'Status3', '02/01/2015');
 
-INSERT INTO REPLY (issue_id, message, post_date)
-VALUES (2, 'Reply1', '02/01/2015');
-
-INSERT INTO REPLY (issue_id, message, post_date)
-VALUES (2, 'Reply2', '02/02/2015');
-
 INSERT INTO USERS (u_name, u_password, u_description)
 VALUES ('user1', 'password1', 'description1');
 
@@ -167,5 +163,11 @@ VALUES ('debugers', 'user3');
 
 INSERT INTO GROUPMEMBERS (g_name, g_member)
 VALUES ('testers', 'user4');
+
+INSERT INTO REPLY (issue_id, message, post_date, poster)
+VALUES (2, 'Reply1', '02/01/2015', 'user1');
+
+INSERT INTO REPLY (issue_id, message, post_date, poster)
+VALUES (2, 'Reply2', '02/02/2015', 'user2');
 
 commit;

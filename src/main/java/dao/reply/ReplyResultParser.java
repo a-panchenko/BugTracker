@@ -14,6 +14,7 @@ public class ReplyResultParser extends ResultParser<Reply> {
         reply.setIssueId(result.getInt(2));
         reply.setMessage(result.getString(3));
         reply.setDate(result.getDate(4));
+        reply.setPoster(result.getString(5));
         return reply;
     }
 }

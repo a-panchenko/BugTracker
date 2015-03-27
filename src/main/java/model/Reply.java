@@ -8,6 +8,7 @@ public class Reply {
     private int issueId;
     private String message;
     private Date date;
+    private String poster;
 
     public Reply() {
 
@@ -47,5 +48,13 @@ public class Reply {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

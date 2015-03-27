@@ -25,11 +25,12 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
             statement.setInt(1, reply.getIssueId());
             statement.setString(2, reply.getMessage());
             statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
+            statement.setString(4, reply.getPoster());
         }
         @Override
         public void completeUpdate(PreparedStatement statement, int id, Reply reply) throws SQLException {
             completeAdd(statement, reply);
-            statement.setInt(4, id);
+            statement.setInt(5, id);
         }
     };
 

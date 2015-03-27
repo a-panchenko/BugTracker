@@ -33,8 +33,8 @@ public class Utils {
             "ISSUE (project_id, issue_title, issue_description, priority, status, creation_date) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String UPDATE_ISSUE = "UPDATE ISSUE SET project_id = ?, issue_title = ?, " +
             "issue_description = ?, priority = ?, status = ?, creation_date = ?, solving_date = ? WHERE issue_id = ?";
-    public static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date) VALUES (?, ?, ?)";
-    public static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ? WHERE reply_id = ?";
+    public static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
+    public static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
     public static final int ROWS_PER_PAGE = 20;
 
     public static DataSource getDataSource() {

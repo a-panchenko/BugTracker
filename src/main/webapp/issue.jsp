@@ -44,11 +44,12 @@
                         List<Reply> replies = (List<Reply>) request.getAttribute("replies");
                         if (replies != null) { %>
                             <p> Replies: </p>
-                            <textarea style="overflow: scroll;" rows="10" cols="50" readonly> <% for (Reply reply : replies) { %> <%= reply.getDate() %> : <%= reply.getMessage() + "\n" %> <% } %> </textarea> <%
+                            <textarea style="overflow: scroll;" rows="10" cols="50" readonly> <% for (Reply reply : replies) { %> <%= reply.getPoster() %> : <%= reply.getMessage() + " (" + reply.getDate() + ")\n" %> <% } %> </textarea> <%
                         } %>
                         <form action="postreply" method="post">
                             <br><textarea name="message" rows="10" cols="50" placeholder="post reply" required></textarea>
                             <input type="hidden" name="issueId" value="<%= issue.getId() %>">
+                            <input type="hidden" name="poster" value="<%= request.getRemoteUser() %>">
                             <br><input type="submit" value="Post"/>
                         </form> <%
                     } %>
