@@ -1,20 +1,40 @@
+DROP TABLE GROUPMEMBERS;
+DROP TABLE GROUPS;
 DROP TABLE REPLY;
 DROP TABLE ISSUE;
 DROP TABLE PROJECT;
-DROP TABLE GROUPMEMBERS;
-DROP TABLE GROUPS;
 DROP TABLE USERS;
 DROP SEQUENCE proj_seq;
 DROP SEQUENCE issue_seq;
 DROP SEQUENCE reply_seq;
 
+CREATE TABLE USERS (
+  U_NAME          VARCHAR2(50)    NOT NULL,
+  U_PASSWORD      VARCHAR2(50)    NOT NULL,
+  U_DESCRIPTION   VARCHAR2(200),
+  CONSTRAINT PK_USERS PRIMARY KEY (U_NAME));
+
+CREATE TABLE GROUPS (
+  G_NAME          VARCHAR2(50)    NOT NULL,
+  G_DESCRIPTION   VARCHAR2(200),
+  CONSTRAINT PK_GROUPS PRIMARY KEY (G_NAME));
+
+CREATE TABLE GROUPMEMBERS (
+  G_NAME    VARCHAR2(50)  NOT NULL,
+  G_MEMBER  VARCHAR2(50)  NOT NULL,
+  CONSTRAINT PK_GROUPMEMBERS  PRIMARY KEY (G_NAME, G_MEMBER),
+  CONSTRAINT FK1_GROUPMEMBERS FOREIGN KEY (G_NAME) REFERENCES GROUPS (G_NAME) ON DELETE CASCADE,
+  CONSTRAINT FK2_GROUPMEMBERS FOREIGN KEY (G_MEMBER) REFERENCES USERS (U_NAME) ON DELETE CASCADE);
+
 CREATE TABLE PROJECT (
-    project_id             NUMBER(10)     NOT NULL,
-    project_title          VARCHAR2(20)   NOT NULL,
-    project_description    VARCHAR2(20)   NOT NULL,
-    start_date             DATE           NOT NULL,
+    project_id             NUMBER(10)        NOT NULL,
+    project_title          VARCHAR2(50)      NOT NULL,
+    project_description    VARCHAR2(2000)    NOT NULL,
+    start_date             DATE              NOT NULL,
     end_date               DATE,
+    project_leed           VARCHAR2(50),
     CONSTRAINT project_pk         PRIMARY KEY (project_id),
+    CONSTRAINT project_fk         FOREIGN KEY (project_leed) REFERENCES USERS (u_name) ON DELETE SET NULL,
     CONSTRAINT project_title_uniq UNIQUE (project_title));
     
 CREATE SEQUENCE proj_seq;
@@ -30,16 +50,16 @@ END;
 /
 
 CREATE TABLE ISSUE (
-    issue_id            NUMBER(10)    NOT NULL,
-    project_id          NUMBER(10)    NOT NULL,
-    issue_title         VARCHAR2(50)  NOT NULL,
-    issue_description   VARCHAR2(150) NOT NULL,
-    priority            VARCHAR2(10)  NOT NULL,
-    status              VARCHAR2(20)  NOT NULL,
-    creation_date       DATE          NOT NULL,
+    issue_id            NUMBER(10)        NOT NULL,
+    project_id          NUMBER(10)        NOT NULL,
+    issue_title         VARCHAR2(50)      NOT NULL,
+    issue_description   VARCHAR2(2000)    NOT NULL,
+    priority            VARCHAR2(10)      NOT NULL,
+    status              VARCHAR2(20)      NOT NULL,
+    creation_date       DATE              NOT NULL,
     solving_date        DATE,
     CONSTRAINT issue_pk PRIMARY KEY (issue_id),
-    CONSTRAINT issue_fk FOREIGN KEY (project_id) REFERENCES PROJECT(project_id));
+    CONSTRAINT issue_fk FOREIGN KEY (project_id) REFERENCES PROJECT (project_id) ON DELETE CASCADE);
     
 CREATE SEQUENCE issue_seq;
 
@@ -56,10 +76,10 @@ END;
 CREATE TABLE REPLY (
     reply_id     NUMBER(10)       NOT NULL,
     issue_id     NUMBER(10)       NOT NULL,
-    message      VARCHAR2(150)    NOT NULL,
+    message      VARCHAR2(2000)   NOT NULL,
     post_date    DATE             NOT NULL,
     CONSTRAINT reply_pk PRIMARY KEY (reply_id),
-    CONSTRAINT reply_fk FOREIGN KEY (issue_id) REFERENCES ISSUE(issue_id));
+    CONSTRAINT reply_fk FOREIGN KEY (issue_id) REFERENCES ISSUE (issue_id) ON DELETE CASCADE);
     
 CREATE SEQUENCE reply_seq;
 
@@ -70,92 +90,6 @@ BEGIN
     SELECT reply_seq.NEXTVAL
     INTO :new.reply_id
     FROM dual;
-END;
-/
-
-CREATE TABLE USERS (
-  U_NAME VARCHAR(200) NOT NULL,
-  U_PASSWORD VARCHAR(50) NOT NULL,
-  U_DESCRIPTION VARCHAR(1000));
-
-ALTER TABLE USERS
-ADD CONSTRAINT PK_USERS
-PRIMARY KEY (U_NAME);
-
-CREATE TABLE GROUPS (
-  G_NAME VARCHAR(200) NOT NULL,
-  G_DESCRIPTION VARCHAR(1000) NULL);
-
-ALTER TABLE GROUPS
-ADD CONSTRAINT PK_GROUPS
-PRIMARY KEY (G_NAME);
-
-CREATE TABLE GROUPMEMBERS (
-  G_NAME VARCHAR(200) NOT NULL,
-  G_MEMBER VARCHAR(200) NOT NULL);
-
-ALTER TABLE GROUPMEMBERS
-ADD CONSTRAINT PK_GROUPMEMS
-PRIMARY KEY (
-    G_NAME,
-    G_MEMBER
-  );
-
-ALTER TABLE GROUPMEMBERS
-ADD CONSTRAINT FK1_GROUPMEMBERS
-FOREIGN KEY ( G_NAME )
-REFERENCES GROUPS (G_NAME)
-ON DELETE CASCADE;
-
-insert into users (u_name, u_password, u_description)
-values ('user1', 'password1', 'description1');
-
-insert into users (u_name, u_password, u_description)
-values ('user2', 'password2', 'description2');
-
-insert into users (u_name, u_password, u_description)
-values ('user3', 'password3', 'description3');
-
-insert into users (u_name, u_password, u_description)
-values ('user4', 'password4', 'description4');
-
-insert into groups (g_name, g_description)
-values ('administrators', 'group for admins');
-
-insert into groups (g_name, g_description)
-values ('project-managers', 'group for project managers');
-
-insert into groups (g_name, g_description)
-values ('debugers', 'group for debugers');
-
-insert into groups (g_name, g_description)
-values ('testers', 'group for testers');
-
-insert into groupmembers (g_name, g_member)
-values ('administrators', 'user1');
-
-insert into groupmembers (g_name, g_member)
-values ('project-managers', 'user2');
-
-insert into groupmembers (g_name, g_member)
-values ('debugers', 'user3');
-
-insert into groupmembers (g_name, g_member)
-values ('testers', 'user4');
-
-CREATE OR REPLACE TRIGGER before_delete_issue
-BEFORE DELETE ON ISSUE
-FOR EACH ROW
-BEGIN
-    DELETE FROM REPLY WHERE issue_id = :old.issue_id;
-END;
-/
-
-CREATE OR REPLACE TRIGGER before_delete_project
-BEFORE DELETE ON PROJECT
-FOR EACH ROW
-BEGIN
-    DELETE FROM ISSUE WHERE project_id = :old.project_id;
 END;
 /
 
@@ -197,5 +131,41 @@ VALUES (2, 'Reply1', '02/01/2015');
 
 INSERT INTO REPLY (issue_id, message, post_date)
 VALUES (2, 'Reply2', '02/02/2015');
+
+INSERT INTO USERS (u_name, u_password, u_description)
+VALUES ('user1', 'password1', 'description1');
+
+INSERT INTO USERS (u_name, u_password, u_description)
+VALUES ('user2', 'password2', 'description2');
+
+INSERT INTO USERS (u_name, u_password, u_description)
+VALUES ('user3', 'password3', 'description3');
+
+INSERT INTO USERS (u_name, u_password, u_description)
+VALUES ('user4', 'password4', 'description4');
+
+INSERT INTO GROUPS (g_name, g_description)
+VALUES ('administrators', 'group for admins');
+
+INSERT INTO GROUPS (g_name, g_description)
+VALUES ('project-managers', 'group for project managers');
+
+INSERT INTO GROUPS (g_name, g_description)
+VALUES ('debugers', 'group for debugers');
+
+INSERT INTO GROUPS (g_name, g_description)
+VALUES ('testers', 'group for testers');
+
+INSERT INTO GROUPMEMBERS (g_name, g_member)
+VALUES ('administrators', 'user1');
+
+INSERT INTO GROUPMEMBERS (g_name, g_member)
+VALUES ('project-managers', 'user2');
+
+INSERT INTO GROUPMEMBERS (g_name, g_member)
+VALUES ('debugers', 'user3');
+
+INSERT INTO GROUPMEMBERS (g_name, g_member)
+VALUES ('testers', 'user4');
 
 commit;

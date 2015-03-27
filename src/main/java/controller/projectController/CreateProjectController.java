@@ -19,10 +19,12 @@ public class CreateProjectController extends HttpServlet {
         try {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
+            String projectLeed = request.getParameter("projectLeed");
             Project project = new Project();
             project.setTitle(title);
             project.setDescription(description);
             project.setStartDate(new Date());
+            project.setProjectLeed(projectLeed);
             new ProjectServiceImpl().addProject(project);
         }
         finally {

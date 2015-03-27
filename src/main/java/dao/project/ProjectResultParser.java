@@ -15,6 +15,7 @@ public class ProjectResultParser extends ResultParser<Project> {
         project.setDescription(result.getString(3));
         project.setStartDate(result.getDate(4));
         project.setEndDate(result.getDate(5));
+        project.setProjectLeed(result.getString(6));
         return project;
     }
 }

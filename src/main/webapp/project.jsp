@@ -42,6 +42,7 @@
                     if (project != null) { %>
                         <p>Title: <%= project.getTitle() %> </p>
                         <p>Description: <%= project.getDescription() %> </p>
+                        <p>Project Leed: <%= project.getProjectLeed() %> </p>
                         <p>Start date: <%= project.getStartDate() %> </p>
                         <p>End date: <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </p> <%
                         List<Issue> issues = (List<Issue>) request.getAttribute("issues");

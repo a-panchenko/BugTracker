@@ -1,4 +1,6 @@
 <%@ page import="model.Project" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.GroupMember" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -34,7 +36,15 @@
                             </p>
                             <p>Description:
                                 <br><textarea name="description" rows="10" cols="50" required><%= project.getDescription() %></textarea>
-                            </p>
+                            </p> <%
+                            List<GroupMember> projectManagers = (List<GroupMember>) request.getAttribute("projectManagers");
+                            if (projectManagers != null) { %>
+                                <p><select name="projectManagers"> <%
+                                    for (GroupMember groupMember : projectManagers) { %>
+                                        <option <% if (project.getProjectLeed().equals(groupMember.getName())) { %> selected <% } %> ><%= groupMember.getName() %></option> <%
+                                    } %>
+                                </select></p> <%
+                            } %>
                             <input type="hidden" name="start" value="<%= project.getStartDate().getTime() %>">
                             <p>Close: <input name="close" type="checkbox" <% if (project.getEndDate() != null) { %> checked="checked" <% } %> ></p>
                             <input type="submit" value="Edit Project"/>

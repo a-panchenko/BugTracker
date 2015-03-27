@@ -9,6 +9,7 @@ public class Project {
     private String description;
     private Date startDate;
     private Date endDate;
+    private String projectLeed;
 
     public Project() {
 
@@ -56,5 +57,13 @@ public class Project {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getProjectLeed() {
+        return projectLeed;
+    }
+
+    public void setProjectLeed(String projectLeed) {
+        this.projectLeed = projectLeed;
     }
 }

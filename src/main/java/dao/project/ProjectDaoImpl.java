@@ -21,17 +21,18 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
             statement.setString(1, project.getTitle());
             statement.setString(2, project.getDescription());
             statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
+            statement.setString(4, project.getProjectLeed());
         }
         @Override
         public void completeUpdate(PreparedStatement statement, int id, Project project) throws SQLException {
             completeAdd(statement, project);
             if (project.getEndDate() == null) {
-                statement.setNull(4, Types.DATE);
+                statement.setNull(5, Types.DATE);
             }
             else {
-                statement.setDate(4, Utils.utilDateToSql(project.getEndDate()));
+                statement.setDate(5, Utils.utilDateToSql(project.getEndDate()));
             }
-            statement.setInt(5, id);
+            statement.setInt(6, id);
         }
     };
 
