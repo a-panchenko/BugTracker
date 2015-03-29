@@ -2,6 +2,7 @@ DROP TABLE GROUPMEMBERS;
 DROP TABLE GROUPS;
 DROP TABLE REPLY;
 DROP TABLE ISSUE;
+DROP TABLE PROJECTMEMBERS;
 DROP TABLE PROJECT;
 DROP TABLE USERS;
 DROP SEQUENCE proj_seq;
@@ -49,6 +50,13 @@ BEGIN
 END;
 /
 
+CREATE TABLE PROJECTMEMBERS (
+  project_id    NUMBER(10)  NOT NULL,
+  name          VARCHAR2(50)  NOT NULL,
+  CONSTRAINT pk_projectmembers  PRIMARY KEY (project_id, name),
+  CONSTRAINT fk1_projectmembers FOREIGN KEY (project_id)    REFERENCES PROJECT (project_id)  ON DELETE CASCADE,
+  CONSTRAINT fk2_projectmembers FOREIGN KEY (name)          REFERENCES USERS (U_NAME)   ON DELETE CASCADE);
+
 CREATE TABLE ISSUE (
     issue_id            NUMBER(10)        NOT NULL,
     project_id          NUMBER(10)        NOT NULL,
@@ -58,8 +66,12 @@ CREATE TABLE ISSUE (
     status              VARCHAR2(20)      NOT NULL,
     creation_date       DATE              NOT NULL,
     solving_date        DATE,
+    creator             VARCHAR2(50)      NOT NULL,
+    assigned            VARCHAR2(50),
     CONSTRAINT issue_pk PRIMARY KEY (issue_id),
-    CONSTRAINT issue_fk FOREIGN KEY (project_id) REFERENCES PROJECT (project_id) ON DELETE CASCADE);
+    CONSTRAINT issue_fk1 FOREIGN KEY (project_id) REFERENCES PROJECT (project_id) ON DELETE CASCADE,
+    CONSTRAINT issue_fk2 FOREIGN KEY (creator)    REFERENCES USERS (U_NAME) ON DELETE SET NULL,
+    CONSTRAINT issue_fk3 FOREIGN KEY (assigned)   REFERENCES USERS (U_NAME) ON DELETE SET NULL);
     
 CREATE SEQUENCE issue_seq;
 
@@ -95,39 +107,6 @@ BEGIN
 END;
 /
 
-INSERT INTO PROJECT (project_title, project_description, start_date)
-VALUES ('Project1', 'Description1', '01/01/2015');
-
-INSERT INTO PROJECT (project_title, project_description, start_date)
-VALUES ('Project2', 'Description2', '01/02/2015');
-
-INSERT INTO PROJECT (project_title, project_description, start_date)
-VALUES ('Project3', 'Description3', '01/01/2015');
-
-INSERT INTO PROJECT (project_title, project_description, start_date)
-VALUES ('Project4', 'Description4', '01/02/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (1, 'Issue1', 'Description1', 'Priority1', 'Status1', '01/01/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (1, 'Issue2', 'Description2', 'Priority1', 'Status1', '01/01/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (1, 'Issue3', 'Description3', 'Priority1', 'Status1', '01/01/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (2, 'Issue4', 'Description4', 'Priority1', 'Status1', '01/01/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (3, 'Issue5', 'Description5', 'Priority1', 'Status1', '01/01/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (3, 'Issue6', 'Description6', 'Priority2', 'Status2', '02/02/2015');
-
-INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date)
-VALUES (4, 'Issue7', 'Description7', 'Priority3', 'Status3', '02/01/2015');
-
 INSERT INTO USERS (u_name, u_password, u_description)
 VALUES ('user1', 'password1', 'description1');
 
@@ -139,6 +118,45 @@ VALUES ('user3', 'password3', 'description3');
 
 INSERT INTO USERS (u_name, u_password, u_description)
 VALUES ('user4', 'password4', 'description4');
+
+INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+VALUES ('Project1', 'Description1', '01/01/2015', 'user1');
+
+INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+VALUES ('Project2', 'Description2', '01/02/2015', 'user2');
+
+INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+VALUES ('Project3', 'Description3', '01/01/2015', 'user1');
+
+INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+VALUES ('Project4', 'Description4', '01/02/2015', 'user2');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (1, 'Issue1', 'Description1', 'Priority1', 'Status1', '01/01/2015', 'user1');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (1, 'Issue2', 'Description2', 'Priority1', 'Status1', '01/01/2015', 'user1');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (1, 'Issue3', 'Description3', 'Priority1', 'Status1', '01/01/2015', 'user1');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (2, 'Issue4', 'Description4', 'Priority1', 'Status1', '01/01/2015', 'user2');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (3, 'Issue5', 'Description5', 'Priority1', 'Status1', '01/01/2015', 'user1');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (3, 'Issue6', 'Description6', 'Priority2', 'Status2', '02/02/2015', 'user1');
+
+INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
+VALUES (4, 'Issue7', 'Description7', 'Priority3', 'Status3', '02/01/2015', 'user2');
+
+INSERT INTO REPLY (issue_id, message, post_date, poster)
+VALUES (2, 'Reply1', '02/01/2015', 'user1');
+
+INSERT INTO REPLY (issue_id, message, post_date, poster)
+VALUES (2, 'Reply2', '02/02/2015', 'user2');
 
 INSERT INTO GROUPS (g_name, g_description)
 VALUES ('administrators', 'group for admins');
@@ -163,11 +181,5 @@ VALUES ('debugers', 'user3');
 
 INSERT INTO GROUPMEMBERS (g_name, g_member)
 VALUES ('testers', 'user4');
-
-INSERT INTO REPLY (issue_id, message, post_date, poster)
-VALUES (2, 'Reply1', '02/01/2015', 'user1');
-
-INSERT INTO REPLY (issue_id, message, post_date, poster)
-VALUES (2, 'Reply2', '02/02/2015', 'user2');
 
 commit;

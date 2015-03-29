@@ -1,6 +1,8 @@
 <%@ page import="model.Project" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.GroupMember" %>
+<%@ page import="model.ProjectMember" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -39,14 +41,32 @@
                             </p> <%
                             List<GroupMember> projectManagers = (List<GroupMember>) request.getAttribute("projectManagers");
                             if (projectManagers != null) { %>
-                                <p><select name="projectManagers"> <%
-                                    for (GroupMember groupMember : projectManagers) { %>
-                                        <option <% if (project.getProjectLeed().equals(groupMember.getName())) { %> selected <% } %> ><%= groupMember.getName() %></option> <%
-                                    } %>
-                                </select></p> <%
+                                <p>Project Leed:
+                                    <select name="projectManagers"> <%
+                                        for (GroupMember groupMember : projectManagers) { %>
+                                            <option <% if (project.getProjectLeed().equals(groupMember.getName())) { %> selected <% } %> ><%= groupMember.getName() %></option> <%
+                                        } %>
+                                    </select>
+                                </p> <%
                             } %>
                             <input type="hidden" name="start" value="<%= project.getStartDate().getTime() %>">
-                            <p>Close: <input name="close" type="checkbox" <% if (project.getEndDate() != null) { %> checked="checked" <% } %> ></p>
+                            <p>Close: <input name="close" type="checkbox" <% if (project.getEndDate() != null) { %> checked <% } %> ></p>
+                            <p>Members: <%
+                                List<GroupMember> availableMembers = (List<GroupMember>) request.getAttribute("availableMembers");
+                                List<ProjectMember> currentMembers = (List<ProjectMember>) request.getAttribute("currentMembers");
+                                if (availableMembers != null && currentMembers != null) {
+                                    List<String> currentMembersNames = new ArrayList<String>();
+                                    for (ProjectMember projectMember : currentMembers) {
+                                        currentMembersNames.add(projectMember.getName()); %>
+                                        <br><input name="members" type="checkbox" value="<%= projectMember.getName() %>" checked/><%= projectMember.getName() %> <%
+                                    }
+                                    for (GroupMember groupMember : availableMembers) {
+                                        if (! currentMembersNames.contains(groupMember.getName())) { %>
+                                            <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>"/><%= groupMember.getName() %> <%
+                                        }
+                                    }
+                                } %>
+                            </p>
                             <input type="submit" value="Edit Project"/>
                         </form> <%
                     } %>

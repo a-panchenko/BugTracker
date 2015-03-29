@@ -18,7 +18,7 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
     @Override
     public List<GroupMember> getMembersByGroup(String group) {
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_MEMBERS_BY_GROUP)) {
+             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_GROUPMEMBERS_BY_GROUP)) {
             statement.setString(1, group);
             try (ResultSet result = statement.executeQuery()) {
                 List<GroupMember> list = new ArrayList<GroupMember>();

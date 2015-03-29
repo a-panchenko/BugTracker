@@ -21,10 +21,12 @@ public class Utils {
             "(SELECT * FROM ISSUE WHERE project_id = ? ORDER BY issue_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
     public static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
     public static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
-    public static final String SELECT_MEMBERS_BY_GROUP = "SELECT * FROM GROUPMEMBERS WHERE g_name = ?";
+    public static final String SELECT_GROUPMEMBERS_BY_GROUP = "SELECT * FROM GROUPMEMBERS WHERE g_name = ?";
+    public static final String SELECT_PROJECTMEMBERS_BY_PROJECT_ID = "SELECT * FROM PROJECTMEMBERS WHERE project_id = ?";
     public static final String DELETE_PROJECT_BY_PROJECT_ID = "DELETE FROM PROJECT WHERE project_id = ?";
     public static final String DELETE_ISSUE_BY_ISSUE_ID = "DELETE FROM ISSUE WHERE issue_id = ?";
     public static final String DELETE_REPLY_BY_REPLY_ID = "DELETE FROM REPLY WHERE reply_id = ?";
+    public static final String DELETE_PROJECTMEMBERS_BY_PROJECT_ID = "DELETE FROM PROJECTMEMBERS WHERE project_id = ?";
     public static final String INSERT_INTO_PROJECT = "INSERT INTO " +
             "PROJECT (project_title, project_description, start_date, project_leed) VALUES (?, ?, ?, ?)";
     public static final String UPDATE_PROJECT = "UPDATE PROJECT " +
@@ -35,6 +37,7 @@ public class Utils {
             "issue_description = ?, priority = ?, status = ?, creation_date = ?, solving_date = ? WHERE issue_id = ?";
     public static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
     public static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
+    public static final String INSERT_INTO_PROJECTMEMBERS = "INSERT INTO PROJECTMEMBERS (project_id, name) VALUES (?, ?)";
     public static final int ROWS_PER_PAGE = 20;
 
     public static DataSource getDataSource() {
