@@ -66,7 +66,7 @@ CREATE TABLE ISSUE (
     status              VARCHAR2(20)      NOT NULL,
     creation_date       DATE              NOT NULL,
     solving_date        DATE,
-    creator             VARCHAR2(50)      NOT NULL,
+    creator             VARCHAR2(50),
     assigned            VARCHAR2(50),
     CONSTRAINT issue_pk PRIMARY KEY (issue_id),
     CONSTRAINT issue_fk1 FOREIGN KEY (project_id) REFERENCES PROJECT (project_id) ON DELETE CASCADE,

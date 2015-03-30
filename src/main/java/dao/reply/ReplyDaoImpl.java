@@ -17,6 +17,12 @@ import java.util.List;
 
 public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
+    private static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
+    private static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
+    private static final String DELETE_REPLY_BY_REPLY_ID = "DELETE FROM REPLY WHERE reply_id = ?";
+    private static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
+
     private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
     private final ResultParser<Reply> replyResultParser = new ReplyResultParser();
     private final PlaceholderCompleter<Reply> placeholderCompleter = new PlaceholderCompleter<Reply>() {
@@ -36,13 +42,13 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
     @Override
     public Reply getReply(int replyId) {
-        return selectById(replyId, Utils.SELECT_REPLY_BY_REPLY_ID, replyResultParser);
+        return selectById(replyId, SELECT_REPLY_BY_REPLY_ID, replyResultParser);
     }
 
     @Override
     public List<Reply> getReplies(int issueId) {
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_REPLIES_BY_ISSUE_ID)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_REPLIES_BY_ISSUE_ID)) {
             statement.setInt(1, issueId);
             try (ResultSet result = statement.executeQuery()) {
                 return replyResultParser.extractAll(result);
@@ -56,16 +62,16 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
     @Override
     public void addReply(Reply reply) {
-        insert(reply, Utils.INSERT_INTO_REPLY, placeholderCompleter);
+        insert(reply, INSERT_INTO_REPLY, placeholderCompleter);
     }
 
     @Override
     public void removeReply(int replyId) {
-        deleteById(replyId, Utils.DELETE_REPLY_BY_REPLY_ID);
+        deleteById(replyId, DELETE_REPLY_BY_REPLY_ID);
     }
 
     @Override
     public void updateReply(int replyId, Reply reply) {
-        update(replyId, reply, Utils.UPDATE_REPLY, placeholderCompleter);
+        update(replyId, reply, UPDATE_REPLY, placeholderCompleter);
     }
 }

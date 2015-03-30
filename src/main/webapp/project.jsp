@@ -42,12 +42,12 @@
                     if (project != null) { %>
                         <p>Title: <%= project.getTitle() %> </p>
                         <p>Description: <%= project.getDescription() %> </p>
-                        <p>Project Leed: <%= project.getProjectLeed() %> </p>
+                        <p>Project Leed: <% if (project.getProjectLeed() != null) { %> <%= project.getProjectLeed() %> <% } %> </p>
                         <p>Start date: <%= project.getStartDate() %> </p>
                         <p>End date: <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </p> <%
                         List<Issue> issues = (List<Issue>) request.getAttribute("issues");
                         if (issues != null && issues.size() > 0) { %>
-                            <br><table width="50%" height="5%" border="1" cellspacing="0">
+                            <br><table width="80%" height="5%" border="1" cellspacing="0">
                                 <tr align="center">
                                     <td> ID </td>
                                     <td width="20"> Title </td>
@@ -56,6 +56,8 @@
                                     <td> Status </td>
                                     <td> Creation date </td>
                                     <td> Solving date </td>
+                                    <td> Created By </td>
+                                    <td> Assigned </td>
                                 </tr> <%
                                 for (Issue issue : issues) { %>
                                     <tr>
@@ -66,6 +68,8 @@
                                         <td> <%= issue.getStatus() %> </td>
                                         <td> <%= issue.getCreationDate() %> </td>
                                         <td> <% if (issue.getSolvingDate() != null) { %> <%= issue.getSolvingDate() %> <% } %> </td>
+                                        <td> <% if (issue.getCreator() != null) { %> <%= issue.getCreator() %> <% } %> </td>
+                                        <td> <% if (issue.getAssigned() != null) { %> <%= issue.getAssigned() %> <% } %> </td>
                                     </tr> <%
                                 } %>
                             </table> <%

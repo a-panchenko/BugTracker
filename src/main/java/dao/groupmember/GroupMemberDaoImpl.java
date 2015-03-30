@@ -13,12 +13,14 @@ import java.util.List;
 
 public class GroupMemberDaoImpl implements GroupMemberDao {
 
+    private static final String SELECT_GROUPMEMBERS_BY_GROUP = "SELECT * FROM GROUPMEMBERS WHERE g_name = ?";
+
     private final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
 
     @Override
     public List<GroupMember> getMembersByGroup(String group) {
         try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(Utils.SELECT_GROUPMEMBERS_BY_GROUP)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_GROUPMEMBERS_BY_GROUP)) {
             statement.setString(1, group);
             try (ResultSet result = statement.executeQuery()) {
                 List<GroupMember> list = new ArrayList<GroupMember>();

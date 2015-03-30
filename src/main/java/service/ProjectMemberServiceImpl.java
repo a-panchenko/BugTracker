@@ -13,6 +13,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     }
 
     @Override
+    public List<ProjectMember> getMembers(int projectId, String group) {
+        return new ProjectMemberDaoImpl().getMembers(projectId, group);
+    }
+
+    @Override
     public void addMember(ProjectMember projectMember) {
         new ProjectMemberDaoImpl().addMember(projectMember);
     }

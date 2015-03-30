@@ -30,19 +30,21 @@
                 <td> <%
                     List<Project> projectList = (List<Project>) request.getAttribute("myProjects");
                     if ((projectList != null) && (projectList.size() > 0)) { %>
-                        <table width="50%" height="5%" border="1" cellspacing="0">
+                        <table width="80%" height="5%" border="1" cellspacing="0">
                             <tr align="center">
                                 <td> Title </td>
                                 <td> Description </td>
                                 <td> Start date </td>
                                 <td> End date </td>
+                                <td> Project Leed </td>
                             </tr> <%
                         for (Project project : projectList) { %>
                             <tr>
                                 <td width="30%"> <a href="/BugTracker/project?id=<%= project.getId() %>"><%= project.getTitle() %></a> </td>
                                 <td width="30%"> <%= project.getDescription() %> </td>
-                                <td width="20%"> <%= project.getStartDate() %> </td>
-                                <td width="20%"> <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </td>
+                                <td width="15%"> <%= project.getStartDate() %> </td>
+                                <td width="15%"> <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </td>
+                                <td width="10%"> <% if (project.getProjectLeed() != null) { %> <%= project.getProjectLeed() %> <% } %> </td>
                             </tr> <%
                         } %>
                         </table> <%

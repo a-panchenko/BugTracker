@@ -12,6 +12,8 @@ public class Issue {
     private String status;
     private Date creationDate;
     private Date solvingDate;
+    private String creator;
+    private String assigned;
 
     public Issue() {
 
@@ -83,5 +85,21 @@ public class Issue {
 
     public Date getSolvingDate() {
         return solvingDate;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(String assigned) {
+        this.assigned = assigned;
     }
 }

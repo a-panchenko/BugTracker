@@ -40,6 +40,8 @@
                         <p> Priority: <%= issue.getPriority() %> </p>
                         <p> Status: <%= issue.getStatus() %> </p>
                         <p> Creation date: <%= issue.getCreationDate() %> </p>
+                        <p> Created By: <% if (issue.getCreator() != null) { %> <%= issue.getCreator() %> <% } %> </p>
+                        <p> Assigned: <% if (issue.getAssigned() != null) { %> <%= issue.getAssigned() %> <% } %> </p>
                         <p> Description: <%= issue.getDescription() %> </p> <%
                         List<Reply> replies = (List<Reply>) request.getAttribute("replies");
                         if (replies != null) { %>

@@ -18,6 +18,8 @@ public class IssueResultParser extends ResultParser<Issue> {
         issue.setStatus(result.getString(6));
         issue.setCreationDate(result.getDate(7));
         issue.setSolvingDate(result.getDate(8));
+        issue.setCreator(result.getString(9));
+        issue.setAssigned(result.getString(10));
         return issue;
     }
 }

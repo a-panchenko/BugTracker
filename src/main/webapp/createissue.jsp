@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -23,27 +24,50 @@
                 <td width="20%">
 
                 </td>
-                <td> <%
-                    Integer projectId = (Integer) request.getAttribute("projectId");
-                    if (projectId != null) { %>
-                        <form action="createissue" method="post">
-                            <p>Title:
-                                <input type="text" name="title" placeholder="title" required/>
-                            </p>
-                            <input type="hidden" name="projectId" value="<%= projectId %>">
-                            <p>Description:
-                                <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
-                            </p>
-                            <p>Priority:
-                                <select name="priority">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            </p>
-                            <input type="submit" value="Create Issue"/>
-                        </form> <%
-                    } %>
+                <td>
+                    <%
+                        Integer projectId = (Integer) request.getAttribute("projectId");
+                        if (projectId != null) {
+                    %>
+                            <form action="createissue" method="post">
+                                <p>Title:
+                                    <input type="text" name="title" placeholder="title" required/>
+                                </p>
+                                <input type="hidden" name="projectId" value="<%= projectId %>">
+                                <p>Description:
+                                    <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
+                                </p>
+                                <p>Assigned:
+                                    <%
+                                        List<String> projectMembersToAssign = (List<String>) request.getAttribute("projectMembersToAssign");
+                                        if (projectMembersToAssign != null) {
+                                    %>
+                                            <select name="assigned">
+                                                <option/>
+                                                <%
+                                                    for (String memberName : projectMembersToAssign) {
+                                                %>
+                                                        <option value="<%= memberName %>"><%= memberName %></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select>
+                                    <%
+                                        }
+                                    %>
+                                </p>
+                                <p>Priority:
+                                    <select name="priority">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </p>
+                                <input type="submit" value="Create Issue"/>
+                            </form>
+                    <%
+                        }
+                    %>
                 </td>
             </tr>
         </table>
