@@ -58,9 +58,9 @@
                                 </p>
                                 <p>Priority:
                                     <select name="priority">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                        <option>low</option>
+                                        <option>middle</option>
+                                        <option>high</option>
                                     </select>
                                 </p>
                                 <input type="submit" value="Create Issue"/>

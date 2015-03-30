@@ -72,7 +72,7 @@ public class CreateIssueController extends HttpServlet {
                 issue.setCreationDate(new Date());
                 issue.setCreator(request.getRemoteUser());
                 String assigned = request.getParameter("assigned");
-                if (assigned != null) {
+                if (! assigned.isEmpty()) {
                     checkAssigned(assigned, allowed, project, request);
                     issue.setAssigned(assigned);
                 }
@@ -83,7 +83,7 @@ public class CreateIssueController extends HttpServlet {
                 throw new NotAllowedToCreateIssueException();
             }
         }
-        catch (NotAllowedToCreateIssueException notAllowed) {
+        catch (NotAllowedToCreateIssueException | InvalidAssignedMemberException notAllowed) {
             LOGGER.error(notAllowed);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }

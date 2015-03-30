@@ -62,7 +62,7 @@
                             } %>
                             <p>Priority:
                                 <select name="priority">
-                                    <% String[] priorityValues = {"1", "2", "3"}; %>
+                                    <% String[] priorityValues = {"low", "middle", "high"}; %>
                                     <%= createOptions(priorityValues, issue.getPriority()) %>
                                 </select>
                             </p>
