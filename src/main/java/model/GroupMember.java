@@ -5,6 +5,15 @@ public class GroupMember {
     private String name;
     private String group;
 
+    public GroupMember() {
+
+    }
+
+    public GroupMember(String name, String group) {
+        setName(name);
+        setGroup(group);
+    }
+
     public String getName() {
         return name;
     }

@@ -1,6 +1,7 @@
 package controller.replyController;
 
 import model.Reply;
+import service.ReplyService;
 import service.ReplyServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -13,22 +14,19 @@ import java.util.Date;
 
 public class PostReplyController extends HttpServlet {
 
+    private ReplyService replyService = new ReplyServiceImpl();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            Reply reply = new Reply();
-            int issueId = Integer.valueOf(request.getParameter("issueId"));
-            reply.setIssueId(issueId);
-            String message = request.getParameter("message");
-            reply.setMessage(message);
-            reply.setDate(new Date());
-            String poster = request.getParameter("poster");
-            reply.setPoster(poster);
-            new ReplyServiceImpl().addReply(reply);
-        }
-        finally {
-            response.sendRedirect("/BugTracker/issue?id=" + request.getParameter("issueId"));
-        }
+        Reply reply = new Reply();
+        int issueId = Integer.valueOf(request.getParameter("issueId"));
+        reply.setIssueId(issueId);
+        String message = request.getParameter("message");
+        reply.setMessage(message);
+        reply.setDate(new Date());
+        reply.setPoster(request.getRemoteUser());
+        replyService.addReply(reply);
+        response.sendRedirect("/BugTracker/issue?id=" + issueId);
     }
 }

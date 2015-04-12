@@ -1,8 +1,11 @@
 package service;
 
 import dao.projectmember.ProjectMemberDaoImpl;
+import model.Project;
 import model.ProjectMember;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectMemberServiceImpl implements ProjectMemberService{
@@ -25,5 +28,29 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     @Override
     public void removeMembers(int projectId) {
         new ProjectMemberDaoImpl().removeMembers(projectId);
+    }
+
+    @Override
+    public List<String> getMembersToAssign(Project project, HttpServletRequest request) {
+        List<String> membersToAssign = new ArrayList<>();
+        for (ProjectMember projectMember : getMembers(project.getId(), "debugers")) {
+            membersToAssign.add(projectMember.getName());
+        }
+        if (project.getProjectLeed().equals(request.getRemoteUser()) || request.isUserInRole("administrator")) {
+            membersToAssign.add(project.getProjectLeed());
+        }
+        return membersToAssign;
+    }
+
+    @Override
+    public List<String> getPossibleCreators(Project project, HttpServletRequest request) {
+        List<String> possibleCreators = new ArrayList<>();
+        for (ProjectMember projectMember : getMembers(project.getId(), "testers")) {
+            possibleCreators.add(projectMember.getName());
+        }
+        if (project.getProjectLeed().equals(request.getRemoteUser()) || request.isUserInRole("administrator")) {
+            possibleCreators.add(project.getProjectLeed());
+        }
+        return possibleCreators;
     }
 }

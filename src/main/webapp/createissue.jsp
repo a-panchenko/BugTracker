@@ -56,6 +56,25 @@
                                         }
                                     %>
                                 </p>
+                                <p>Created By:
+                                    <%
+                                        List<String> possibleCreators = (List<String>) request.getAttribute("possibleCreators");
+                                        if (possibleCreators != null) {
+                                    %>
+                                    <select name="creator">
+                                        <option/>
+                                        <%
+                                            for (String creator : possibleCreators) {
+                                        %>
+                                        <option value="<%= creator %>"><%= creator %></option>
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                    <%
+                                        }
+                                    %>
+                                </p>
                                 <p>Priority:
                                     <select name="priority">
                                         <option>low</option>

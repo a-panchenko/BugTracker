@@ -28,9 +28,11 @@
                 <td width="20%">
                     <div align="center"><a href="/BugTracker/createproject.jsp">Create Project</a></div>
                 </td>
-                <td> <%
-                    Project project = (Project) request.getAttribute("project");
-                    if (project != null) { %>
+                <td>
+                    <%
+                        Project project = (Project) request.getAttribute("project");
+                        if (project != null) {
+                    %>
                         <form action="editproject" method="post">
                             <input type="hidden" name="id" value="<%= project.getId() %>">
                             <p>Title:
@@ -38,38 +40,54 @@
                             </p>
                             <p>Description:
                                 <br><textarea name="description" rows="10" cols="50" required><%= project.getDescription() %></textarea>
-                            </p> <%
-                            List<GroupMember> projectManagers = (List<GroupMember>) request.getAttribute("projectManagers");
-                            if (projectManagers != null) { %>
+                            </p>
+                            <%
+                                List<GroupMember> projectManagers = (List<GroupMember>) request.getAttribute("projectManagers");
+                                if (projectManagers != null) {
+                            %>
                                 <p>Project Leed:
-                                    <select name="projectManagers"> <%
-                                        for (GroupMember groupMember : projectManagers) { %>
-                                            <option <% if (project.getProjectLeed().equals(groupMember.getName())) { %> selected <% } %> ><%= groupMember.getName() %></option> <%
-                                        } %>
+                                    <select name="projectManagers">
+                                        <%
+                                            for (GroupMember groupMember : projectManagers) {
+                                        %>
+                                                <option <% if (project.getProjectLeed().equals(groupMember.getName())) { %> selected <% } %> ><%= groupMember.getName() %></option>
+                                        <%
+                                            }
+                                        %>
                                     </select>
-                                </p> <%
-                            } %>
+                                </p>
+                            <%
+                                }
+                            %>
                             <input type="hidden" name="start" value="<%= project.getStartDate().getTime() %>">
                             <p>Close: <input name="close" type="checkbox" <% if (project.getEndDate() != null) { %> checked <% } %> ></p>
-                            <p>Members: <%
-                                List<GroupMember> availableMembers = (List<GroupMember>) request.getAttribute("availableMembers");
-                                List<ProjectMember> currentMembers = (List<ProjectMember>) request.getAttribute("currentMembers");
-                                if (availableMembers != null && currentMembers != null) {
-                                    List<String> currentMembersNames = new ArrayList<String>();
-                                    for (ProjectMember projectMember : currentMembers) {
-                                        currentMembersNames.add(projectMember.getName()); %>
-                                        <br><input name="members" type="checkbox" value="<%= projectMember.getName() %>" checked/><%= projectMember.getName() %> <%
-                                    }
-                                    for (GroupMember groupMember : availableMembers) {
-                                        if (! currentMembersNames.contains(groupMember.getName())) { %>
-                                            <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>"/><%= groupMember.getName() %> <%
+                            <p>Members:
+                                <%
+                                    List<GroupMember> availableMembers = (List<GroupMember>) request.getAttribute("availableMembers");
+                                    List<GroupMember> currentMembers = (List<GroupMember>) request.getAttribute("currentMembers");
+                                    if (availableMembers != null && currentMembers != null) {
+                                        List<String> currentMembersNames = new ArrayList<String>();
+                                        for (GroupMember groupMember : currentMembers) {
+                                            currentMembersNames.add(groupMember.getName());
+                                %>
+                                            <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>" checked/><%= groupMember.getName() %> (<%= groupMember.getGroup() %>)
+                                <%
+                                        }
+                                        for (GroupMember groupMember : availableMembers) {
+                                            if (! currentMembersNames.contains(groupMember.getName())) {
+                                %>
+                                            <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>"/><%= groupMember.getName() %> (<%= groupMember.getGroup() %>)
+                                <%
+                                            }
                                         }
                                     }
-                                } %>
+                                %>
                             </p>
                             <input type="submit" value="Edit Project"/>
-                        </form> <%
-                    } %>
+                        </form>
+                    <%
+                        }
+                    %>
                 </td>
             </tr>
         </table>

@@ -1,8 +1,8 @@
 package controller.issueController;
 
-import controller.issueController.exceptions.InvalidAssignedMemberException;
-import controller.issueController.exceptions.NoSuchProjectException;
-import controller.issueController.exceptions.NotAllowedToCreateIssueException;
+import controller.exceptions.InvalidAssignedMemberException;
+import controller.exceptions.NoSuchProjectException;
+import controller.exceptions.NotAllowedToCreateIssueException;
 import model.Issue;
 import model.Project;
 import model.ProjectMember;
@@ -22,6 +22,9 @@ public class CreateIssueController extends HttpServlet {
 
     private final Logger LOGGER = Logger.getLogger(CreateIssueController.class);
 
+    private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
+    private ProjectService projectService = new ProjectServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
@@ -31,14 +34,10 @@ public class CreateIssueController extends HttpServlet {
             List<String> allowed = getAllowed(project);
             if (allowed.contains(request.getRemoteUser()) || request.isUserInRole("administrator")) {
                 request.setAttribute("projectId", id);
-                List<String> projectMembersToAssign = new ArrayList<>();
-                for (ProjectMember projectMember : new ProjectMemberServiceImpl().getMembers(id, "debugers")) {
-                    projectMembersToAssign.add(projectMember.getName());
-                }
-                if (project.getProjectLeed().equals(request.getRemoteUser())) {
-                    projectMembersToAssign.add(project.getProjectLeed());
-                }
+                List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request);
                 request.setAttribute("projectMembersToAssign", projectMembersToAssign);
+                List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request);
+                request.setAttribute("possibleCreators", possibleCreators);
                 request.getRequestDispatcher("createissue.jsp").forward(request, response);
             }
             else {
@@ -70,10 +69,12 @@ public class CreateIssueController extends HttpServlet {
                 issue.setPriority(request.getParameter("priority"));
                 issue.setStatus("open");
                 issue.setCreationDate(new Date());
-                issue.setCreator(request.getRemoteUser());
+                String creator = request.getParameter("creator");
+                checkMembership(creator, allowed, project, request);
+                issue.setCreator(creator);
                 String assigned = request.getParameter("assigned");
                 if (! assigned.isEmpty()) {
-                    checkAssigned(assigned, allowed, project, request);
+                    checkMembership(assigned, allowed, project, request);
                     issue.setAssigned(assigned);
                 }
                 new IssueServiceImpl().addIssue(issue);
@@ -94,7 +95,7 @@ public class CreateIssueController extends HttpServlet {
     }
 
     private Project getProject(int projectId) {
-        Project project = new ProjectServiceImpl().getProject(projectId);
+        Project project = projectService.getProject(projectId);
         if (project == null) {
             throw new NoSuchProjectException();
         }
@@ -103,16 +104,16 @@ public class CreateIssueController extends HttpServlet {
 
     private List<String> getAllowed(Project project) {
         List<String> allowed = new ArrayList<>();
-        for (ProjectMember projectMember : new ProjectMemberServiceImpl().getMembers(project.getId())) {
+        for (ProjectMember projectMember : projectMemberService.getMembers(project.getId())) {
             allowed.add(projectMember.getName());
         }
         allowed.add(project.getProjectLeed());
         return allowed;
     }
 
-    private void checkAssigned(String assigned, List<String> allowed, Project project, HttpServletRequest request) {
-        if (allowed.contains(assigned)) {
-            if (assigned.equals(project.getProjectLeed()) && !request.getRemoteUser().equals(project.getProjectLeed())) {
+    private void checkMembership(String member, List<String> allowed, Project project, HttpServletRequest request) {
+        if (allowed.contains(member)) {
+            if (member.equals(project.getProjectLeed()) && !request.getRemoteUser().equals(project.getProjectLeed())) {
                 throw new InvalidAssignedMemberException();
             }
         }

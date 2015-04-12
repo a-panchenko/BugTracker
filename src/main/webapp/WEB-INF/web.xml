@@ -77,6 +77,38 @@
         <servlet-name>logoutServlet</servlet-name>
         <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>userListServlet</servlet-name>
+        <servlet-class>controller.userController.UserListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>userList</servlet-name>
+        <jsp-file>admin.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>createUserServlet</servlet-name>
+        <servlet-class>controller.userController.CreateUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createUser</servlet-name>
+        <jsp-file>createuser.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>userServlet</servlet-name>
+        <servlet-class>controller.userController.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>user</servlet-name>
+        <jsp-file>user.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>editUserServlet</servlet-name>
+        <servlet-class>controller.userController.EditUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editUser</servlet-name>
+        <jsp-file>edituser.jsp</jsp-file>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -150,6 +182,39 @@
         <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userListServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userList</servlet-name>
+        <url-pattern>/admin.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createUserServlet</servlet-name>
+        <url-pattern>/createuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createUser</servlet-name>
+        <url-pattern>/createuser.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userServlet</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>user</servlet-name>
+        <url-pattern>/user.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editUserServlet</servlet-name>
+        <url-pattern>/edituser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editUser</servlet-name>
+        <url-pattern>/edituser.jsp</url-pattern>
+    </servlet-mapping>
+
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -191,28 +256,14 @@
             <web-resource-name>Remove Issue</web-resource-name>
             <url-pattern>/removeissue</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Admin Panel</web-resource-name>
+            <url-pattern>/admin</url-pattern>
+            <url-pattern>/createuser</url-pattern>
+            <url-pattern>/createuser.jsp</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <role-name>administrator</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Create Issue</web-resource-name>
-            <url-pattern>/createissue</url-pattern>
-            <url-pattern>/createissue.jsp</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>Edit Issue</web-resource-name>
-            <url-pattern>/editissue</url-pattern>
-            <url-pattern>/editissue.jsp</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>Post Reply</web-resource-name>
-            <url-pattern>/postreply</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>valid-user</role-name>
         </auth-constraint>
     </security-constraint>
     

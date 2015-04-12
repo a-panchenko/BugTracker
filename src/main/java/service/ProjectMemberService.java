@@ -1,7 +1,9 @@
 package service;
 
+import model.Project;
 import model.ProjectMember;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface ProjectMemberService {
@@ -13,4 +15,8 @@ public interface ProjectMemberService {
     void addMember(ProjectMember projectMember);
 
     void removeMembers(int projectId);
+
+    List<String> getMembersToAssign(Project project, HttpServletRequest request);
+
+    List<String> getPossibleCreators(Project project, HttpServletRequest request);
 }

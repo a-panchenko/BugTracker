@@ -51,7 +51,6 @@
                         <form action="postreply" method="post">
                             <br><textarea name="message" rows="10" cols="50" placeholder="post reply" required></textarea>
                             <input type="hidden" name="issueId" value="<%= issue.getId() %>">
-                            <input type="hidden" name="poster" value="<%= request.getRemoteUser() %>">
                             <br><input type="submit" value="Post"/>
                         </form> <%
                     } %>

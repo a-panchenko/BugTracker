@@ -51,7 +51,7 @@ END;
 /
 
 CREATE TABLE PROJECTMEMBERS (
-  project_id    NUMBER(10)  NOT NULL,
+  project_id    NUMBER(10)    NOT NULL,
   name          VARCHAR2(50)  NOT NULL,
   CONSTRAINT pk_projectmembers  PRIMARY KEY (project_id, name),
   CONSTRAINT fk1_projectmembers FOREIGN KEY (project_id)    REFERENCES PROJECT (project_id)  ON DELETE CASCADE,
@@ -63,7 +63,7 @@ CREATE TABLE ISSUE (
     issue_title         VARCHAR2(50)      NOT NULL,
     issue_description   VARCHAR2(2000)    NOT NULL,
     priority            VARCHAR2(10)      NOT NULL CHECK (priority in ('low', 'middle', 'high')),
-    status              VARCHAR2(20)      NOT NULL CHECK (status in ('open', 'in progress', 'resolved', 'ready for testing', 'close')),
+    status              VARCHAR2(20)      NOT NULL CHECK (status in ('open', 'in progress', 'resolved', 'testing', 'close')),
     creation_date       DATE              NOT NULL,
     solving_date        DATE,
     creator             VARCHAR2(50),

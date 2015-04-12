@@ -1,4 +1,4 @@
-package controller.issueController.exceptions;
+package controller.exceptions;
 
 public class InvalidAssignedMemberException extends RuntimeException {
 
