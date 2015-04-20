@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
     private static final String INSERT_INTO_USER = "INSERT INTO USERS (u_name, u_password) VALUES (?, ?)";
     private static final String UPDATE_USER = "UPDATE USERS SET u_password = ? WHERE u_name = ?";
 
-    private Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     @Override
     public User getUser(String name) {
@@ -50,7 +50,6 @@ public class UserDaoImpl implements UserDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 
@@ -64,7 +63,6 @@ public class UserDaoImpl implements UserDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 }

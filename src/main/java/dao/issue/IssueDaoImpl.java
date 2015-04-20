@@ -22,7 +22,8 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
             "issue_description = ?, priority = ?, status = ?, creation_date = ?, creator = ?, assigned = ?, solving_date = ? WHERE issue_id = ?";
     private static final String DELETE_ISSUE_BY_ISSUE_ID = "DELETE FROM ISSUE WHERE issue_id = ?";
 
-    private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
+
     private final ResultParser<Issue> issueResultParser = new IssueResultParser();
     private final PlaceholderCompleter<Issue> placeholderCompleter = new PlaceholderCompleter<Issue>() {
         @Override

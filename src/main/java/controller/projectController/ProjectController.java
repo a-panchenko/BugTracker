@@ -1,5 +1,6 @@
 package controller.projectController;
 
+import controller.exceptions.NoSuchProjectException;
 import model.Issue;
 import model.Project;
 import org.apache.log4j.Logger;
@@ -25,14 +26,25 @@ public class ProjectController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.valueOf(request.getParameter("id"));
-        String pageValue = request.getParameter("page");
-        int page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
-        Project project = projectService.getProject(id);
-        request.setAttribute("project", project);
-        List<Issue> issues = issueService.getIssues(id, page);
-        request.setAttribute("issues", issues);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("project.jsp");
-        dispatcher.forward(request, response);
+        try {
+            int id = Integer.valueOf(request.getParameter("id"));
+            Project project = projectService.getProject(id);
+            if (project != null) {
+                String pageValue = request.getParameter("page");
+                int page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
+                request.setAttribute("project", project);
+                List<Issue> issues = issueService.getIssues(id, page);
+                request.setAttribute("issues", issues);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("project.jsp");
+                dispatcher.forward(request, response);
+            }
+            else {
+                throw new NoSuchProjectException();
+            }
+        }
+        catch (NoSuchProjectException notFound) {
+            LOGGER.error(notFound);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 }

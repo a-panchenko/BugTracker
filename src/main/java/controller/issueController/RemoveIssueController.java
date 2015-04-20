@@ -1,5 +1,6 @@
 package controller.issueController;
 
+import service.IssueService;
 import service.IssueServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -11,15 +12,13 @@ import java.io.IOException;
 
 public class RemoveIssueController extends HttpServlet {
 
+    private IssueService issueService = new IssueServiceImpl();
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            Integer id = Integer.valueOf(request.getParameter("id"));
-            new IssueServiceImpl().removeIssue(id);
-        }
-        finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-            dispatcher.forward(request, response);
-        }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.valueOf(request.getParameter("id"));
+        issueService.removeIssue(id);
+        response.sendRedirect("/BugTracker/myprojects");
     }
 }

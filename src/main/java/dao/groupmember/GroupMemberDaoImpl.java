@@ -21,7 +21,7 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
     private static final String UPDATE_GROUPMEMBER = "UPDATE GROUPMEMBERS SET g_name = ? WHERE g_member = ?";
 
 
-    private final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
 
     @Override
     public List<GroupMember> getAllMembers() {
@@ -98,7 +98,6 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 
@@ -135,7 +134,6 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 }

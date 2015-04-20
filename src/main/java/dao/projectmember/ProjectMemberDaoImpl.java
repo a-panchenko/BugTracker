@@ -19,7 +19,7 @@ public class ProjectMemberDaoImpl implements ProjectMemberDao {
     private static final String DELETE_PROJECTMEMBERS_BY_PROJECT_ID = "DELETE FROM PROJECTMEMBERS WHERE project_id = ?";
     private static final String INSERT_INTO_PROJECTMEMBERS = "INSERT INTO PROJECTMEMBERS (project_id, name) VALUES (?, ?)";
 
-    private final Logger LOGGER = Logger.getLogger(ProjectMemberDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ProjectMemberDaoImpl.class);
 
     @Override
     public List<ProjectMember> getMembers(int projectId) {
@@ -75,7 +75,6 @@ public class ProjectMemberDaoImpl implements ProjectMemberDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 
@@ -88,7 +87,6 @@ public class ProjectMemberDaoImpl implements ProjectMemberDao {
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return;
         }
     }
 }

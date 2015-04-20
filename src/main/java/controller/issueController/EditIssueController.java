@@ -5,10 +5,7 @@ import controller.exceptions.NotAllowedToEditIssueException;
 import model.Issue;
 import model.Project;
 import org.apache.log4j.Logger;
-import service.IssueServiceImpl;
-import service.ProjectMemberService;
-import service.ProjectMemberServiceImpl;
-import service.ProjectServiceImpl;
+import service.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,30 +20,39 @@ public class EditIssueController extends HttpServlet {
 
     private final Logger LOGGER = Logger.getLogger(EditIssueController.class);
 
+    private IssueService issueService = new IssueServiceImpl();
+    private ProjectService projectService = new ProjectServiceImpl();
+    private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            Issue issue = new IssueServiceImpl().getIssue(id);
-            request.setAttribute("issue", issue);
-
-            //admin
-            List<Project> projects = new ProjectServiceImpl().getAllProjects();
-            request.setAttribute("projects", projects);
-
-            //admin, projectleed, assigned empty
-            Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
-            ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
-            List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request);
-            request.setAttribute("projectMembersToAssign", projectMembersToAssign);
-
-            List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request);
-            request.setAttribute("possibleCreators", possibleCreators);
+            Issue issue = issueService.getIssue(id);
+            if (issue != null) {
+                request.setAttribute("issue", issue);
+                if (request.isUserInRole("administrator")) {
+                    List<Project> projects = projectService.getAllProjects();
+                    request.setAttribute("projects", projects);
+                }
+                Project project = projectService.getProject(issue.getProjectId());
+                if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+                    List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request);
+                    request.setAttribute("projectMembersToAssign", projectMembersToAssign);
+                    List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request);
+                    request.setAttribute("possibleCreators", possibleCreators);
+                }
+                RequestDispatcher dispatcher = request.getRequestDispatcher("editissue.jsp");
+                dispatcher.forward(request, response);
+            }
+            else {
+                throw new NoSuchIssueException();
+            }
         }
-        finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("editissue.jsp");
-            dispatcher.forward(request, response);
+        catch (NoSuchIssueException notFound) {
+            LOGGER.error(notFound);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -55,9 +61,9 @@ public class EditIssueController extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            Issue issue = new IssueServiceImpl().getIssue(id);
+            Issue issue = issueService.getIssue(id);
             if (issue != null) {
-                Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
+                Project project = projectService.getProject(issue.getProjectId());
                 editCreator(request, issue, project);
                 editAssigned(request, issue, project);
                 editPriority(request, issue, project);
@@ -66,7 +72,7 @@ public class EditIssueController extends HttpServlet {
                 editTitle(request, issue, project);
                 editDescription(request, issue, project);
                 editProjectId(request, issue);
-                new IssueServiceImpl().editIssue(id, issue);
+                issueService.editIssue(id, issue);
                 response.sendRedirect("/BugTracker/issue?id=" + id);
             }
             else {
@@ -208,7 +214,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = new ProjectMemberServiceImpl().getMembersToAssign(project, request);
+                    List<String> allowed = projectMemberService.getMembersToAssign(project, request);
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("in progress");
                         issue.setAssigned(request.getRemoteUser());
@@ -238,7 +244,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = new ProjectMemberServiceImpl().getMembersToAssign(project, request);
+                    List<String> allowed = projectMemberService.getMembersToAssign(project, request);
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("resolved");
                         issue.setAssigned(request.getRemoteUser());
@@ -268,7 +274,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = new ProjectMemberServiceImpl().getPossibleCreators(project, request);
+                    List<String> allowed = projectMemberService.getPossibleCreators(project, request);
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("testing");
                         issue.setCreator(request.getRemoteUser());
@@ -298,7 +304,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = new ProjectMemberServiceImpl().getPossibleCreators(project, request);
+                    List<String> allowed = projectMemberService.getPossibleCreators(project, request);
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("close");
                         issue.setCreator(request.getRemoteUser());

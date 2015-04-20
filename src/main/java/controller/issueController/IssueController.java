@@ -1,12 +1,11 @@
 package controller.issueController;
 
+import controller.exceptions.NoSuchIssueException;
 import model.Issue;
 import model.Project;
 import model.Reply;
 import org.apache.log4j.Logger;
-import service.IssueServiceImpl;
-import service.ProjectServiceImpl;
-import service.ReplyServiceImpl;
+import service.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,24 +17,34 @@ import java.util.List;
 
 public class IssueController extends HttpServlet{
 
-    private static final Logger logger = Logger.getLogger(IssueController.class);
+    private static final Logger LOGGER = Logger.getLogger(IssueController.class);
+
+    private IssueService issueService = new IssueServiceImpl();
+    private ProjectService projectService = new ProjectServiceImpl();
+    private ReplyService replyService = new ReplyServiceImpl();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            if (id > 0) {
-                Issue issue = new IssueServiceImpl().getIssue(id);
+            Issue issue = issueService.getIssue(id);
+            if (issue != null) {
                 request.setAttribute("issue", issue);
-                Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
+                Project project = projectService.getProject(issue.getProjectId());
                 request.setAttribute("project", project);
-                List<Reply> replies = new ReplyServiceImpl().getReplies(id);
+                List<Reply> replies = replyService.getReplies(id);
                 request.setAttribute("replies", replies);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("issue.jsp");
+                dispatcher.forward(request, response);
+            }
+            else {
+                throw new NoSuchIssueException();
             }
         }
-        finally {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("issue.jsp");
-            dispatcher.forward(request, response);
+        catch (NoSuchIssueException notFound) {
+            LOGGER.error(notFound);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

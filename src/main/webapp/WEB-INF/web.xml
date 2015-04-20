@@ -1,8 +1,8 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-<web-app>
     <display-name>BugTracker</display-name>
 
     <servlet>
@@ -11,11 +11,11 @@
     </servlet>
     <servlet>
         <servlet-name>myProjects</servlet-name>
-        <jsp-file>myprojects.jsp</jsp-file>
+        <jsp-file>jsp/myprojects.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>createProject</servlet-name>
-        <jsp-file>createproject.jsp</jsp-file>
+        <jsp-file>jsp/createproject.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>createProjectServlet</servlet-name>
@@ -27,7 +27,7 @@
     </servlet>
     <servlet>
         <servlet-name>project</servlet-name>
-        <jsp-file>project.jsp</jsp-file>
+        <jsp-file>jsp/project.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>editProjectServlet</servlet-name>
@@ -35,7 +35,7 @@
     </servlet>
     <servlet>
         <servlet-name>editProject</servlet-name>
-        <jsp-file>editproject.jsp</jsp-file>
+        <jsp-file>jsp/editproject.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>removeProjectServlet</servlet-name>
@@ -47,7 +47,7 @@
     </servlet>
     <servlet>
         <servlet-name>issue</servlet-name>
-        <jsp-file>issue.jsp</jsp-file>
+        <jsp-file>jsp/issue.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>editIssueServlet</servlet-name>
@@ -55,7 +55,7 @@
     </servlet>
     <servlet>
         <servlet-name>editIssue</servlet-name>
-        <jsp-file>editissue.jsp</jsp-file>
+        <jsp-file>jsp/editissue.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>removeIssueServlet</servlet-name>
@@ -67,7 +67,7 @@
     </servlet>
     <servlet>
         <servlet-name>createIssue</servlet-name>
-        <jsp-file>createissue.jsp</jsp-file>
+        <jsp-file>jsp/createissue.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>postReplyServlet</servlet-name>
@@ -83,7 +83,7 @@
     </servlet>
     <servlet>
         <servlet-name>userList</servlet-name>
-        <jsp-file>admin.jsp</jsp-file>
+        <jsp-file>jsp/admin.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>createUserServlet</servlet-name>
@@ -91,7 +91,7 @@
     </servlet>
     <servlet>
         <servlet-name>createUser</servlet-name>
-        <jsp-file>createuser.jsp</jsp-file>
+        <jsp-file>jsp/createuser.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>userServlet</servlet-name>
@@ -99,7 +99,7 @@
     </servlet>
     <servlet>
         <servlet-name>user</servlet-name>
-        <jsp-file>user.jsp</jsp-file>
+        <jsp-file>jsp/user.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>editUserServlet</servlet-name>
@@ -107,7 +107,7 @@
     </servlet>
     <servlet>
         <servlet-name>editUser</servlet-name>
-        <jsp-file>edituser.jsp</jsp-file>
+        <jsp-file>jsp/edituser.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
@@ -217,7 +217,7 @@
 
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/myprojects</welcome-file>
     </welcome-file-list>
 
     <security-constraint>

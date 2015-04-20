@@ -23,7 +23,8 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
     private static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
 
-    private final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
+
     private final ResultParser<Reply> replyResultParser = new ReplyResultParser();
     private final PlaceholderCompleter<Reply> placeholderCompleter = new PlaceholderCompleter<Reply>() {
         @Override

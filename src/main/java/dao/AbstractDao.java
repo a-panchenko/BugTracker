@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class AbstractDao<T> {
 
-    private final Logger LOGGER = Logger.getLogger(AbstractDao.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractDao.class);
 
     protected T selectById(int id, String sql, ResultParser<T> resultParser) {
         try (Connection connection = Utils.getDataSource().getConnection();

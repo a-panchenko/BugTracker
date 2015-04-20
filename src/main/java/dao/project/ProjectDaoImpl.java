@@ -23,7 +23,8 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
             "SET project_title = ?, project_description = ?, start_date = ?, project_leed = ?, end_date = ? WHERE project_id = ?";
     private static final String DELETE_PROJECT_BY_PROJECT_ID = "DELETE FROM PROJECT WHERE project_id = ?";
 
-    private final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
+    
     private final ResultParser<Project> projectResultParser = new ProjectResultParser();
     private final PlaceholderCompleter<Project> placeholderCompleter = new PlaceholderCompleter<Project>() {
         @Override

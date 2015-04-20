@@ -55,7 +55,6 @@ public class EditProjectController extends HttpServlet {
         if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
             project.setTitle(request.getParameter("title"));
             project.setDescription(request.getParameter("description"));
-            editStartDate(request, project);
             editEndDate(request, project);
             editProjectLeed(request, project);
             editProjectMembers(request, id);
@@ -77,13 +76,6 @@ public class EditProjectController extends HttpServlet {
         List<GroupMember> projectManagers = groupMemberService.getMembersByGroup("administrators");
         projectManagers.addAll(groupMemberService.getMembersByGroup("project-managers"));
         return projectManagers;
-    }
-
-    private void editStartDate(HttpServletRequest request, Project project) {
-        if (project.getStartDate() == null) {
-            long start = Long.valueOf(request.getParameter("start"));
-            project.setStartDate(new Date(start));
-        }
     }
 
     private void editEndDate(HttpServletRequest request, Project project) {
