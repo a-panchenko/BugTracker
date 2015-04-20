@@ -1,5 +1,8 @@
 package dao.groupmember;
 
+import dao.AbstractDao;
+import dao.PlaceholderCompleter;
+import dao.ResultParser;
 import dao.Utils;
 import model.GroupMember;
 import org.apache.log4j.Logger;
@@ -11,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupMemberDaoImpl implements GroupMemberDao {
+public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> implements GroupMemberDao {
 
     private static final String SELECT_GROUPMEMBER_BY_NAME = "SELECT * FROM GROUPMEMBERS WHERE g_member = ?";
     private static final String SELECT_ALL_GROUPMEMBERS = "SELECT * FROM GROUPMEMBERS";
@@ -20,120 +23,49 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
     private static final String INSERT_INTO_GROUPMEMBERS = "INSERT INTO GROUPMEMBERS (g_name, g_member) VALUES (?, ?)";
     private static final String UPDATE_GROUPMEMBER = "UPDATE GROUPMEMBERS SET g_name = ? WHERE g_member = ?";
 
-
     private static final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
+
+    private final ResultParser<GroupMember> resultParser = new GroupMemberResultParser();
 
     @Override
     public List<GroupMember> getAllMembers() {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_GROUPMEMBERS)) {
-            try (ResultSet result = statement.executeQuery()) {
-                List<GroupMember> list = new ArrayList<GroupMember>();
-                while (result.next()) {
-                    GroupMember groupMember = new GroupMember();
-                    groupMember.setGroup(result.getString(1));
-                    groupMember.setName(result.getString(2));
-                    list.add(groupMember);
-                }
-                return list;
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return new ArrayList<GroupMember>();
-        }
+        return select(SELECT_ALL_GROUPMEMBERS, resultParser);
     }
 
     @Override
     public List<GroupMember> getMembersByGroup(String group) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_GROUPMEMBERS_BY_GROUP)) {
-            statement.setString(1, group);
-            try (ResultSet result = statement.executeQuery()) {
-                List<GroupMember> list = new ArrayList<GroupMember>();
-                while (result.next()) {
-                    GroupMember groupMember = new GroupMember();
-                    groupMember.setGroup(result.getString(1));
-                    groupMember.setName(result.getString(2));
-                    list.add(groupMember);
-                }
-                return list;
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return new ArrayList<GroupMember>();
-        }
+        return select(SELECT_GROUPMEMBERS_BY_GROUP, resultParser, group);
     }
 
     @Override
     public List<GroupMember> getMembersByProjectId(int projectId) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_GROUPMEMBERS_BY_PROJECT_ID)) {
-            statement.setInt(1, projectId);
-            try (ResultSet result = statement.executeQuery()) {
-                List<GroupMember> list = new ArrayList<GroupMember>();
-                while (result.next()) {
-                    GroupMember groupMember = new GroupMember();
-                    groupMember.setGroup(result.getString(1));
-                    groupMember.setName(result.getString(2));
-                    list.add(groupMember);
-                }
-                return list;
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return new ArrayList<GroupMember>();
-        }
-    }
-
-    @Override
-    public void addMember(GroupMember groupMember) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_INTO_GROUPMEMBERS)) {
-            statement.setString(1, groupMember.getGroup());
-            statement.setString(2, groupMember.getName());
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-        }
+        return select(SELECT_GROUPMEMBERS_BY_PROJECT_ID, resultParser, projectId);
     }
 
     @Override
     public GroupMember getMemberByName(String username) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_GROUPMEMBER_BY_NAME)) {
-            statement.setString(1, username);
-            try (ResultSet result = statement.executeQuery()) {
-                if (result.next()) {
-                    GroupMember groupMember = new GroupMember();
-                    groupMember.setGroup(result.getString(1));
-                    groupMember.setName(result.getString(2));
-                    return groupMember;
-                }
-                else {
-                    return null;
-                }
+        return select(username, SELECT_GROUPMEMBER_BY_NAME, resultParser);
+    }
+
+    @Override
+    public void addMember(GroupMember groupMember) {
+        insert(groupMember, INSERT_INTO_GROUPMEMBERS, new PlaceholderCompleter<GroupMember>() {
+            @Override
+            public void complete(PreparedStatement statement, GroupMember groupMember) throws SQLException {
+                statement.setString(1, groupMember.getGroup());
+                statement.setString(2, groupMember.getName());
             }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return null;
-        }
+        });
     }
 
     @Override
     public void updateMember(GroupMember groupMember) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_GROUPMEMBER)) {
-            statement.setString(1, groupMember.getGroup());
-            statement.setString(2, groupMember.getName());
-            statement.executeUpdate();
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-        }
+        update(groupMember, UPDATE_GROUPMEMBER, new PlaceholderCompleter<GroupMember>() {
+            @Override
+            public void complete(PreparedStatement statement, GroupMember groupMember) throws SQLException {
+                statement.setString(1, groupMember.getGroup());
+                statement.setString(2, groupMember.getName());
+            }
+        });
     }
 }

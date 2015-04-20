@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
+public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDao {
 
     private static final String SELECT_ISSUE_BY_ISSUE_ID = "SELECT * FROM ISSUE WHERE issue_id = ?";
     private static final String SELECT_ISSUES = "SELECT * FROM (SELECT /*+ FIRST_ROWS(20) */ a.*, ROWNUM rnum FROM " +
@@ -24,35 +24,11 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
 
     private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
 
-    private final ResultParser<Issue> issueResultParser = new IssueResultParser();
-    private final PlaceholderCompleter<Issue> placeholderCompleter = new PlaceholderCompleter<Issue>() {
-        @Override
-        public void completeAdd(PreparedStatement statement, Issue issue) throws SQLException {
-            statement.setInt(1, issue.getProjectId());
-            statement.setString(2, issue.getTitle());
-            statement.setString(3, issue.getDescription());
-            statement.setString(4, issue.getPriority());
-            statement.setString(5, issue.getStatus());
-            statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
-            statement.setString(7, issue.getCreator());
-            statement.setString(8, issue.getAssigned());
-        }
-        @Override
-        public void completeUpdate(PreparedStatement statement, int id, Issue issue) throws SQLException {
-            completeAdd(statement, issue);
-            if (issue.getSolvingDate() == null) {
-                statement.setNull(9, Types.DATE);
-            }
-            else {
-                statement.setDate(9, Utils.utilDateToSql(issue.getSolvingDate()));
-            }
-            statement.setInt(10, id);
-        }
-    };
+    private final ResultParser<Issue> resultParser = new IssueResultParser();
 
     @Override
     public Issue getIssue(int issueId) {
-        return selectById(issueId, SELECT_ISSUE_BY_ISSUE_ID, issueResultParser);
+        return select(issueId, SELECT_ISSUE_BY_ISSUE_ID, resultParser);
     }
 
     @Override
@@ -63,7 +39,7 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
             statement.setInt(2, page * Utils.ROWS_PER_PAGE);
             statement.setInt(3, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
-                return issueResultParser.extractAll(result);
+                return resultParser.extractAll(result);
             }
         }
         catch (SQLException se) {
@@ -74,16 +50,44 @@ public class IssueDaoImpl extends AbstractDao<Issue> implements IssueDao {
 
     @Override
     public void addIssue(Issue issue) {
-        insert(issue, INSERT_INTO_ISSUE, placeholderCompleter);
+        insert(issue, INSERT_INTO_ISSUE, new PlaceholderCompleter<Issue>() {
+            @Override
+            public void complete(PreparedStatement statement, Issue issue) throws SQLException {
+                completeAdd(statement, issue);
+            }
+        });
     }
 
     @Override
     public void removeIssue(int issueId) {
-        deleteById(issueId, DELETE_ISSUE_BY_ISSUE_ID);
+        delete(issueId, DELETE_ISSUE_BY_ISSUE_ID);
     }
 
     @Override
-    public void updateIssue(int issueId, Issue issue) {
-        update(issueId, issue, UPDATE_ISSUE, placeholderCompleter);
+    public void updateIssue(Issue issue) {
+        update(issue, UPDATE_ISSUE, new PlaceholderCompleter<Issue>() {
+            @Override
+            public void complete(PreparedStatement statement, Issue issue) throws SQLException {
+                completeAdd(statement, issue);
+                if (issue.getSolvingDate() == null) {
+                    statement.setNull(9, Types.DATE);
+                }
+                else {
+                    statement.setDate(9, Utils.utilDateToSql(issue.getSolvingDate()));
+                }
+                statement.setInt(10, issue.getId());
+            }
+        });
+    }
+
+    private void completeAdd(PreparedStatement statement, Issue issue) throws SQLException {
+        statement.setInt(1, issue.getProjectId());
+        statement.setString(2, issue.getTitle());
+        statement.setString(3, issue.getDescription());
+        statement.setString(4, issue.getPriority());
+        statement.setString(5, issue.getStatus());
+        statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
+        statement.setString(7, issue.getCreator());
+        statement.setString(8, issue.getAssigned());
     }
 }

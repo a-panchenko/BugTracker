@@ -6,15 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AbstractDao<T> {
+public class AbstractDao<T, PK> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class);
 
-    protected T selectById(int id, String sql, ResultParser<T> resultParser) {
+    protected T select(PK primaryKey, String sql, ResultParser<T> resultParser) {
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setObject(1, primaryKey);
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     return resultParser.extractSingle(result);
@@ -30,39 +32,54 @@ public class AbstractDao<T> {
         }
     }
 
+    protected List<T> select(String sql, ResultParser<T> resultParser, Object ... params) {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (params.length > 0) {
+                for (int i = 0; i < params.length; i++) {
+                    statement.setObject(i + 1, params[i]);
+                }
+            }
+            try (ResultSet result = statement.executeQuery()) {
+                return resultParser.extractAll(result);
+            }
+        }
+        catch (SQLException se) {
+            LOGGER.error(sql, se);
+            return new ArrayList<T>();
+        }
+    }
+
     protected void insert(T entity, String sql, PlaceholderCompleter<T> placeholderCompleter) {
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            placeholderCompleter.completeAdd(statement, entity);
+            placeholderCompleter.complete(statement, entity);
             statement.executeUpdate();
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
-            return;
         }
     }
 
-    protected void update(int id, T entity, String sql, PlaceholderCompleter<T> placeholderCompleter) {
+    protected void update(T entity, String sql, PlaceholderCompleter<T> placeholderCompleter) {
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            placeholderCompleter.completeUpdate(statement, id, entity);
+            placeholderCompleter.complete(statement, entity);
             statement.executeUpdate();
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
-            return;
         }
     }
 
-    protected void deleteById(int id, String sql) {
+    protected void delete(PK primaryKey, String sql) {
         try (Connection connection = Utils.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setObject(1, primaryKey);
             statement.executeUpdate();
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
-            return;
         }
     }
 }

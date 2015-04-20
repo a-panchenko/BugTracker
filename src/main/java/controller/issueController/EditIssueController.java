@@ -72,7 +72,7 @@ public class EditIssueController extends HttpServlet {
                 editTitle(request, issue, project);
                 editDescription(request, issue, project);
                 editProjectId(request, issue);
-                issueService.editIssue(id, issue);
+                issueService.editIssue(issue);
                 response.sendRedirect("/BugTracker/issue?id=" + id);
             }
             else {

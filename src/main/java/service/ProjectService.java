@@ -8,7 +8,7 @@ public interface ProjectService {
 
     public void addProject(Project project);
 
-    public void editProject(int projectId, Project project);
+    public void editProject(Project project);
 
     public void removeProject(int projectId);
 

@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
+public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements ProjectDao {
 
     private static final String SELECT_PROJECT_BY_PROJECT_ID = "SELECT * FROM PROJECT WHERE project_id = ?";
     private static final String SELECT_PROJECTS = "SELECT * FROM (SELECT /*+ FIRST_ROWS(20) */ a.*, ROWNUM rnum FROM " +
@@ -25,45 +25,16 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
     
-    private final ResultParser<Project> projectResultParser = new ProjectResultParser();
-    private final PlaceholderCompleter<Project> placeholderCompleter = new PlaceholderCompleter<Project>() {
-        @Override
-        public void completeAdd(PreparedStatement statement, Project project) throws SQLException {
-            statement.setString(1, project.getTitle());
-            statement.setString(2, project.getDescription());
-            statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
-            statement.setString(4, project.getProjectLeed());
-        }
-        @Override
-        public void completeUpdate(PreparedStatement statement, int id, Project project) throws SQLException {
-            completeAdd(statement, project);
-            if (project.getEndDate() == null) {
-                statement.setNull(5, Types.DATE);
-            }
-            else {
-                statement.setDate(5, Utils.utilDateToSql(project.getEndDate()));
-            }
-            statement.setInt(6, id);
-        }
-    };
+    private final ResultParser<Project> resultParser = new ProjectResultParser();
 
     @Override
     public Project getProject(int projectId) {
-        return selectById(projectId, SELECT_PROJECT_BY_PROJECT_ID, projectResultParser);
+        return select(projectId, SELECT_PROJECT_BY_PROJECT_ID, resultParser);
     }
 
     @Override
     public List<Project> getProjects() {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_PROJECTS)) {
-            try (ResultSet result = statement.executeQuery()) {
-                return projectResultParser.extractAll(result);
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return new ArrayList<Project>();
-        }
+        return select(SELECT_ALL_PROJECTS, resultParser);
     }
 
     @Override
@@ -73,7 +44,7 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
             statement.setInt(1, page * Utils.ROWS_PER_PAGE);
             statement.setInt(2, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
-                return projectResultParser.extractAll(result);
+                return resultParser.extractAll(result);
             }
         }
         catch (SQLException se) {
@@ -84,16 +55,40 @@ public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
 
     @Override
     public void addProject(Project project) {
-        insert(project, INSERT_INTO_PROJECT, placeholderCompleter);
+        insert(project, INSERT_INTO_PROJECT, new PlaceholderCompleter<Project>() {
+            @Override
+            public void complete(PreparedStatement statement, Project project) throws SQLException {
+                completeAdd(statement, project);
+            }
+        });
     }
 
     @Override
     public void removeProject(int projectId) {
-        deleteById(projectId, DELETE_PROJECT_BY_PROJECT_ID);
+        delete(projectId, DELETE_PROJECT_BY_PROJECT_ID);
     }
 
     @Override
-    public void updateProject(int projectId, Project project) {
-        update(projectId, project, UPDATE_PROJECT, placeholderCompleter);
+    public void updateProject(Project project) {
+        update(project, UPDATE_PROJECT, new PlaceholderCompleter<Project>() {
+            @Override
+            public void complete(PreparedStatement statement, Project project) throws SQLException {
+                completeAdd(statement, project);
+                if (project.getEndDate() == null) {
+                    statement.setNull(5, Types.DATE);
+                }
+                else {
+                    statement.setDate(5, Utils.utilDateToSql(project.getEndDate()));
+                }
+                statement.setInt(6, project.getId());
+            }
+        });
+    }
+
+    private void completeAdd(PreparedStatement statement, Project project) throws SQLException {
+        statement.setString(1, project.getTitle());
+        statement.setString(2, project.getDescription());
+        statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
+        statement.setString(4, project.getProjectLeed());
     }
 }

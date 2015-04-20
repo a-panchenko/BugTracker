@@ -13,9 +13,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void editProject(int projectId, Project project) {
+    public void editProject(Project project) {
         ProjectDao projectDao = new ProjectDaoImpl();
-        projectDao.updateProject(projectId, project);
+        projectDao.updateProject(project);
     }
 
     @Override

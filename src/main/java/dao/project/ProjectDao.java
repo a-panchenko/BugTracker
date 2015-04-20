@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface ProjectDao {
 
-    public Project getProject(int projectId);
+    Project getProject(int projectId);
 
-    public List<Project> getProjects();
+    List<Project> getProjects();
 
-    public List<Project> getProjects(int page);
+    List<Project> getProjects(int page);
 
-    public void addProject(Project project);
+    void addProject(Project project);
 
-    public void removeProject(int projectId);
+    void removeProject(int projectId);
 
-    public void updateProject(int projectId, Project project);
+    void updateProject(Project project);
 }

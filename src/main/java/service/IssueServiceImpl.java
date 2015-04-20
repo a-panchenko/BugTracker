@@ -13,9 +13,9 @@ public class IssueServiceImpl implements IssueService {
         issueDao.addIssue(issue);
     }
 
-    public void editIssue(int issueId, Issue issue) {
+    public void editIssue(Issue issue) {
         IssueDao issueDao = new IssueDaoImpl();
-        issueDao.updateIssue(issueId, issue);
+        issueDao.updateIssue(issue);
     }
 
     public void removeIssue(int issueId) {

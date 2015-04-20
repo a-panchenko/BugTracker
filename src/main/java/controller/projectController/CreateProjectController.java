@@ -29,6 +29,10 @@ public class CreateProjectController extends HttpServlet {
             project.setStartDate(new Date());
             project.setProjectLeed(projectLeed);
             projectService.addProject(project);
+            response.sendRedirect("/BugTracker/myprojects");
+        }
+        else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

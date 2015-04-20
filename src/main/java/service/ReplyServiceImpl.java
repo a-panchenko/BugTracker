@@ -13,9 +13,9 @@ public class ReplyServiceImpl implements ReplyService {
         replyDao.addReply(reply);
     }
 
-    public void editReply(int replyId, Reply reply) {
+    public void editReply(Reply reply) {
         ReplyDao replyDao = new ReplyDaoImpl();
-        replyDao.updateReply(replyId, reply);
+        replyDao.updateReply(reply);
     }
 
     public void removeReply(int replyId) {

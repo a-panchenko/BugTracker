@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
+public class ReplyDaoImpl extends AbstractDao<Reply, Integer> implements ReplyDao {
 
     private static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
     private static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
@@ -25,54 +25,48 @@ public class ReplyDaoImpl extends AbstractDao<Reply> implements ReplyDao {
 
     private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
 
-    private final ResultParser<Reply> replyResultParser = new ReplyResultParser();
-    private final PlaceholderCompleter<Reply> placeholderCompleter = new PlaceholderCompleter<Reply>() {
-        @Override
-        public void completeAdd(PreparedStatement statement, Reply reply) throws SQLException {
-            statement.setInt(1, reply.getIssueId());
-            statement.setString(2, reply.getMessage());
-            statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
-            statement.setString(4, reply.getPoster());
-        }
-        @Override
-        public void completeUpdate(PreparedStatement statement, int id, Reply reply) throws SQLException {
-            completeAdd(statement, reply);
-            statement.setInt(5, id);
-        }
-    };
+    private final ResultParser<Reply> resultParser = new ReplyResultParser();
 
     @Override
     public Reply getReply(int replyId) {
-        return selectById(replyId, SELECT_REPLY_BY_REPLY_ID, replyResultParser);
+        return select(replyId, SELECT_REPLY_BY_REPLY_ID, resultParser);
     }
 
     @Override
     public List<Reply> getReplies(int issueId) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_REPLIES_BY_ISSUE_ID)) {
-            statement.setInt(1, issueId);
-            try (ResultSet result = statement.executeQuery()) {
-                return replyResultParser.extractAll(result);
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            return new ArrayList<Reply>();
-        }
+        return select(SELECT_REPLIES_BY_ISSUE_ID, resultParser, issueId);
     }
 
     @Override
     public void addReply(Reply reply) {
-        insert(reply, INSERT_INTO_REPLY, placeholderCompleter);
+        insert(reply, INSERT_INTO_REPLY, new PlaceholderCompleter<Reply>() {
+            @Override
+            public void complete(PreparedStatement statement, Reply reply) throws SQLException {
+                completeAdd(statement, reply);
+            }
+        });
     }
 
     @Override
     public void removeReply(int replyId) {
-        deleteById(replyId, DELETE_REPLY_BY_REPLY_ID);
+        delete(replyId, DELETE_REPLY_BY_REPLY_ID);
     }
 
     @Override
-    public void updateReply(int replyId, Reply reply) {
-        update(replyId, reply, UPDATE_REPLY, placeholderCompleter);
+    public void updateReply(Reply reply) {
+        update(reply, UPDATE_REPLY, new PlaceholderCompleter<Reply>() {
+            @Override
+            public void complete(PreparedStatement statement, Reply reply) throws SQLException {
+                completeAdd(statement, reply);
+                statement.setInt(5, reply.getId());
+            }
+        });
+    }
+
+    private void completeAdd(PreparedStatement statement, Reply reply) throws SQLException {
+        statement.setInt(1, reply.getIssueId());
+        statement.setString(2, reply.getMessage());
+        statement.setDate(3, Utils.utilDateToSql(reply.getDate()));
+        statement.setString(4, reply.getPoster());
     }
 }

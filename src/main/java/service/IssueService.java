@@ -8,7 +8,7 @@ public interface IssueService {
 
     public void addIssue(Issue issue);
 
-    public void editIssue(int issueId, Issue issue);
+    public void editIssue(Issue issue);
 
     public void removeIssue(int issueId);
 

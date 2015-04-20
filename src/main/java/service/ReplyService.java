@@ -8,7 +8,7 @@ public interface ReplyService {
 
     public void addReply(Reply reply);
 
-    public void editReply(int replyId, Reply reply);
+    public void editReply(Reply reply);
 
     public void removeReply(int replyId);
 

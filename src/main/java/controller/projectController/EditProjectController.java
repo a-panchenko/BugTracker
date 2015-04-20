@@ -58,7 +58,7 @@ public class EditProjectController extends HttpServlet {
             editEndDate(request, project);
             editProjectLeed(request, project);
             editProjectMembers(request, id);
-            projectService.editProject(id, project);
+            projectService.editProject(project);
             response.sendRedirect("/BugTracker/project?id=" + id);
         }
         else {
