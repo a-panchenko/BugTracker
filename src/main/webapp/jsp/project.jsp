@@ -61,7 +61,7 @@
                                     <tr>
                                         <td> <%= issue.getId() %> </td>
                                         <td> <a href="/BugTracker/issue?id=<%= issue.getId() %>"><%= issue.getTitle() %></a> </td>
-                                        <td> <%= issue.getDescription() %> </td>
+                                        <td> <%= issue.getDescription().substring(0, 30) %> </td>
                                         <td> <%= issue.getPriority() %> </td>
                                         <td> <%= issue.getStatus() %> </td>
                                         <td> <%= issue.getCreationDate() %> </td>

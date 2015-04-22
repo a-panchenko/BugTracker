@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class IssueController extends HttpServlet{
+public class IssueController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(IssueController.class);
 

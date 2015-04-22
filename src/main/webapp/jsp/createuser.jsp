@@ -9,6 +9,7 @@
                 height: 100vh;
             }
         </style>
+        <script type="text/javascript" src="js/validatePassword.js"></script>
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
@@ -20,18 +21,18 @@
             <tr valign="top">
                 <td width="20%"></td>
                 <td>
-                    <form action="createuser" method="post">
+                    <form action="createuser" onsubmit="return validatePassword(password.value, retypePassword.value)" method="post">
                         <p>Username:
-                            <input type="text" name="username" required/>
+                            <input type="text" name="username" pattern="[A-Za-z0-9]{4,15}" required/>
                         </p>
                         <p>Password:
-                            <input type="password" name="password" required/>
+                            <input type="password" name="password" pattern="[A-Za-z0-9]{6,20}" required/>
                         </p>
                         <p>Retype Password:
                             <input type="password" name="retypePassword" required/>
                         </p>
                         <p>Group:
-                            <select name="group" required>
+                            <select name="group">
                                 <option>administrators</option>
                                 <option>project-managers</option>
                                 <option>debugers</option>

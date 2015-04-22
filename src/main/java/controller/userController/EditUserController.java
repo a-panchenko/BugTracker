@@ -30,6 +30,8 @@ public class EditUserController extends HttpServlet {
         try {
             String username = request.getParameter("name");
             if (request.isUserInRole("administrator") || request.getRemoteUser().equals(username)) {
+                GroupMember groupMember = groupMemberService.getMemberByName(username);
+                request.setAttribute("group", groupMember.getGroup());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("edituser.jsp");
                 dispatcher.forward(request, response);
             }
@@ -61,8 +63,8 @@ public class EditUserController extends HttpServlet {
             }
             response.sendRedirect("/BugTracker/user?name=" + username);
         }
-        catch (NotAllowedToEditUserException | EditPasswordException editExeption) {
-            LOGGER.error(editExeption);
+        catch (NotAllowedToEditUserException | EditPasswordException editException) {
+            LOGGER.error(editException);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }
