@@ -1,6 +1,7 @@
 package service;
 
 import dao.projectmember.ProjectMemberDaoImpl;
+import model.GroupMember;
 import model.Project;
 import model.ProjectMember;
 
@@ -31,24 +32,26 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     }
 
     @Override
-    public List<String> getMembersToAssign(Project project, HttpServletRequest request) {
+    public List<String> getMembersToAssign(Project project, String username) {
         List<String> membersToAssign = new ArrayList<>();
         for (ProjectMember projectMember : getMembers(project.getId(), "debugers")) {
             membersToAssign.add(projectMember.getName());
         }
-        if (project.getProjectLeed().equals(request.getRemoteUser()) || request.isUserInRole("administrator")) {
+        GroupMember groupMember = new GroupMemberServiceImpl().getMemberByName(username);
+        if (project.getProjectLeed().equals(username) || groupMember.getGroup().equals("administrators")) {
             membersToAssign.add(project.getProjectLeed());
         }
         return membersToAssign;
     }
 
     @Override
-    public List<String> getPossibleCreators(Project project, HttpServletRequest request) {
+    public List<String> getPossibleCreators(Project project, String username) {
         List<String> possibleCreators = new ArrayList<>();
         for (ProjectMember projectMember : getMembers(project.getId(), "testers")) {
             possibleCreators.add(projectMember.getName());
         }
-        if (project.getProjectLeed().equals(request.getRemoteUser()) || request.isUserInRole("administrator")) {
+        GroupMember groupMember = new GroupMemberServiceImpl().getMemberByName(username);
+        if (project.getProjectLeed().equals(username) || groupMember.getGroup().equals("administrators")) {
             possibleCreators.add(project.getProjectLeed());
         }
         return possibleCreators;

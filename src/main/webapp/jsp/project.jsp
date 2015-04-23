@@ -21,20 +21,25 @@
                 </td>
             </tr>
             <tr valign="top">
-                <td width="20%"> <%
-                    if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) { %>
-                        <div align="center"><a href="/BugTracker/createproject.jsp">Create Project</a></div> <%
-                    }
-                    Project project = (Project) request.getAttribute("project");
-                    if (project != null) { %>
-                        <div align="center"><a href="/BugTracker/createissue?id=<%= project.getId() %>">Create Issue</a></div> <%
-                        if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) { %>
-                            <div align="center"><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a></div> <%
+                <td width="20%">
+                    <%
+                        Project project = (Project) request.getAttribute("project");
+                        if (project != null) {
+                    %>
+                            <div align="center"><a href="/BugTracker/createissue?id=<%= project.getId() %>">Create Issue</a></div>
+                    <%
+                            if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) {
+                    %>
+                            <div align="center"><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a></div>
+                    <%
+                            }
+                            if (request.isUserInRole("administrator")) {
+                    %>
+                            <div align="center"><a href="/BugTracker/removeproject?id=<%= project.getId() %>">Remove Project</a></div>
+                    <%
+                            }
                         }
-                        if (request.isUserInRole("administrator")) { %>
-                            <div align="center"><a href="/BugTracker/removeproject?id=<%= project.getId() %>">Remove Project</a></div> <%
-                        }
-                    } %>
+                    %>
                 </td>
                 <td> <%
                     if (project != null) { %>
@@ -61,7 +66,20 @@
                                     <tr>
                                         <td> <%= issue.getId() %> </td>
                                         <td> <a href="/BugTracker/issue?id=<%= issue.getId() %>"><%= issue.getTitle() %></a> </td>
-                                        <td> <%= issue.getDescription().substring(0, 30) %> </td>
+                                        <td>
+                                            <%
+                                                if (issue.getDescription().length() > 30) {
+                                            %>
+                                                    <%= issue.getDescription().substring(0, 30) %>
+                                            <%
+                                                }
+                                                else {
+                                            %>
+                                                    <%= issue.getDescription() %>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                         <td> <%= issue.getPriority() %> </td>
                                         <td> <%= issue.getStatus() %> </td>
                                         <td> <%= issue.getCreationDate() %> </td>

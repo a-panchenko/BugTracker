@@ -36,4 +36,9 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     public GroupMember getMemberByName(String username) {
         return new GroupMemberDaoImpl().getMemberByName(username);
     }
+
+    @Override
+    public boolean isUserInGroup(String username, String group) {
+        return getMemberByName(username).getGroup().equals(group);
+    }
 }

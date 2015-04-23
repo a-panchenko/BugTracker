@@ -38,9 +38,9 @@ public class EditIssueController extends HttpServlet {
                 }
                 Project project = projectService.getProject(issue.getProjectId());
                 if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
-                    List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request);
+                    List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
                     request.setAttribute("projectMembersToAssign", projectMembersToAssign);
-                    List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request);
+                    List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request.getRemoteUser());
                     request.setAttribute("possibleCreators", possibleCreators);
                 }
                 RequestDispatcher dispatcher = request.getRequestDispatcher("editissue.jsp");
@@ -67,7 +67,7 @@ public class EditIssueController extends HttpServlet {
                 editCreator(request, issue, project);
                 editAssigned(request, issue, project);
                 editPriority(request, issue, project);
-                editStatus(request,issue, project);
+                editStatus(request, issue, project);
                 editSolvingDate(issue);
                 editTitle(request, issue, project);
                 editDescription(request, issue, project);
@@ -214,7 +214,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = projectMemberService.getMembersToAssign(project, request);
+                    List<String> allowed = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("in progress");
                         issue.setAssigned(request.getRemoteUser());
@@ -244,7 +244,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = projectMemberService.getMembersToAssign(project, request);
+                    List<String> allowed = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("resolved");
                         issue.setAssigned(request.getRemoteUser());
@@ -274,7 +274,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = projectMemberService.getPossibleCreators(project, request);
+                    List<String> allowed = projectMemberService.getPossibleCreators(project, request.getRemoteUser());
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("testing");
                         issue.setCreator(request.getRemoteUser());
@@ -304,7 +304,7 @@ public class EditIssueController extends HttpServlet {
                     }
                 }
                 else {
-                    List<String> allowed = projectMemberService.getPossibleCreators(project, request);
+                    List<String> allowed = projectMemberService.getPossibleCreators(project, request.getRemoteUser());
                     if (allowed.contains(request.getRemoteUser())) {
                         issue.setStatus("close");
                         issue.setCreator(request.getRemoteUser());

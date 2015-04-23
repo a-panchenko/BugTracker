@@ -17,4 +17,6 @@ public interface GroupMemberService {
     void updateMember(GroupMember groupMember);
 
     GroupMember getMemberByName(String username);
+
+    boolean isUserInGroup(String username, String group);
 }

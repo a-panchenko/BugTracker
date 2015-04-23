@@ -24,7 +24,7 @@
             </tr>
             <tr valign="top">
                 <td width="20%">
-                    <div align="center"><a href="/BugTracker/createproject.jsp">Create Project</a></div>
+
                 </td>
                 <td>
                     <c:if test="${not empty project}">
