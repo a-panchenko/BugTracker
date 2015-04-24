@@ -41,4 +41,18 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     public boolean isUserInGroup(String username, String group) {
         return getMemberByName(username).getGroup().equals(group);
     }
+
+    @Override
+    public List<GroupMember> getAvailableMembers() {
+        List<GroupMember> availableMembers = getMembersByGroup("debugers");
+        availableMembers.addAll(getMembersByGroup("testers"));
+        return availableMembers;
+    }
+
+    @Override
+    public List<GroupMember> getProjectManagers() {
+        List<GroupMember> projectManagers = getMembersByGroup("administrators");
+        projectManagers.addAll(getMembersByGroup("project-managers"));
+        return projectManagers;
+    }
 }

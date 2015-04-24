@@ -12,6 +12,10 @@ public interface GroupMemberService {
 
     List<GroupMember> getMembersByProjectId(int projectId);
 
+    List<GroupMember> getAvailableMembers();
+
+    List<GroupMember> getProjectManagers();
+
     void addMember(GroupMember groupMember);
 
     void updateMember(GroupMember groupMember);

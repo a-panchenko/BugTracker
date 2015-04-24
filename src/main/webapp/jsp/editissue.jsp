@@ -88,7 +88,7 @@
                                     Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
                                     if (request.isUserInRole("administrator")
                                         || request.getRemoteUser().equals(project.getProjectLeed())
-                                        || issue.getCreator().equals(request.getRemoteUser())) {
+                                        || request.getRemoteUser().equals(issue.getCreator())) {
                                 %>
                                     <p>Title:
                                         <input type="text" name="title" value="<%= issue.getTitle() %>" required/>

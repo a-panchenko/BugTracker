@@ -1,6 +1,10 @@
 package controller.projectController;
 
+import controller.exceptions.NotAllowedToCreateProjectException;
+import dto.ProjectDto;
 import model.Project;
+import org.apache.log4j.Logger;
+import security.CreateProjectSecurity;
 import service.ProjectService;
 import service.ProjectServiceImpl;
 
@@ -14,25 +18,27 @@ import java.util.Date;
 
 public class CreateProjectController extends HttpServlet {
 
+    private static final Logger LOGGER = Logger.getLogger(CreateProjectController.class);
+
     private ProjectService projectService = new ProjectServiceImpl();
+
+    private CreateProjectSecurity createProjectSecurity = new CreateProjectSecurity();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String projectLeed = request.getParameter("projectLeed");
-        if (title != null && description != null & projectLeed != null) {
-            Project project = new Project();
-            project.setTitle(title);
-            project.setDescription(description);
-            project.setStartDate(new Date());
-            project.setProjectLeed(projectLeed);
+        try {
+            ProjectDto projectDto = new ProjectDto();
+            projectDto.setTitle(request.getParameter("title"));
+            projectDto.setDescription(request.getParameter("description"));
+            projectDto.setProjectLeed(request.getParameter("projectLeed"));
+            Project project = createProjectSecurity.checkCreateProject(projectDto);
             projectService.addProject(project);
             response.sendRedirect("/BugTracker/myprojects");
         }
-        else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        catch (NotAllowedToCreateProjectException notAllowed) {
+            LOGGER.error(notAllowed);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }
 }

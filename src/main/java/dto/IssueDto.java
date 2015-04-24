@@ -2,6 +2,7 @@ package dto;
 
 public class IssueDto {
 
+    private String id;
     private String projectId;
     private String title;
     private String description;
@@ -68,5 +69,13 @@ public class IssueDto {
 
     public void setAssigned(String assigned) {
         this.assigned = assigned;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

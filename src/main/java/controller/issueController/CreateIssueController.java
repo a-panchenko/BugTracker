@@ -25,7 +25,7 @@ public class CreateIssueController extends HttpServlet {
     private ProjectService projectService = new ProjectServiceImpl();
     private IssueService issueService = new IssueServiceImpl();
 
-    private CreateIssueSecurity issueSecurity = new CreateIssueSecurity();
+    private CreateIssueSecurity createIssueSecurity = new CreateIssueSecurity();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +33,7 @@ public class CreateIssueController extends HttpServlet {
         try {
             int projectId = Integer.valueOf(request.getParameter("id"));
             Project project = projectService.getProject(projectId);
-            issueSecurity.checkProject(project, request.getRemoteUser());
+            createIssueSecurity.checkProject(project, request.getRemoteUser());
             request.setAttribute("projectId", projectId);
             List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
             request.setAttribute("projectMembersToAssign", projectMembersToAssign);
@@ -66,7 +66,7 @@ public class CreateIssueController extends HttpServlet {
             issueDto.setPriority(request.getParameter("priority"));
             issueDto.setCreator(request.getParameter("creator"));
             issueDto.setAssigned(request.getParameter("assigned"));
-            Issue issue = issueSecurity.checkCreateIssue(issueDto, request.getRemoteUser());
+            Issue issue = createIssueSecurity.checkCreateIssue(issueDto, request.getRemoteUser());
             issueService.addIssue(issue);
             response.sendRedirect("/BugTracker/project?id=" + request.getParameter("projectId"));
         }
