@@ -30,13 +30,6 @@
          <artifactId>log4j</artifactId>
          <version>1.2.17</version>
       </dependency>
-      <dependency>
-          <groupId>weblogic</groupId>
-          <artifactId>weblogic</artifactId>
-          <version>1.0</version>
-          <scope>system</scope>
-          <systemPath>${project.basedir}/src/main/resources/wls-api.jar</systemPath>
-      </dependency>
   </dependencies>
   <build>
       <finalName>BugTracker</finalName>

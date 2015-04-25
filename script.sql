@@ -108,16 +108,16 @@ END;
 /
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user1', 'password1', 'description1');
+VALUES ('user1', '-928147210', 'description1');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user2', 'password2', 'description2');
+VALUES ('user2', '-928147209', 'description2');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user3', 'password3', 'description3');
+VALUES ('user3', '-928147208', 'description3');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user4', 'password4', 'description4');
+VALUES ('user4', '-928147207', 'description4');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
 VALUES ('Project1', 'Description1', '01/01/2015', 'user1');

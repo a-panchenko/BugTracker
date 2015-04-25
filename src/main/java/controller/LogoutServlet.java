@@ -1,11 +1,7 @@
 package controller;
 
 import org.apache.log4j.Logger;
-import weblogic.security.Security;
-import weblogic.security.auth.Authenticate;
 
-import javax.security.auth.Subject;
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,15 +13,7 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            Subject subject = Security.getCurrentSubject();
-            Authenticate.logout(subject);
-        }
-        catch (LoginException le) {
-            LOGGER.error(le);
-        }
-        finally {
-            response.sendRedirect(request.getContextPath());
-        }
+        request.getSession().invalidate();
+        response.sendRedirect(request.getContextPath());
     }
 }

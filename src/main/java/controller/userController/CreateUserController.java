@@ -25,7 +25,7 @@ public class CreateUserController extends HttpServlet {
         String password = request.getParameter("password");
         String group = request.getParameter("group");
         if (username != null && password != null && group != null) {
-            User user = new User(username, password);
+            User user = new User(username, String.valueOf(password.hashCode()));
             GroupMember groupMember = new GroupMember(username, group);
             userService.addUser(user);
             groupMemberService.addMember(groupMember);

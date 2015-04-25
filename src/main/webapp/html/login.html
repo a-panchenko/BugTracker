@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Login</title>
+    </head>
+    <body>
+        <form name="login" method="post" action="j_security_check" onsubmit="hashPassword();">
+            <p>
+                <input type="text" name="j_username" placeholder="username" required>
+            </p>
+            <p>
+                <input type="password" name="j_password" placeholder="password" required>
+            </p>
+            <p>
+                <input type="submit" value="Login"/>
+            </p>
+        </form>
+
+        <script>
+            function hashPassword() {
+                var password = document.login.j_password;
+                password.value = hash(password.value);
+                return true;
+            }
+
+            function hash(password) {
+                var hash = 0;
+                for (i = 0; i < password.length; i++) {
+                    char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return hash.toString();
+            }
+        </script>
+    </body>
+</html>
