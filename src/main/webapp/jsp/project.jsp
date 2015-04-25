@@ -45,7 +45,15 @@
                     if (project != null) { %>
                         <p>Title: <%= project.getTitle() %> </p>
                         <p>Description: <%= project.getDescription() %> </p>
-                        <p>Project Leed: <% if (project.getProjectLeed() != null) { %> <%= project.getProjectLeed() %> <% } %> </p>
+                        <p>Project Leed:
+                            <%
+                                if (project.getProjectLeed() != null) {
+                            %>
+                                    <a href="<%= "/BugTracker/user?name=" + project.getProjectLeed() %>"><%= project.getProjectLeed() %></a>
+                            <%
+                                }
+                            %>
+                        </p>
                         <p>Start date: <%= project.getStartDate() %> </p>
                         <p>End date: <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </p> <%
                         List<Issue> issues = (List<Issue>) request.getAttribute("issues");
@@ -84,8 +92,24 @@
                                         <td> <%= issue.getStatus() %> </td>
                                         <td> <%= issue.getCreationDate() %> </td>
                                         <td> <% if (issue.getSolvingDate() != null) { %> <%= issue.getSolvingDate() %> <% } %> </td>
-                                        <td> <% if (issue.getCreator() != null) { %> <%= issue.getCreator() %> <% } %> </td>
-                                        <td> <% if (issue.getAssigned() != null) { %> <%= issue.getAssigned() %> <% } %> </td>
+                                        <td>
+                                            <%
+                                                if (issue.getCreator() != null) {
+                                            %>
+                                                    <a href="<%= "/BugTracker/user?name=" + issue.getCreator() %>"><%= issue.getCreator() %></a>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
+                                        <td>
+                                            <%
+                                                if (issue.getAssigned() != null) {
+                                            %>
+                                                    <a href="<%= "/BugTracker/user?name=" + issue.getAssigned() %>"><%= issue.getAssigned() %></a>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                     </tr> <%
                                 } %>
                             </table> <%

@@ -50,7 +50,15 @@
                                         <td width="30%"> <%= project.getDescription() %> </td>
                                         <td width="15%"> <%= project.getStartDate() %> </td>
                                         <td width="15%"> <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </td>
-                                        <td width="10%"> <% if (project.getProjectLeed() != null) { %> <%= project.getProjectLeed() %> <% } %> </td>
+                                        <td width="10%">
+                                            <%
+                                                if (project.getProjectLeed() != null) {
+                                            %>
+                                                    <a href="<%= "/BugTracker/user?name=" + project.getProjectLeed() %>"><%= project.getProjectLeed() %></a>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                     </tr>
                             <%
                                 }
