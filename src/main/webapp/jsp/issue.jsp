@@ -2,6 +2,8 @@
 <%@ page import="model.Reply" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Project" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -47,6 +49,7 @@
                     <%
                         Project project = (Project) request.getAttribute("project");
                         if (project != null && issue != null) {
+                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
                     %>
                             <table width="80%">
                                 <tr>
@@ -63,7 +66,18 @@
                                     <td>Status: <%= issue.getStatus() %> </td>
                                 </tr>
                                 <tr>
-                                    <td>Creation date: <%= issue.getCreationDate() %> </td>
+                                    <td>Creation date: <%= dateFormat.format(issue.getCreationDate()) %> </td>
+                                </tr>
+                                <tr>
+                                    <td>Solving date:
+                                        <%
+                                            if (issue.getSolvingDate() != null) {
+                                        %>
+                                                <%= dateFormat.format(issue.getSolvingDate()) %>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Created By:
@@ -93,7 +107,7 @@
                             if (replies != null) {
                     %>
                                 <p> Replies: </p>
-                                <textarea style="overflow: scroll; word-break: break-all;" rows="10" cols="50" readonly> <% for (Reply reply : replies) { %> <%= reply.getPoster() %> : <%= reply.getMessage() + " (" + reply.getDate() + ")\n" %> <% } %> </textarea>
+                                <textarea style="overflow: scroll; word-break: break-all;" rows="10" cols="50" readonly> <% for (Reply reply : replies) { %> <%= reply.getPoster() %> : <%= reply.getMessage() + " (" + dateFormat.format(reply.getDate()) + ")\n" %> <% } %> </textarea>
                     <%
                             }
                     %>

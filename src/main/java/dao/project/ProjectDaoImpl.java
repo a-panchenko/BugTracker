@@ -75,10 +75,10 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
             public void complete(PreparedStatement statement, Project project) throws SQLException {
                 completeAdd(statement, project);
                 if (project.getEndDate() == null) {
-                    statement.setNull(5, Types.DATE);
+                    statement.setNull(5, Types.NUMERIC);
                 }
                 else {
-                    statement.setDate(5, Utils.utilDateToSql(project.getEndDate()));
+                    statement.setLong(5, project.getEndDate().getTime());
                 }
                 statement.setInt(6, project.getId());
             }
@@ -88,7 +88,7 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
     private void completeAdd(PreparedStatement statement, Project project) throws SQLException {
         statement.setString(1, project.getTitle());
         statement.setString(2, project.getDescription());
-        statement.setDate(3, Utils.utilDateToSql(project.getStartDate()));
+        statement.setLong(3, project.getStartDate().getTime());
         statement.setString(4, project.getProjectLeed());
     }
 }

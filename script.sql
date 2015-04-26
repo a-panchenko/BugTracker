@@ -31,8 +31,8 @@ CREATE TABLE PROJECT (
     project_id             NUMBER(10)        NOT NULL,
     project_title          VARCHAR2(50)      NOT NULL,
     project_description    VARCHAR2(2000)    NOT NULL,
-    start_date             DATE              NOT NULL,
-    end_date               DATE,
+    start_date             NUMBER(20)        NOT NULL,
+    end_date               NUMBER(20),
     project_leed           VARCHAR2(50),
     CONSTRAINT project_pk         PRIMARY KEY (project_id),
     CONSTRAINT project_fk         FOREIGN KEY (project_leed) REFERENCES USERS (u_name) ON DELETE SET NULL,
@@ -64,8 +64,8 @@ CREATE TABLE ISSUE (
     issue_description   VARCHAR2(2000)    NOT NULL,
     priority            VARCHAR2(10)      NOT NULL CHECK (priority in ('low', 'middle', 'high')),
     status              VARCHAR2(20)      NOT NULL CHECK (status in ('open', 'in progress', 'resolved', 'testing', 'close')),
-    creation_date       DATE              NOT NULL,
-    solving_date        DATE,
+    creation_date       NUMBER(20)        NOT NULL,
+    solving_date        NUMBER(20),
     creator             VARCHAR2(50),
     assigned            VARCHAR2(50),
     CONSTRAINT issue_pk   PRIMARY KEY (issue_id),
@@ -89,7 +89,7 @@ CREATE TABLE REPLY (
     reply_id     NUMBER(10)       NOT NULL,
     issue_id     NUMBER(10)       NOT NULL,
     message      VARCHAR2(2000)   NOT NULL,
-    post_date    DATE             NOT NULL,
+    post_date    NUMBER(20)       NOT NULL,
     poster       VARCHAR2(50)     NOT NULL,
     CONSTRAINT reply_pk       PRIMARY KEY (reply_id),
     CONSTRAINT reply_fk1      FOREIGN KEY (issue_id)  REFERENCES ISSUE (issue_id) ON DELETE CASCADE,
@@ -120,43 +120,43 @@ INSERT INTO USERS (u_name, u_password, u_description)
 VALUES ('user4', '-928147207', 'description4');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
-VALUES ('Project1', 'Description1', '01/01/2015', 'user1');
+VALUES ('Project1', 'Description1', '1430024861112', 'user1');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
-VALUES ('Project2', 'Description2', '01/02/2015', 'user2');
+VALUES ('Project2', 'Description2', '1430024861112', 'user2');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
-VALUES ('Project3', 'Description3', '01/01/2015', 'user1');
+VALUES ('Project3', 'Description3', '1430024861112', 'user1');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
-VALUES ('Project4', 'Description4', '01/02/2015', 'user2');
+VALUES ('Project4', 'Description4', '1430024861112', 'user2');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (1, 'Issue1', 'Description1', 'low', 'open', '01/01/2015', 'user1');
+VALUES (1, 'Issue1', 'Description1', 'low', 'open', '1430024861112', 'user1');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (1, 'Issue2', 'Description2', 'low', 'open', '01/01/2015', 'user1');
+VALUES (1, 'Issue2', 'Description2', 'low', 'open', '1430024861112', 'user1');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (1, 'Issue3', 'Description3', 'low', 'open', '01/01/2015', 'user1');
+VALUES (1, 'Issue3', 'Description3', 'low', 'open', '1430024861112', 'user1');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (2, 'Issue4', 'Description4', 'low', 'open', '01/01/2015', 'user2');
+VALUES (2, 'Issue4', 'Description4', 'low', 'open', '1430024861112', 'user2');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (3, 'Issue5', 'Description5', 'low', 'open', '01/01/2015', 'user1');
+VALUES (3, 'Issue5', 'Description5', 'low', 'open', '1430024861112', 'user1');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (3, 'Issue6', 'Description6', 'low', 'open', '02/02/2015', 'user1');
+VALUES (3, 'Issue6', 'Description6', 'low', 'open', '1430024861112', 'user1');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)
-VALUES (4, 'Issue7', 'Description7', 'low', 'open', '02/01/2015', 'user2');
+VALUES (4, 'Issue7', 'Description7', 'low', 'open', '1430024861112', 'user2');
 
 INSERT INTO REPLY (issue_id, message, post_date, poster)
-VALUES (2, 'Reply1', '02/01/2015', 'user1');
+VALUES (2, 'Reply1', '1430024861112', 'user1');
 
 INSERT INTO REPLY (issue_id, message, post_date, poster)
-VALUES (2, 'Reply2', '02/02/2015', 'user2');
+VALUES (2, 'Reply2', '1430024861112', 'user2');
 
 INSERT INTO GROUPS (g_name, g_description)
 VALUES ('administrators', 'group for admins');

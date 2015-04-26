@@ -5,6 +5,7 @@ import model.Issue;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class IssueResultParser extends ResultParser<Issue> {
 
@@ -16,8 +17,11 @@ public class IssueResultParser extends ResultParser<Issue> {
         issue.setDescription(result.getString(4));
         issue.setPriority(result.getString(5));
         issue.setStatus(result.getString(6));
-        issue.setCreationDate(result.getDate(7));
-        issue.setSolvingDate(result.getDate(8));
+        issue.setCreationDate(new Date(result.getLong(7)));
+        long solvingDate = result.getLong(8);
+        if (solvingDate > 0) {
+            issue.setSolvingDate(new Date(solvingDate));
+        }
         issue.setCreator(result.getString(9));
         issue.setAssigned(result.getString(10));
         return issue;

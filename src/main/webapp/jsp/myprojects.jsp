@@ -1,5 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Project" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.Format" %>
+<%@ page import="java.text.DateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -48,8 +51,21 @@
                                     <tr>
                                         <td width="30%"> <a href="/BugTracker/project?id=<%= project.getId() %>"><%= project.getTitle() %></a> </td>
                                         <td width="30%"> <%= project.getDescription() %> </td>
-                                        <td width="15%"> <%= project.getStartDate() %> </td>
-                                        <td width="15%"> <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </td>
+                                        <%
+                                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+                                        %>
+                                        <td width="15%">
+                                            <%= dateFormat.format(project.getStartDate()) %>
+                                        </td>
+                                        <td width="15%">
+                                            <%
+                                                if (project.getEndDate() != null) {
+                                            %>
+                                                    <%= dateFormat.format(project.getEndDate()) %>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                         <td width="10%">
                                             <%
                                                 if (project.getProjectLeed() != null) {

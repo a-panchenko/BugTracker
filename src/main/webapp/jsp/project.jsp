@@ -1,6 +1,8 @@
 <%@ page import="model.Project" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Issue" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.DateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -41,8 +43,11 @@
                         }
                     %>
                 </td>
-                <td> <%
-                    if (project != null) { %>
+                <td>
+                    <%
+                        if (project != null) {
+                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+                    %>
                         <p>Title: <%= project.getTitle() %> </p>
                         <p>Description: <%= project.getDescription() %> </p>
                         <p>Project Leed:
@@ -54,10 +59,20 @@
                                 }
                             %>
                         </p>
-                        <p>Start date: <%= project.getStartDate() %> </p>
-                        <p>End date: <% if (project.getEndDate() != null) { %> <%= project.getEndDate() %> <% } %> </p> <%
+                        <p>Start date: <%= dateFormat.format(project.getStartDate()) %> </p>
+                        <p>End date:
+                            <%
+                                if (project.getEndDate() != null) {
+                            %>
+                                    <%= dateFormat.format(project.getEndDate()) %>
+                            <%
+                                }
+                            %>
+                        </p>
+                    <%
                         List<Issue> issues = (List<Issue>) request.getAttribute("issues");
-                        if (issues != null && issues.size() > 0) { %>
+                        if (issues != null && issues.size() > 0) {
+                    %>
                             <br><table width="80%" height="5%" border="1" cellspacing="0">
                                 <tr align="center">
                                     <td> ID </td>
@@ -69,8 +84,10 @@
                                     <td> Solving date </td>
                                     <td> Created By </td>
                                     <td> Assigned </td>
-                                </tr> <%
-                                for (Issue issue : issues) { %>
+                                </tr>
+                    <%
+                                for (Issue issue : issues) {
+                    %>
                                     <tr>
                                         <td> <%= issue.getId() %> </td>
                                         <td> <a href="/BugTracker/issue?id=<%= issue.getId() %>"><%= issue.getTitle() %></a> </td>
@@ -90,8 +107,16 @@
                                         </td>
                                         <td> <%= issue.getPriority() %> </td>
                                         <td> <%= issue.getStatus() %> </td>
-                                        <td> <%= issue.getCreationDate() %> </td>
-                                        <td> <% if (issue.getSolvingDate() != null) { %> <%= issue.getSolvingDate() %> <% } %> </td>
+                                        <td> <%= dateFormat.format(issue.getCreationDate()) %> </td>
+                                        <td>
+                                            <%
+                                                if (issue.getSolvingDate() != null) {
+                                            %>
+                                                    <%= dateFormat.format(issue.getSolvingDate()) %>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                         <td>
                                             <%
                                                 if (issue.getCreator() != null) {

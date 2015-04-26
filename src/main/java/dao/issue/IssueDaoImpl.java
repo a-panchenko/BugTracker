@@ -70,10 +70,10 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
             public void complete(PreparedStatement statement, Issue issue) throws SQLException {
                 completeAdd(statement, issue);
                 if (issue.getSolvingDate() == null) {
-                    statement.setNull(9, Types.DATE);
+                    statement.setNull(9, Types.NUMERIC);
                 }
                 else {
-                    statement.setDate(9, Utils.utilDateToSql(issue.getSolvingDate()));
+                    statement.setLong(9, issue.getSolvingDate().getTime());
                 }
                 statement.setInt(10, issue.getId());
             }
@@ -86,7 +86,7 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
         statement.setString(3, issue.getDescription());
         statement.setString(4, issue.getPriority());
         statement.setString(5, issue.getStatus());
-        statement.setDate(6, Utils.utilDateToSql(issue.getCreationDate()));
+        statement.setLong(6, issue.getCreationDate().getTime());
         statement.setString(7, issue.getCreator());
         statement.setString(8, issue.getAssigned());
     }
