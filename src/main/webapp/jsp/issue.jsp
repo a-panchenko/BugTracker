@@ -17,7 +17,7 @@
             textarea {
                 width: 80%;
             }
-            #description {
+            #description, #message {
                 word-break: break-all;
             }
         </style>
@@ -49,7 +49,7 @@
                     <%
                         Project project = (Project) request.getAttribute("project");
                         if (project != null && issue != null) {
-                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+                            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
                     %>
                             <table width="80%">
                                 <tr>
@@ -104,10 +104,29 @@
                             </table>
                     <%
                             List<Reply> replies = (List<Reply>) request.getAttribute("replies");
-                            if (replies != null) {
+                            if (replies != null && replies.size() > 0) {
                     %>
-                                <p> Replies: </p>
-                                <textarea style="overflow: scroll; word-break: break-all;" rows="10" cols="50" readonly> <% for (Reply reply : replies) { %> <%= reply.getPoster() %> : <%= reply.getMessage() + " (" + dateFormat.format(reply.getDate()) + ")\n" %> <% } %> </textarea>
+                                <p>Replies:
+                                    <table border="1" width="80%">
+                                        <tr>
+                                            <td>Posted By</td>
+                                            <td>Message</td>
+                                        </tr>
+                                        <%
+                                            StringBuffer buffer = new StringBuffer();
+                                            for (Reply reply : replies) {
+                                                buffer.append(reply.getMessage()).append("<br>").append("(").append(dateFormat.format(reply.getDate())).append(")");
+                                        %>
+                                                <tr>
+                                                    <td width="20%"><%= reply.getPoster() %></td>
+                                                    <td id="message"><%= buffer.toString() %></td>
+                                                </tr>
+                                        <%
+                                                buffer.setLength(0);
+                                            }
+                                        %>
+                                    </table>
+                                </p>
                     <%
                             }
                     %>
