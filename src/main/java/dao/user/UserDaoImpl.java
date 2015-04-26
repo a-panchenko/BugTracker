@@ -3,13 +3,10 @@ package dao.user;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
-import dao.Utils;
 import model.User;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoImpl extends AbstractDao<User, String> implements UserDao {
@@ -17,6 +14,7 @@ public class UserDaoImpl extends AbstractDao<User, String> implements UserDao {
     private static final String SELECT_USER = "SELECT * FROM USERS WHERE u_name = ?";
     private static final String INSERT_INTO_USER = "INSERT INTO USERS (u_name, u_password) VALUES (?, ?)";
     private static final String UPDATE_USER = "UPDATE USERS SET u_password = ? WHERE u_name = ?";
+    private static final String DELETE_USER = "DELETE USERS WHERE u_name = ?";
 
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
@@ -47,5 +45,10 @@ public class UserDaoImpl extends AbstractDao<User, String> implements UserDao {
                 statement.setString(2, user.getName());
             }
         });
+    }
+
+    @Override
+    public void removeUser(String name) {
+        delete(name, DELETE_USER);
     }
 }

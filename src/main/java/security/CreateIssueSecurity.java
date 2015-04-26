@@ -89,7 +89,7 @@ public class CreateIssueSecurity {
 
     private void setCreator(IssueDto issueDto, Issue issue, String username) {
         String creator = issueDto.getCreator();
-        if (creator != null) {
+        if (! creator.isEmpty()) {
             Project project = projectService.getProject(issue.getProjectId());
             List<String> allowed = projectMemberService.getPossibleCreators(project, username);
             if (allowed.contains(creator)) {
@@ -103,7 +103,7 @@ public class CreateIssueSecurity {
 
     private void setAssigned(IssueDto issueDto, Issue issue, String username) {
         String assigned = issueDto.getAssigned();
-        if (assigned != null) {
+        if (! assigned.isEmpty()) {
             Project project = projectService.getProject(issue.getProjectId());
             List<String> allowed = projectMemberService.getMembersToAssign(project, username);
             if (allowed.contains(assigned)) {

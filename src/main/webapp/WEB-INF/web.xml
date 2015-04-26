@@ -109,6 +109,10 @@
         <servlet-name>editUser</servlet-name>
         <jsp-file>jsp/edituser.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>removeUserServlet</servlet-name>
+        <servlet-class>controller.userController.RemoveUserController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -213,6 +217,10 @@
     <servlet-mapping>
         <servlet-name>editUser</servlet-name>
         <url-pattern>/edituser.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeUserServlet</servlet-name>
+        <url-pattern>/removeuser</url-pattern>
     </servlet-mapping>
 
 
