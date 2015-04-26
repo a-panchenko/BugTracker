@@ -63,6 +63,7 @@ public class EditIssueController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            request.setCharacterEncoding("UTF-8");
             IssueDto issueDto = new IssueDto();
             issueDto.setId(request.getParameter("id"));
             issueDto.setProjectId(request.getParameter("project"));

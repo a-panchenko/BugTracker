@@ -59,6 +59,7 @@ public class CreateIssueController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         try {
+            request.setCharacterEncoding("UTF-8");
             IssueDto issueDto = new IssueDto();
             issueDto.setProjectId(request.getParameter("projectId"));
             issueDto.setTitle(request.getParameter("title"));

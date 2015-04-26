@@ -49,6 +49,7 @@ public class EditUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("name");
             if (request.isUserInRole("administrator")) {
                 editUserIfAdmin(request, username);

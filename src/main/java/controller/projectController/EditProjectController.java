@@ -59,6 +59,7 @@ public class EditProjectController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            request.setCharacterEncoding("UTF-8");
             ProjectDto projectDto = new ProjectDto();
             projectDto.setId(request.getParameter("id"));
             projectDto.setTitle(request.getParameter("title"));

@@ -19,6 +19,7 @@ public class PostReplyController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         Reply reply = new Reply();
         int issueId = Integer.valueOf(request.getParameter("issueId"));
         reply.setIssueId(issueId);

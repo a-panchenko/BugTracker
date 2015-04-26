@@ -28,6 +28,7 @@ public class CreateProjectController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         try {
+            request.setCharacterEncoding("UTF-8");
             ProjectDto projectDto = new ProjectDto();
             projectDto.setTitle(request.getParameter("title"));
             projectDto.setDescription(request.getParameter("description"));
