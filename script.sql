@@ -60,7 +60,7 @@ CREATE TABLE PROJECTMEMBERS (
 CREATE TABLE ISSUE (
     issue_id            NUMBER(10)        NOT NULL,
     project_id          NUMBER(10)        NOT NULL,
-    issue_title         VARCHAR2(50)      NOT NULL,
+    issue_title         VARCHAR2(100)     NOT NULL,
     issue_description   VARCHAR2(2000)    NOT NULL,
     priority            VARCHAR2(10)      NOT NULL CHECK (priority in ('low', 'middle', 'high')),
     status              VARCHAR2(20)      NOT NULL CHECK (status in ('open', 'in progress', 'resolved', 'testing', 'close')),

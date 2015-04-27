@@ -8,6 +8,9 @@
                 font: 11pt Arial, Helvetica, sans-serif;
                 height: 100vh;
             }
+            textarea {
+                width: 80%;
+            }
         </style>
     </head>
     <body>
@@ -24,7 +27,7 @@
                 <td>
                     <form action="createproject" method="post">
                         <p>Title:
-                            <input type="text" name="title" placeholder="title" required/>
+                            <input type="text" name="title" placeholder="title" size="50" maxlength="50" required/>
                         </p>
                         <p>Description:
                             <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>

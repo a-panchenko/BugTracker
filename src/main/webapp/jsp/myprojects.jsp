@@ -1,7 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Project" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.text.Format" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -12,6 +11,9 @@
             body {
                 font: 11pt Arial, Helvetica, sans-serif;
                 height: 100vh;
+            }
+            td {
+                word-break: break-all;
             }
         </style>
     </head>
@@ -37,7 +39,7 @@
                         List<Project> projectList = (List<Project>) request.getAttribute("myProjects");
                         if ((projectList != null) && (projectList.size() > 0)) {
                     %>
-                            <table width="80%" height="5%" border="1" cellspacing="0">
+                            <table width="90%" height="5%" border="1" cellspacing="0">
                                 <tr align="center">
                                     <td> Title </td>
                                     <td> Description </td>
@@ -49,10 +51,38 @@
                                 for (Project project : projectList) {
                             %>
                                     <tr>
-                                        <td width="30%"> <a href="/BugTracker/project?id=<%= project.getId() %>"><%= project.getTitle() %></a> </td>
-                                        <td width="30%"> <%= project.getDescription() %> </td>
+                                        <td width="30%">
+                                            <a href="/BugTracker/project?id=<%= project.getId() %>">
+                                                <%
+                                                    if (project.getTitle().length() > 30) {
+                                                %>
+                                                        <%= project.getTitle().substring(0, 30)%>
+                                                <%
+                                                    }
+                                                    else {
+                                                %>
+                                                        <%= project.getTitle() %>
+                                                <%
+                                                    }
+                                                %>
+                                            </a>
+                                        </td>
+                                        <td width="30%">
+                                            <%
+                                                if (project.getDescription().length() > 30) {
+                                            %>
+                                                    <%= project.getDescription().substring(0, 30)%>
+                                            <%
+                                                }
+                                                else {
+                                            %>
+                                                    <%= project.getDescription() %>
+                                            <%
+                                                }
+                                            %>
+                                        </td>
                                         <%
-                                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+                                            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
                                         %>
                                         <td width="15%">
                                             <%= dateFormat.format(project.getStartDate()) %>

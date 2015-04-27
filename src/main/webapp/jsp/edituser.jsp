@@ -57,10 +57,10 @@
                                         }
                                     %>
                                     <p>New Password:
-                                        <input type="password" name="newPassword" pattern="[A-Za-z0-9]{6,20}" <% if (! request.isUserInRole("administrator")) { %> required <% } %>/>
+                                        <input type="password" name="newPassword" pattern="[A-Za-z0-9]{6,20}" size="20" maxlength="20" <% if (! request.isUserInRole("administrator")) { %> required <% } %>/> (min 6 letters, digits)
                                     </p>
                                     <p>Retype New Password:
-                                        <input type="password" name="retypeNewPassword" <% if (! request.isUserInRole("administrator")) { %> required <% } %>/>
+                                        <input type="password" name="retypeNewPassword" size="20" maxlength="20" <% if (! request.isUserInRole("administrator")) { %> required <% } %>/>
                                     </p>
                                     <p>
                                         <input type="submit" value="Edit User"/>

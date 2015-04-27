@@ -17,7 +17,7 @@
             textarea {
                 width: 80%;
             }
-            #description, #message {
+            td {
                 word-break: break-all;
             }
         </style>

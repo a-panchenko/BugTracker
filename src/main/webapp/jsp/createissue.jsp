@@ -30,7 +30,7 @@
                     <c:if test="${not empty projectId}">
                         <form action="createissue" method="post">
                             <p>Title:
-                                <input type="text" name="title" placeholder="title" required/>
+                                <input type="text" name="title" placeholder="title" size="100" maxlength="100" required/>
                             </p>
                             <input type="hidden" name="projectId" value="${projectId}">
                             <p>Description:

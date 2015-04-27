@@ -23,13 +23,13 @@
                 <td>
                     <form action="createuser" onsubmit="return validatePassword(password.value, retypePassword.value)" method="post">
                         <p>Username:
-                            <input type="text" name="username" pattern="[A-Za-z0-9]{4,15}" required/>
+                            <input type="text" name="username" pattern="[A-Za-z0-9]{4,15}" size="15" maxlength="15" required/> (min 4 letters, digits)
                         </p>
                         <p>Password:
-                            <input type="password" name="password" pattern="[A-Za-z0-9]{6,20}" required/>
+                            <input type="password" name="password" pattern="[A-Za-z0-9]{6,20}" size="20" maxlength="20" required/> (min 6 letters, digits)
                         </p>
                         <p>Retype Password:
-                            <input type="password" name="retypePassword" required/>
+                            <input type="password" name="retypePassword" size="20" maxlength="20" required/>
                         </p>
                         <p>Group:
                             <select name="group">

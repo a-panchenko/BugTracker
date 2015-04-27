@@ -13,6 +13,9 @@
                 font: 11pt Arial, Helvetica, sans-serif;
                 height: 100vh;
             }
+            textarea {
+                width: 80%;
+            }
         </style>
     </head>
     <body>
@@ -31,7 +34,7 @@
                         <form action="editproject" method="post">
                             <input type="hidden" name="id" value="${project.id}">
                             <p>Title:
-                                <input type="text" name="title" value="${project.title}" required/>
+                                <input type="text" name="title" value="${project.title}" size="50" maxlength="50" required/>
                             </p>
                             <p>Description:
                                 <br><textarea name="description" rows="10" cols="50" required>${project.description}</textarea>

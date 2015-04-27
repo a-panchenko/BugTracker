@@ -13,6 +13,9 @@
                 font: 11pt Arial, Helvetica, sans-serif;
                 height: 100vh;
             }
+            #description {
+                word-break: break-all;
+            }
         </style>
     </head>
     <body>
@@ -46,10 +49,12 @@
                 <td>
                     <%
                         if (project != null) {
-                            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+                            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
                     %>
-                        <p>Title: <%= project.getTitle() %> </p>
-                        <p>Description: <%= project.getDescription() %> </p>
+                        <p>Title:
+                            <%= project.getTitle() %>
+                        </p>
+                        <p id="description">Description: <%= project.getDescription() %> </p>
                         <p>Project Leed:
                             <%
                                 if (project.getProjectLeed() != null) {
@@ -73,11 +78,11 @@
                         List<Issue> issues = (List<Issue>) request.getAttribute("issues");
                         if (issues != null && issues.size() > 0) {
                     %>
-                            <br><table width="80%" height="5%" border="1" cellspacing="0">
+                            <br><table width="100%" height="5%" border="1" cellspacing="0">
                                 <tr align="center">
                                     <td> ID </td>
-                                    <td width="20"> Title </td>
-                                    <td width="40%"> Description </td>
+                                    <td width="30"> Title </td>
+                                    <td width="30%"> Description </td>
                                     <td> Priority </td>
                                     <td> Status </td>
                                     <td> Creation date </td>
@@ -90,7 +95,22 @@
                     %>
                                     <tr>
                                         <td> <%= issue.getId() %> </td>
-                                        <td> <a href="/BugTracker/issue?id=<%= issue.getId() %>"><%= issue.getTitle() %></a> </td>
+                                        <td>
+                                            <a href="/BugTracker/issue?id=<%= issue.getId() %>">
+                                                <%
+                                                    if (issue.getTitle().length() > 30) {
+                                                %>
+                                                        <%= issue.getTitle().substring(0, 30) %>
+                                                <%
+                                                    }
+                                                    else {
+                                                %>
+                                                        <%= issue.getTitle() %>
+                                                <%
+                                                    }
+                                                %>
+                                            </a>
+                                        </td>
                                         <td>
                                             <%
                                                 if (issue.getDescription().length() > 30) {

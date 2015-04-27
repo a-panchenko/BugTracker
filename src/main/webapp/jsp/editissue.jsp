@@ -61,11 +61,12 @@
                                 <%
                                     if (request.isUserInRole("administrator")) {
                                 %>
-                                        <p>
+                                        <p>Replace Issue To Project:
                                             <%
                                                 List<Project> projects = (List<Project>) request.getAttribute("projects");
                                                 if (projects != null) {
                                             %>
+                                                    <br>
                                                     <select name="project">
                                                     <%
                                                         for (Project project : projects) {
@@ -91,7 +92,7 @@
                                         || request.getRemoteUser().equals(issue.getCreator())) {
                                 %>
                                     <p>Title:
-                                        <input type="text" name="title" value="<%= issue.getTitle() %>" required/>
+                                        <input type="text" name="title" value="<%= issue.getTitle() %>" size="100" maxlength="100" required/>
                                     </p>
                                     <p>Description:
                                         <br><textarea name="description" rows="10" cols="50" required><%= issue.getDescription() %></textarea>
