@@ -1,4 +1,4 @@
-package controller.issueController;
+package controller.issuecontroller;
 
 import dto.IssueDto;
 import controller.exceptions.InvalidAssignedMemberException;

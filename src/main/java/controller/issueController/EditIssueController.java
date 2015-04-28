@@ -1,4 +1,4 @@
-package controller.issueController;
+package controller.issuecontroller;
 
 import controller.exceptions.NoSuchIssueException;
 import controller.exceptions.NotAllowedToEditIssueException;

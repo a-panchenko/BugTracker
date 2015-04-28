@@ -23,6 +23,11 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     }
 
     @Override
+    public List<GroupMember> getMembersWithNameLike(String name, String group) {
+        return new GroupMemberDaoImpl().getMembersWithNameLike(name, group);
+    }
+
+    @Override
     public void addMember(GroupMember groupMember) {
         new GroupMemberDaoImpl().addMember(groupMember);
     }

@@ -35,7 +35,8 @@
                     <%
                             if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) {
                     %>
-                            <div align="center"><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a></div>
+                                <div align="center"><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a></div>
+                                <div align="center"><a href="/BugTracker/editprojectmembers.jsp?id=<%= project.getId() %>">Edit Members</a></div>
                     <%
                             }
                             if (request.isUserInRole("administrator")) {

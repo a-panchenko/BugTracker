@@ -21,7 +21,6 @@ public class EditProjectSecurity {
         editDescription(projectDto, project);
         editEndDate(projectDto, project);
         editProjectLeed(projectDto, project, username);
-        editProjectMembers(projectDto, project);
         return project;
     }
 
@@ -75,19 +74,6 @@ public class EditProjectSecurity {
     private void editProjectLeed(ProjectDto projectDto, Project project, String username) {
         if (groupMemberService.isUserInGroup(username, "administrators")) {
             project.setProjectLeed(projectDto.getProjectLeed());
-        }
-    }
-
-    private void editProjectMembers(ProjectDto projectDto, Project project) {
-        projectMemberService.removeMembers(project.getId());
-        String[] members = projectDto.getMembers();
-        if (members != null) {
-            for (String member : members) {
-                ProjectMember projectMember = new ProjectMember();
-                projectMember.setProjectId(project.getId());
-                projectMember.setName(member);
-                projectMemberService.addMember(projectMember);
-            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package controller.userController;
+package controller.usercontroller;
 
 import service.UserService;
 import service.UserServiceImpl;

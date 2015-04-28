@@ -1,4 +1,4 @@
-package controller.userController;
+package controller.usercontroller;
 
 import controller.exceptions.EditPasswordException;
 import controller.exceptions.NotAllowedToEditUserException;

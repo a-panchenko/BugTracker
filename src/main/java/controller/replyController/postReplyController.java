@@ -1,10 +1,9 @@
-package controller.replyController;
+package controller.replycontroller;
 
 import model.Reply;
 import service.ReplyService;
 import service.ReplyServiceImpl;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

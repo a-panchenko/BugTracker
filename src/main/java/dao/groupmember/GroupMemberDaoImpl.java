@@ -20,6 +20,7 @@ public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> impleme
     private static final String SELECT_ALL_GROUPMEMBERS = "SELECT * FROM GROUPMEMBERS";
     private static final String SELECT_GROUPMEMBERS_BY_GROUP = "SELECT * FROM GROUPMEMBERS WHERE g_name = ?";
     private static final String SELECT_GROUPMEMBERS_BY_PROJECT_ID = "SELECT * FROM GROUPMEMBERS WHERE g_member IN (SELECT name FROM PROJECTMEMBERS WHERE project_id = ?)";
+    private static final String SELECT_GROUPMEMBER_WHERE_NAME_LIKE = "SELECT * FROM GROUPMEMBERS WHERE g_member LIKE ? AND g_name = ?";
     private static final String INSERT_INTO_GROUPMEMBERS = "INSERT INTO GROUPMEMBERS (g_name, g_member) VALUES (?, ?)";
     private static final String UPDATE_GROUPMEMBER = "UPDATE GROUPMEMBERS SET g_name = ? WHERE g_member = ?";
 
@@ -45,6 +46,11 @@ public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> impleme
     @Override
     public GroupMember getMemberByName(String username) {
         return select(username, SELECT_GROUPMEMBER_BY_NAME, resultParser);
+    }
+
+    @Override
+    public List<GroupMember> getMembersWithNameLike(String name, String group) {
+        return select(SELECT_GROUPMEMBER_WHERE_NAME_LIKE, resultParser, name + "%", group);
     }
 
     @Override

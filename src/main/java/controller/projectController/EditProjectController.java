@@ -1,4 +1,4 @@
-package controller.projectController;
+package controller.projectcontroller;
 
 import controller.exceptions.NoSuchProjectException;
 import controller.exceptions.NotAllowedToEditProjectException;
@@ -66,7 +66,6 @@ public class EditProjectController extends HttpServlet {
             projectDto.setDescription(request.getParameter("description"));
             projectDto.setClose(request.getParameter("close"));
             projectDto.setProjectLeed(request.getParameter("projectManagers"));
-            projectDto.setMembers(request.getParameterValues("members"));
             Project project = editProjectSecurity.checkEditProject(projectDto, request.getRemoteUser());
             projectService.editProject(project);
             response.sendRedirect("/BugTracker/project?id=" + request.getParameter("id"));

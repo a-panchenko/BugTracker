@@ -51,29 +51,9 @@
                                 </p>
                             </c:if>
                             <p>Close: <input name="close" type="checkbox" <c:if test="${not empty project.endDate}"> checked </c:if></p>
-                            <p>Members:
-                                <%
-                                    List<GroupMember> availableMembers = (List<GroupMember>) request.getAttribute("availableMembers");
-                                    List<GroupMember> currentMembers = (List<GroupMember>) request.getAttribute("currentMembers");
-                                    if (availableMembers != null && currentMembers != null) {
-                                        List<String> currentMembersNames = new ArrayList<String>();
-                                        for (GroupMember groupMember : currentMembers) {
-                                            currentMembersNames.add(groupMember.getName());
-                                %>
-                                            <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>" checked/><%= groupMember.getName() %> (<%= groupMember.getGroup() %>)
-                                <%
-                                        }
-                                        for (GroupMember groupMember : availableMembers) {
-                                            if (! currentMembersNames.contains(groupMember.getName())) {
-                                %>
-                                                <br><input name="members" type="checkbox" value="<%= groupMember.getName() %>"/><%= groupMember.getName() %> (<%= groupMember.getGroup() %>)
-                                <%
-                                            }
-                                        }
-                                    }
-                                %>
+                            <p>
+                                <input type="submit" value="Edit Project"/>
                             </p>
-                            <input type="submit" value="Edit Project"/>
                         </form>
                     </c:if>
                 </td>

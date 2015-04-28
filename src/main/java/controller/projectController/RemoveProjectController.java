@@ -1,4 +1,4 @@
-package controller.projectController;
+package controller.projectcontroller;
 
 import service.ProjectService;
 import service.ProjectServiceImpl;

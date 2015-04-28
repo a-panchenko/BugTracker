@@ -1,4 +1,4 @@
-package controller.projectController;
+package controller.projectcontroller;
 
 import controller.exceptions.NotAllowedToCreateProjectException;
 import dto.ProjectDto;
@@ -8,13 +8,11 @@ import security.CreateProjectSecurity;
 import service.ProjectService;
 import service.ProjectServiceImpl;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 public class CreateProjectController extends HttpServlet {
 

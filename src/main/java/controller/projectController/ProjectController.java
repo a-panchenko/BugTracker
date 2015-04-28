@@ -1,4 +1,4 @@
-package controller.projectController;
+package controller.projectcontroller;
 
 import controller.exceptions.NoSuchProjectException;
 import model.Issue;

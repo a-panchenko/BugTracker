@@ -7,7 +7,7 @@
 
     <servlet>
         <servlet-name>projectListServlet</servlet-name>
-        <servlet-class>controller.projectController.ProjectListController</servlet-class>
+        <servlet-class>controller.projectcontroller.ProjectListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>myProjects</servlet-name>
@@ -19,11 +19,11 @@
     </servlet>
     <servlet>
         <servlet-name>createProjectServlet</servlet-name>
-        <servlet-class>controller.projectController.CreateProjectController</servlet-class>
+        <servlet-class>controller.projectcontroller.CreateProjectController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>projectServlet</servlet-name>
-        <servlet-class>controller.projectController.ProjectController</servlet-class>
+        <servlet-class>controller.projectcontroller.ProjectController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>project</servlet-name>
@@ -31,7 +31,7 @@
     </servlet>
     <servlet>
         <servlet-name>editProjectServlet</servlet-name>
-        <servlet-class>controller.projectController.EditProjectController</servlet-class>
+        <servlet-class>controller.projectcontroller.EditProjectController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editProject</servlet-name>
@@ -39,11 +39,11 @@
     </servlet>
     <servlet>
         <servlet-name>removeProjectServlet</servlet-name>
-        <servlet-class>controller.projectController.RemoveProjectController</servlet-class>
+        <servlet-class>controller.projectcontroller.RemoveProjectController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>issueServlet</servlet-name>
-        <servlet-class>controller.issueController.IssueController</servlet-class>
+        <servlet-class>controller.issuecontroller.IssueController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>issue</servlet-name>
@@ -51,7 +51,7 @@
     </servlet>
     <servlet>
         <servlet-name>editIssueServlet</servlet-name>
-        <servlet-class>controller.issueController.EditIssueController</servlet-class>
+        <servlet-class>controller.issuecontroller.EditIssueController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editIssue</servlet-name>
@@ -59,11 +59,11 @@
     </servlet>
     <servlet>
         <servlet-name>removeIssueServlet</servlet-name>
-        <servlet-class>controller.issueController.RemoveIssueController</servlet-class>
+        <servlet-class>controller.issuecontroller.RemoveIssueController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createIssueServlet</servlet-name>
-        <servlet-class>controller.issueController.CreateIssueController</servlet-class>
+        <servlet-class>controller.issuecontroller.CreateIssueController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createIssue</servlet-name>
@@ -71,7 +71,7 @@
     </servlet>
     <servlet>
         <servlet-name>postReplyServlet</servlet-name>
-        <servlet-class>controller.replyController.PostReplyController</servlet-class>
+        <servlet-class>controller.replycontroller.PostReplyController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>logoutServlet</servlet-name>
@@ -79,7 +79,7 @@
     </servlet>
     <servlet>
         <servlet-name>userListServlet</servlet-name>
-        <servlet-class>controller.userController.UserListController</servlet-class>
+        <servlet-class>controller.usercontroller.UserListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>userList</servlet-name>
@@ -87,7 +87,7 @@
     </servlet>
     <servlet>
         <servlet-name>createUserServlet</servlet-name>
-        <servlet-class>controller.userController.CreateUserController</servlet-class>
+        <servlet-class>controller.usercontroller.CreateUserController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createUser</servlet-name>
@@ -95,7 +95,7 @@
     </servlet>
     <servlet>
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>controller.userController.UserController</servlet-class>
+        <servlet-class>controller.usercontroller.UserController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>user</servlet-name>
@@ -103,7 +103,7 @@
     </servlet>
     <servlet>
         <servlet-name>editUserServlet</servlet-name>
-        <servlet-class>controller.userController.EditUserController</servlet-class>
+        <servlet-class>controller.usercontroller.EditUserController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editUser</servlet-name>
@@ -111,7 +111,27 @@
     </servlet>
     <servlet>
         <servlet-name>removeUserServlet</servlet-name>
-        <servlet-class>controller.userController.RemoveUserController</servlet-class>
+        <servlet-class>controller.usercontroller.RemoveUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>projectMembersServlet</servlet-name>
+        <servlet-class>controller.projectmembercontroller.ProjectMemberController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editProjectMembers</servlet-name>
+        <jsp-file>jsp/editprojectmembers.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>groupMembersServlet</servlet-name>
+        <servlet-class>controller.groupmembercontroller.GroupMemberController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addProjectMembersServlet</servlet-name>
+        <servlet-class>controller.projectmembercontroller.AddProjectMembersController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>removeProjectMemberServlet</servlet-name>
+        <servlet-class>controller.projectmembercontroller.RemoveProjectMemberController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -221,6 +241,26 @@
     <servlet-mapping>
         <servlet-name>removeUserServlet</servlet-name>
         <url-pattern>/removeuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>projectMembersServlet</servlet-name>
+        <url-pattern>/projectmembers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProjectMembers</servlet-name>
+        <url-pattern>/editprojectmembers.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>groupMembersServlet</servlet-name>
+        <url-pattern>/groupmembers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addProjectMembersServlet</servlet-name>
+        <url-pattern>/addprojectmembers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeProjectMemberServlet</servlet-name>
+        <url-pattern>/removeprojectmember</url-pattern>
     </servlet-mapping>
 
 

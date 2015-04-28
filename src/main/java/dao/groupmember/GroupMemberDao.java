@@ -12,6 +12,8 @@ public interface GroupMemberDao {
 
     List<GroupMember> getMembersByProjectId(int projectId);
 
+    List<GroupMember> getMembersWithNameLike(String name, String group);
+
     void addMember(GroupMember groupMember);
 
     void updateMember(GroupMember groupMember);

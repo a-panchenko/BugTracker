@@ -32,6 +32,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     }
 
     @Override
+    public void removeMember(ProjectMember projectMember) {
+        new ProjectMemberDaoImpl().removeMember(projectMember);
+    }
+
+    @Override
     public List<String> getMembersToAssign(Project project, String username) {
         List<String> membersToAssign = new ArrayList<>();
         for (ProjectMember projectMember : getMembers(project.getId(), "debugers")) {

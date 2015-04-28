@@ -20,6 +20,7 @@ public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, Integer> im
     private static final String SELECT_PROJECTMEMBERS_BY_PROJECT_ID_AND_GROUP = "SELECT * FROM PROJECTMEMBERS WHERE project_id = ? " +
             "AND name in (SELECT g_member FROM GROUPMEMBERS WHERE g_name = ?)";
     private static final String DELETE_PROJECTMEMBERS_BY_PROJECT_ID = "DELETE FROM PROJECTMEMBERS WHERE project_id = ?";
+    private static final String DELETE_PROJECTMEMBER = "DELETE FROM PROJECTMEMBERS WHERE project_id = ? AND name = ?";
     private static final String INSERT_INTO_PROJECTMEMBERS = "INSERT INTO PROJECTMEMBERS (project_id, name) VALUES (?, ?)";
 
     private static final Logger LOGGER = Logger.getLogger(ProjectMemberDaoImpl.class);
@@ -41,8 +42,7 @@ public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, Integer> im
         insert(projectMember, INSERT_INTO_PROJECTMEMBERS, new PlaceholderCompleter<ProjectMember>() {
             @Override
             public void complete(PreparedStatement statement, ProjectMember projectMember) throws SQLException {
-                statement.setInt(1, projectMember.getProjectId());
-                statement.setString(2, projectMember.getName());
+                completeAdd(statement, projectMember);
             }
         });
     }
@@ -50,5 +50,22 @@ public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, Integer> im
     @Override
     public void removeMembers(int projectId) {
         delete(projectId, DELETE_PROJECTMEMBERS_BY_PROJECT_ID);
+    }
+
+    @Override
+    public void removeMember(ProjectMember projectMember) {
+        try (Connection connection = Utils.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_PROJECTMEMBER)) {
+            completeAdd(statement, projectMember);
+            statement.executeUpdate();
+        }
+        catch (SQLException se) {
+            LOGGER.error(se);
+        }
+    }
+
+    private void completeAdd(PreparedStatement statement, ProjectMember projectMember) throws SQLException {
+        statement.setInt(1, projectMember.getProjectId());
+        statement.setString(2, projectMember.getName());
     }
 }

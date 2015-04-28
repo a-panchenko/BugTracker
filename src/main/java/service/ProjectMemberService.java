@@ -16,6 +16,8 @@ public interface ProjectMemberService {
 
     void removeMembers(int projectId);
 
+    void removeMember(ProjectMember projectMember);
+
     List<String> getMembersToAssign(Project project, String username);
 
     List<String> getPossibleCreators(Project project, String username);
