@@ -31,7 +31,6 @@
                     <%
                         if (request.isUserInRole("administrator")) {
                     %>
-                            <div align="center"><a href="/BugTracker/createuser.jsp">Create User</a></div>
                             <div align="center"><a href="<%= "/BugTracker/removeuser?name=" + user.getName() %>">Remove User</a></div>
                     <%
                         }
