@@ -319,7 +319,7 @@
         <auth-method>FORM</auth-method>
         <form-login-config>
             <form-login-page>/html/login.html</form-login-page>
-            <form-error-page>/html/loginError.html</form-error-page>
+            <form-error-page>/html/login.html</form-error-page>
         </form-login-config>
     </login-config>
 
