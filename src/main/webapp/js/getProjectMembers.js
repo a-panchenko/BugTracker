@@ -11,7 +11,7 @@ function getProjectMembers(id) {
             $(data).find("member").each(function() {
                 name = $(this).find("name").text();
                 group = $(this).find("group").text();
-                $("#members").append("<br><input type='checkbox' onchange='removeProjectMember(" + id + ", value)' checked value='" + name + "'>"
+                $("#members").append("<br><input type='checkbox' onclick='removeProjectMember(" + id + ", value)' checked value='" + name + "'>"
                         + name + "(" + group + ")" + "</checkbox>");
             })
         },
@@ -22,18 +22,23 @@ function getProjectMembers(id) {
 }
 
 function removeProjectMember(id, member) {
-    var url = "removeprojectmember";
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: "id=" + id + "&" + "member=" + member,
-        success: function() {
-            $("#members input[type=checkbox][value=" + member + "]")[0].previousSibling.remove();
-            $("#members input[type=checkbox][value=" + member + "]")[0].nextSibling.remove();
-            $("#members input[type=checkbox][value=" + member + "]").remove();
-        },
-        error: function() {
-            console.error("Error while remove member");
-        }
-    });
+    if (confirm("Remove member from project?")) {
+        var url = "removeprojectmember";
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: "id=" + id + "&" + "member=" + member,
+            success: function () {
+                $("#members input[type=checkbox][value=" + member + "]")[0].previousSibling.remove();
+                $("#members input[type=checkbox][value=" + member + "]")[0].nextSibling.remove();
+                $("#members input[type=checkbox][value=" + member + "]").remove();
+            },
+            error: function () {
+                console.error("Error while remove member");
+            }
+        });
+    }
+    else {
+        $("#members input[type=checkbox][value=" + member + "]").prop("checked", true);
+    }
 }
