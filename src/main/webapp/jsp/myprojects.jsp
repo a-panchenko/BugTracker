@@ -56,7 +56,7 @@
                                                 <%
                                                     if (project.getTitle().length() > 30) {
                                                 %>
-                                                        <%= project.getTitle().substring(0, 30)%>
+                                                        <%= project.getTitle().substring(0, 30) + "..." %>
                                                 <%
                                                     }
                                                     else {
@@ -71,7 +71,7 @@
                                             <%
                                                 if (project.getDescription().length() > 30) {
                                             %>
-                                                    <%= project.getDescription().substring(0, 30)%>
+                                                    <%= project.getDescription().substring(0, 30) + "..." %>
                                             <%
                                                 }
                                                 else {

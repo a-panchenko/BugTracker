@@ -101,7 +101,7 @@
                                                 <%
                                                     if (issue.getTitle().length() > 30) {
                                                 %>
-                                                        <%= issue.getTitle().substring(0, 30) %>
+                                                        <%= issue.getTitle().substring(0, 30) + "..." %>
                                                 <%
                                                     }
                                                     else {
@@ -116,7 +116,7 @@
                                             <%
                                                 if (issue.getDescription().length() > 30) {
                                             %>
-                                                    <%= issue.getDescription().substring(0, 30) %>
+                                                    <%= issue.getDescription().substring(0, 30) + "..." %>
                                             <%
                                                 }
                                                 else {
