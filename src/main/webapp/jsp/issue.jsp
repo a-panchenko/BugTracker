@@ -109,20 +109,20 @@
                                 <p>Replies:
                                     <table border="1" width="80%">
                                         <tr>
+                                            <td>Date</td>
                                             <td>Posted By</td>
                                             <td>Message</td>
                                         </tr>
                                         <%
-                                            StringBuffer buffer = new StringBuffer();
                                             for (Reply reply : replies) {
-                                                buffer.append(reply.getMessage()).append("<br>").append("(").append(dateFormat.format(reply.getDate())).append(")");
                                         %>
                                                 <tr>
-                                                    <td width="20%"><%= reply.getPoster() %></td>
-                                                    <td id="message"><%= buffer.toString() %></td>
+                                                    <td><%= dateFormat.format(reply.getDate()) %></td>
+                                                    <td>
+                                                        <a href="/BugTracker/user?name=<%= reply.getPoster() %>"><%= reply.getPoster() %></a></td>
+                                                    <td width="80%"><%= reply.getMessage() %></td>
                                                 </tr>
                                         <%
-                                                buffer.setLength(0);
                                             }
                                         %>
                                     </table>
@@ -131,7 +131,7 @@
                             }
                     %>
                         <form action="postreply" method="post">
-                            <br><textarea name="message" rows="10" cols="50" placeholder="post reply" required></textarea>
+                            <br><textarea name="message" rows="5" cols="50" placeholder="post reply" required></textarea>
                             <input type="hidden" name="issueId" value="<%= issue.getId() %>">
                             <br><input type="submit" value="Post"/>
                         </form>
