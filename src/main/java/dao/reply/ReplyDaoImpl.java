@@ -18,7 +18,7 @@ import java.util.List;
 public class ReplyDaoImpl extends AbstractDao<Reply, Integer> implements ReplyDao {
 
     private static final String SELECT_REPLY_BY_REPLY_ID = "SELECT * FROM REPLY WHERE reply_id = ?";
-    private static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ?";
+    private static final String SELECT_REPLIES_BY_ISSUE_ID = "SELECT * FROM REPLY WHERE issue_id = ? ORDER BY post_date";
     private static final String DELETE_REPLY_BY_REPLY_ID = "DELETE FROM REPLY WHERE reply_id = ?";
     private static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
