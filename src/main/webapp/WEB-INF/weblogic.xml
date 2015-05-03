@@ -5,10 +5,6 @@
         <relogin-enabled>true</relogin-enabled>
     </container-descriptor>
 
-    <session-descriptor>
-        <invalidate-on-relogin>true</invalidate-on-relogin>
-    </session-descriptor>
-
     <security-role-assignment>
         <role-name>valid-user</role-name>
         <principal-name>administrators</principal-name>
