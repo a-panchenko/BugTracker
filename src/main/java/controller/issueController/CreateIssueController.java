@@ -34,7 +34,7 @@ public class CreateIssueController extends HttpServlet {
             int projectId = Integer.valueOf(request.getParameter("id"));
             Project project = projectService.getProject(projectId);
             createIssueSecurity.checkProject(project, request.getRemoteUser());
-            request.setAttribute("projectId", projectId);
+            request.setAttribute("project", project);
             List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
             request.setAttribute("projectMembersToAssign", projectMembersToAssign);
             List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request.getRemoteUser());

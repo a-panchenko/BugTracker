@@ -17,22 +17,23 @@
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
-            <tr>
-                <td colspan="2" height="10%">
-                    <jsp:include page="jsp/common/header.jsp"/>
-                </td>
-            </tr>
+            <jsp:include page="jsp/common/header.jsp"/>
+            <c:if test="${not empty project}">
+                <tr>
+                    <td colspan="2" height="5%">
+                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a>
+                    </td>
+                </tr>
+            </c:if>
             <tr valign="top">
-                <td width="20%">
-
-                </td>
+                <td width="20%"></td>
                 <td>
-                    <c:if test="${not empty projectId}">
+                    <c:if test="${not empty project}">
                         <form action="createissue" method="post">
                             <p>Title:
                                 <input type="text" name="title" placeholder="title" size="100" maxlength="100" required/>
                             </p>
-                            <input type="hidden" name="projectId" value="${projectId}">
+                            <input type="hidden" name="projectId" value="${project.id}"/>
                             <p>Description:
                                 <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
                             </p>

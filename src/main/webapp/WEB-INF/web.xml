@@ -133,6 +133,10 @@
         <servlet-name>removeProjectMemberServlet</servlet-name>
         <servlet-class>controller.projectmembercontroller.RemoveProjectMemberController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>editProjectMembersServlet</servlet-name>
+        <servlet-class>controller.projectmembercontroller.EditProjectMembersController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>projectListServlet</servlet-name>
@@ -262,7 +266,10 @@
         <servlet-name>removeProjectMemberServlet</servlet-name>
         <url-pattern>/removeprojectmember</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>editProjectMembersServlet</servlet-name>
+        <url-pattern>/editprojectmembers</url-pattern>
+    </servlet-mapping>
 
     <welcome-file-list>
         <welcome-file>/myprojects</welcome-file>

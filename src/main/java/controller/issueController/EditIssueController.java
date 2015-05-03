@@ -40,6 +40,7 @@ public class EditIssueController extends HttpServlet {
                 request.setAttribute("projects", projects);
             }
             Project project = projectService.getProject(issue.getProjectId());
+            request.setAttribute("project", project);
             if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
                 List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
                 request.setAttribute("projectMembersToAssign", projectMembersToAssign);

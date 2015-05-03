@@ -1,7 +1,6 @@
-<%@ page import="model.Issue" %>
 <%@ page import="model.Project" %>
-<%@ page import="java.util.List" %>
 <%@ page import="service.ProjectServiceImpl" %>
+<%@ page import="model.Issue" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,137 +20,110 @@
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
-            <tr>
-                <td colspan="2" height="10%">
-                    <jsp:include page="jsp/common/header.jsp"/>
-                </td>
-            </tr>
+            <jsp:include page="jsp/common/header.jsp"/>
+            <c:if test="${not empty project && not empty issue}">
+                <tr>
+                    <td colspan="2" height="5%">
+                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a>
+                    </td>
+                </tr>
+            </c:if>
             <tr valign="top">
                 <td width="20%">
                     <%
-                        Issue issue = (Issue) request.getAttribute("issue");
                         if (request.isUserInRole("administrator")) {
                     %>
                             <div align="center">
-                                <a href="/BugTracker/removeissue?id=<%= issue.getId()%>">Remove Issue</a>
+                                <a href="/BugTracker/removeissue?id=${issue.id}">Remove Issue</a>
                             </div>
                     <%
                         }
                     %>
                 </td>
                 <td>
-                    <%
-                        if (issue != null) {
-                    %>
-                            <form action="editissue" method="post">
-                                <input type="hidden" name="id" value="<%= issue.getId() %>">
-                                <%!
-                                    private String createOptions(String[] values, String selected) {
-                                        StringBuilder builder = new StringBuilder();
-                                        for (String value : values) {
-                                            builder.append("<option value=\"" + value + "\"");
-                                            if (value.equals(selected)) {
-                                                builder.append(" selected");
-                                            }
-                                            builder.append(">" + value + "</option>");
-                                        }
-                                        return builder.toString();
-                                    }
-                                %>
-                                <%
-                                    if (request.isUserInRole("administrator")) {
-                                %>
-                                        <p>Replace Issue To Project:
-                                            <%
-                                                List<Project> projects = (List<Project>) request.getAttribute("projects");
-                                                if (projects != null) {
-                                            %>
-                                                    <br>
-                                                    <select name="project">
-                                                    <%
-                                                        for (Project project : projects) {
-                                                    %>
-                                                        <option value="<%= project.getId() %>" <% if (project.getId() == issue.getProjectId()) { %> selected<% } %> >
-                                                            <%= project.getTitle() %>
-                                                        </option>
-                                                    <%
-                                                        }
-                                                    %>
-                                                    </select>
-                                            <%
-                                                }
-                                            %>
-                                        </p>
-                                <%
-                                    }
-                                %>
-                                <%
-                                    Project project = new ProjectServiceImpl().getProject(issue.getProjectId());
-                                    if (request.isUserInRole("administrator")
+                    <c:if test="${not empty issue}">
+                        <form action="editissue" method="post">
+                            <input type="hidden" name="id" value="${issue.id}">
+                            <%
+                                if (request.isUserInRole("administrator")) {
+                            %>
+                                    <p>Replace Issue To Project:
+                                        <c:if test="${not empty projects}">
+                                            <br>
+                                            <select name="project">
+                                                <c:forEach var="project" items="${projects}">
+                                                    <option value="${project.id}" <c:if test="${project.id eq issue.projectId}"> selected </c:if> >
+                                                        ${project.title}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </c:if>
+                                    </p>
+                            <%
+                                }
+                            %>
+                            <%
+                                Project project = (Project) request.getAttribute("project");
+                                Issue issue = (Issue) request.getAttribute("issue");
+                                if (request.isUserInRole("administrator")
                                         || request.getRemoteUser().equals(project.getProjectLeed())
                                         || request.getRemoteUser().equals(issue.getCreator())) {
-                                %>
+                            %>
                                     <p>Title:
-                                        <input type="text" name="title" value="<%= issue.getTitle() %>" size="100" maxlength="100" required/>
+                                        <input type="text" name="title" value="${issue.title}" size="100" maxlength="100" required/>
                                     </p>
                                     <p>Description:
-                                        <br><textarea name="description" rows="10" cols="50" required><%= issue.getDescription() %></textarea>
+                                        <br>
+                                        <textarea name="description" rows="10" cols="50" required>${issue.description}</textarea>
                                     </p>
                                     <p>Priority:
                                         <select name="priority">
-                                            <% String[] priorityValues = {"low", "middle", "high"}; %>
-                                            <%= createOptions(priorityValues, issue.getPriority()) %>
+                                            <option value="low" <c:if test="${'low' eq issue.priority}"> selected </c:if> > low </option>
+                                            <option value="middle" <c:if test="${'middle' eq issue.priority}"> selected </c:if> > middle </option>
+                                            <option value="high" <c:if test="${'high' eq issue.priority}"> selected </c:if> > high </option>
                                         </select>
                                     </p>
-                                <%
-                                    }
-                                %>
-                                <p>Status:
-                                    <select name="status">
-                                        <% String[] statusValues = {"open", "in progress", "resolved", "testing", "close"}; %>
-                                        <%= createOptions(statusValues, issue.getStatus()) %>
-                                    </select>
-                                </p>
-                                <%
-                                    if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
-                                %>
-                                        <p>Assigned:
-                                            <%
-                                                List<String> projectMembersToAssign = (List<String>) request.getAttribute("projectMembersToAssign");
-                                                if (projectMembersToAssign != null) {
-                                                    String[] names = projectMembersToAssign.toArray(new String[projectMembersToAssign.size()]);
-                                            %>
-                                                    <select name="assigned">
-                                                        <option/>
-                                                        <%= createOptions(names, issue.getAssigned()) %>
-                                                    </select>
-                                            <%
-                                                }
-                                            %>
-                                        </p>
-                                        <p>Created By:
-                                            <%
-                                                List<String> possibleCreators = (List<String>) request.getAttribute("possibleCreators");
-                                                if (possibleCreators != null) {
-                                                    String[] names = possibleCreators.toArray(new String[possibleCreators.size()]);
-                                            %>
-                                                    <select name="creator">
-                                                        <option/>
-                                                        <%= createOptions(names, issue.getCreator()) %>
-                                                    </select>
-                                            <%
-                                                }
-                                            %>
-                                        </p>
-                                <%
-                                    }
-                                %>
-                                <input type="hidden" name="startDate" value="<%= issue.getCreationDate().getTime() %>">
-                                <input type="submit" value="Edit Issue"/>
-                            </form>
-                    <%
-                        }
-                    %>
+                            <%
+                                }
+                            %>
+                            <p>Status:
+                                <select name="status">
+                                    <option value="open" <c:if test="${'open' eq issue.status}"> selected </c:if> > open </option>
+                                    <option value="in progress" <c:if test="${'in progress' eq issue.status}"> selected </c:if> > in progress </option>
+                                    <option value="resolved" <c:if test="${'resolved' eq issue.status}"> selected </c:if> > resolved </option>
+                                    <option value="testing" <c:if test="${'testing' eq issue.status}"> selected </c:if> > testing </option>
+                                    <option value="close" <c:if test="${'close' eq issue.status}"> selected </c:if> > close </option>
+                                </select>
+                            </p>
+                            <%
+                                if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+                            %>
+                                    <p>Assigned:
+                                        <c:if test="${not empty projectMembersToAssign}">
+                                            <select name="assigned">
+                                                <option/>
+                                                <c:forEach var="name" items="${projectMembersToAssign}">
+                                                    <option value="${name}" <c:if test="${name eq issue.assigned}"> selected </c:if> > ${name} </option>
+                                                </c:forEach>
+                                            </select>
+                                        </c:if>
+                                    </p>
+                                    <p>Created By:
+                                        <c:if test="${not empty possibleCreators}">
+                                            <select name="creator">
+                                                <option/>
+                                                <c:forEach var="name" items="${possibleCreators}">
+                                                    <option value="${name}" <c:if test="${name eq issue.creator}"> selected </c:if> > ${name} </option>
+                                                </c:forEach>
+                                            </select>
+                                        </c:if>
+                                    </p>
+                            <%
+                                }
+                            %>
+                            <input type="submit" value="Edit Issue"/>
+                        </form>
+                    </c:if>
                 </td>
             </tr>
         </table>

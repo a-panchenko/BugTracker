@@ -1,9 +1,11 @@
 <%@ page import="model.Project" %>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Issue" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
+<%@ page import="model.Issue" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -20,66 +22,55 @@
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
-            <tr>
-                <td colspan="2" height="10%">
-                    <jsp:include page="jsp/common/header.jsp"/>
-                </td>
-            </tr>
+            <jsp:include page="jsp/common/header.jsp"/>
             <tr valign="top">
                 <td width="20%">
-                    <%
-                        Project project = (Project) request.getAttribute("project");
-                        if (project != null) {
-                    %>
-                            <div align="center"><a href="/BugTracker/createissue?id=<%= project.getId() %>">Create Issue</a></div>
-                    <%
+                    <c:if test="${not empty project}">
+                        <div align="center"><a href="/BugTracker/createissue?id=${project.id}">Create Issue</a></div>
+                        <%
                             if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) {
-                    %>
-                                <div align="center"><a href="/BugTracker/editproject?id=<%= project.getId() %>">Edit Project</a></div>
-                                <div align="center"><a href="/BugTracker/editprojectmembers.jsp?id=<%= project.getId() %>">Edit Members</a></div>
-                    <%
+                        %>
+                                <div align="center"><a href="/BugTracker/editproject?id=${project.id}">Edit Project</a></div>
+                                <div align="center"><a href="/BugTracker/editprojectmembers?id=${project.id}">Edit Members</a></div>
+                        <%
                             }
+                        %>
+                        <%
                             if (request.isUserInRole("administrator")) {
-                    %>
-                            <div align="center"><a href="/BugTracker/removeproject?id=<%= project.getId() %>">Remove Project</a></div>
-                    <%
+                        %>
+                                <div align="center"><a href="/BugTracker/removeproject?id=${project.id}">Remove Project</a></div>
+                        <%
                             }
-                        }
-                    %>
+                        %>
+                    </c:if>
                 </td>
                 <td>
-                    <%
-                        if (project != null) {
-                            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
-                    %>
+                    <c:if test="${not empty project}">
                         <p>Title:
-                            <%= project.getTitle() %>
+                            ${project.title}
                         </p>
-                        <p id="description">Description: <%= project.getDescription() %> </p>
+                        <p id="description">Description:
+                            ${project.description}
+                        </p>
                         <p>Project Leed:
-                            <%
-                                if (project.getProjectLeed() != null) {
-                            %>
-                                    <a href="<%= "/BugTracker/user?name=" + project.getProjectLeed() %>"><%= project.getProjectLeed() %></a>
-                            <%
-                                }
-                            %>
+                            <c:if test="${not empty project.projectLeed}">
+                                <a href="/BugTracker/user?name=${project.projectLeed}">${project.projectLeed}</a>
+                            </c:if>
                         </p>
-                        <p>Start date: <%= dateFormat.format(project.getStartDate()) %> </p>
+                        <%
+                            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                        %>
+                        <p>Start date:
+                            <%= dateFormat.format(((Project) request.getAttribute("project")).getStartDate()) %>
+                        </p>
                         <p>End date:
-                            <%
-                                if (project.getEndDate() != null) {
-                            %>
-                                    <%= dateFormat.format(project.getEndDate()) %>
-                            <%
-                                }
-                            %>
+                            <c:if test="${not empty project.endDate}">
+                                <%= dateFormat.format(((Project) request.getAttribute("project")).getEndDate()) %>
+                            </c:if>
                         </p>
-                    <%
-                        List<Issue> issues = (List<Issue>) request.getAttribute("issues");
-                        if (issues != null && issues.size() > 0) {
-                    %>
-                            <br><table width="100%" height="5%" border="1" cellspacing="0">
+                        <c:if test="${not empty issues}">
+                            <br>
+                            <table width="100%" height="5%" border="1" cellspacing="0">
                                 <tr align="center">
                                     <td> ID </td>
                                     <td width="30"> Title </td>
@@ -91,76 +82,54 @@
                                     <td> Created By </td>
                                     <td> Assigned </td>
                                 </tr>
-                    <%
-                                for (Issue issue : issues) {
-                    %>
+                                <c:forEach var="issue" items="${issues}">
                                     <tr>
-                                        <td> <%= issue.getId() %> </td>
+                                        <td> ${issue.id} </td>
                                         <td>
-                                            <a href="/BugTracker/issue?id=<%= issue.getId() %>">
-                                                <%
-                                                    if (issue.getTitle().length() > 30) {
-                                                %>
-                                                        <%= issue.getTitle().substring(0, 30) + "..." %>
-                                                <%
-                                                    }
-                                                    else {
-                                                %>
-                                                        <%= issue.getTitle() %>
-                                                <%
-                                                    }
-                                                %>
+                                            <a href="/BugTracker/issue?id=${issue.id}">
+                                                <c:choose>
+                                                    <c:when test="${fn:length(issue.title) > 30}">
+                                                        ${fn:substring(issue.title, 0, 30)}...
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${issue.title}
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </a>
                                         </td>
                                         <td>
-                                            <%
-                                                if (issue.getDescription().length() > 30) {
-                                            %>
-                                                    <%= issue.getDescription().substring(0, 30) + "..." %>
-                                            <%
-                                                }
-                                                else {
-                                            %>
-                                                    <%= issue.getDescription() %>
-                                            <%
-                                                }
-                                            %>
+                                            <c:choose>
+                                                <c:when test="${fn:length(issue.description) > 30}">
+                                                    ${fn:substring(issue.description, 0, 30)}...
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${issue.description}
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
-                                        <td> <%= issue.getPriority() %> </td>
-                                        <td> <%= issue.getStatus() %> </td>
-                                        <td> <%= dateFormat.format(issue.getCreationDate()) %> </td>
+                                        <td> ${issue.priority} </td>
+                                        <td> ${issue.status} </td>
+                                        <td> <%= dateFormat.format(((Issue) pageContext.getAttribute("issue")).getCreationDate()) %> </td>
                                         <td>
-                                            <%
-                                                if (issue.getSolvingDate() != null) {
-                                            %>
-                                                    <%= dateFormat.format(issue.getSolvingDate()) %>
-                                            <%
-                                                }
-                                            %>
+                                            <c:if test="${issue.solvingDate}">
+                                                <%= dateFormat.format(((Issue) pageContext.getAttribute("issue")).getSolvingDate()) %>
+                                            </c:if>
                                         </td>
                                         <td>
-                                            <%
-                                                if (issue.getCreator() != null) {
-                                            %>
-                                                    <a href="<%= "/BugTracker/user?name=" + issue.getCreator() %>"><%= issue.getCreator() %></a>
-                                            <%
-                                                }
-                                            %>
+                                            <c:if test="${issue.creator}">
+                                                <a href="/BugTracker/user?name=${issue.creator}"> ${issue.creator} </a>
+                                            </c:if>
                                         </td>
                                         <td>
-                                            <%
-                                                if (issue.getAssigned() != null) {
-                                            %>
-                                                    <a href="<%= "/BugTracker/user?name=" + issue.getAssigned() %>"><%= issue.getAssigned() %></a>
-                                            <%
-                                                }
-                                            %>
+                                            <c:if test="${issue.assigned}">
+                                                <a href="/BugTracker/user?name=${issue.assigned}"> ${issue.assigned} </a>
+                                            </c:if>
                                         </td>
-                                    </tr> <%
-                                } %>
-                            </table> <%
-                        }
-                    } %>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </c:if>
+                    </c:if>
                 </td>
             </tr>
         </table>

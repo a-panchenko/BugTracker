@@ -26,7 +26,7 @@ public class ProjectListController extends HttpServlet {
         String pageValue = request.getParameter("page");
         Integer page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
         List<Project> projectList = projectService.getProjects(page);
-        request.setAttribute("myProjects", projectList);
+        request.setAttribute("projects", projectList);
         request.setAttribute("currentPage", page);
         int pagesCount = (int) Math.ceil(((double) projectService.getAllProjects().size()) / Utils.ROWS_PER_PAGE);
         request.setAttribute("pagesCount", pagesCount);

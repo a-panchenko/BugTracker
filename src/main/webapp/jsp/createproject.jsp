@@ -15,22 +15,17 @@
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
-            <tr>
-                <td colspan="2" height="10%">
-                    <jsp:include page="jsp/common/header.jsp"/>
-                </td>
-            </tr>
+            <jsp:include page="jsp/common/header.jsp"/>
             <tr valign="top">
-                <td width="20%">
-
-                </td>
+                <td width="20%"></td>
                 <td>
                     <form action="createproject" method="post">
                         <p>Title:
                             <input type="text" name="title" placeholder="title" size="50" maxlength="50" required/>
                         </p>
                         <p>Description:
-                            <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
+                            <br>
+                            <textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
                         </p>
                         <input type="hidden" name="projectLeed" value="${pageContext.request.remoteUser}">
                         <input type="submit" value="Create Project"/>
