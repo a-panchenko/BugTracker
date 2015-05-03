@@ -5,14 +5,9 @@
   <head>
       <meta charset="utf-8">
       <title>Edit Project Members</title>
-      <style>
-          body {
-              font: 11pt Arial, Helvetica, sans-serif;
-              height: 100vh;
-          }
-      </style>
       <script type="text/javascript" src="js/jquery-2.1.3.js"></script>
       <script type="text/javascript" src="js/editprojectmembers.js"></script>
+      <link href="css/content.css" type="text/css" rel="stylesheet">
       <link href="css/editprojectmembers.css" type="text/css" rel="stylesheet">
   </head>
   <body>

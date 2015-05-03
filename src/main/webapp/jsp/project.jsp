@@ -10,11 +10,8 @@
     <head>
         <meta charset="utf-8">
         <title>Project</title>
+        <link href="css/content.css" type="text/css" rel="stylesheet">
         <style>
-            body {
-                font: 11pt Arial, Helvetica, sans-serif;
-                height: 100vh;
-            }
             #description {
                 word-break: break-all;
             }

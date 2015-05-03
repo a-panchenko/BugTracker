@@ -9,14 +9,8 @@
     <head>
         <meta charset="utf-8">
         <title>Issue</title>
+        <link href="css/content.css" type="text/css" rel="stylesheet">
         <style>
-            body {
-                font: 11pt Arial, Helvetica, sans-serif;
-                height: 100vh;
-            }
-            textarea {
-                width: 80%;
-            }
             td {
                 word-break: break-all;
             }

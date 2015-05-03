@@ -5,12 +5,7 @@
     <head>
         <meta charset="utf-8">
         <title>Edit User</title>
-        <style>
-            body {
-                font: 11pt Arial, Helvetica, sans-serif;
-                height: 100vh;
-            }
-        </style>
+        <link href="css/content.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="js/validatePassword.js"></script>
     </head>
     <body>

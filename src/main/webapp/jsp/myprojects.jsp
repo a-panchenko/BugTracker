@@ -9,15 +9,7 @@
     <head>
         <meta charset="utf-8">
         <title>Projects</title>
-        <style>
-            body {
-                font: 11pt Arial, Helvetica, sans-serif;
-                height: 100vh;
-            }
-            td {
-                word-break: break-all;
-            }
-        </style>
+        <link href="css/content.css" type="text/css" rel="stylesheet">
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
