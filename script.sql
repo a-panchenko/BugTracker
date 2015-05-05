@@ -11,7 +11,7 @@ DROP SEQUENCE reply_seq;
 
 CREATE TABLE USERS (
   U_NAME          VARCHAR2(50)    NOT NULL,
-  U_PASSWORD      VARCHAR2(50)    NOT NULL,
+  U_PASSWORD      VARCHAR2(100)    NOT NULL,
   U_DESCRIPTION   VARCHAR2(200),
   CONSTRAINT PK_USERS PRIMARY KEY (U_NAME));
 
@@ -108,16 +108,16 @@ END;
 /
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user1', '-928147210', 'description1');
+VALUES ('user1', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e', 'description1');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user2', '-928147209', 'description2');
+VALUES ('user2', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4', 'description2');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user3', '-928147208', 'description3');
+VALUES ('user3', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764', 'description3');
 
 INSERT INTO USERS (u_name, u_password, u_description)
-VALUES ('user4', '-928147207', 'description4');
+VALUES ('user4', 'b97873a40f73abedd8d685a7cd5e5f85e4a9cfb83eac26886640a0813850122b', 'description4');
 
 INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
 VALUES ('Project1', 'Description1', '1430024861112', 'user1');

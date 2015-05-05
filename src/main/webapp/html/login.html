@@ -1,23 +1,10 @@
-<!DOCTYPE html>
 <html>
     <head lang="en">
         <meta charset="UTF-8">
         <title>Login</title>
-        <style>
-            form {
-                height: 7.5em;
-                width: 12em;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                margin: -200px 0 0 -200px;
-                text-align: center;
-                border: 1px solid #666;
-                background-color: antiquewhite;
-                border-radius: 10px;
-                padding: 0.5em;
-            }
-        </style>
+        <link href="../css/login.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="../js/hashPassword.js"></script>
+        <script type="text/javascript" src="../js/sha256.js"></script>
     </head>
     <body>
         <div>
@@ -33,23 +20,5 @@
                 </p>
             </form>
         </div>
-
-        <script>
-            function hashPassword() {
-                var password = document.login.j_password;
-                password.value = hash(password.value);
-                return true;
-            }
-
-            function hash(password) {
-                var hash = 0;
-                for (i = 0; i < password.length; i++) {
-                    char = password.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash;
-                }
-                return hash.toString();
-            }
-        </script>
     </body>
 </html>
