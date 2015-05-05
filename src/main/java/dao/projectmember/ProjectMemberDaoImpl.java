@@ -3,16 +3,14 @@ package dao.projectmember;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
-import dao.Utils;
-import dao.exceptions.QueryExecutionExeption;
+import service.DataSourceProvider;
+import dao.exceptions.QueryExecutionException;
 import model.ProjectMember;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, String> implements ProjectMemberDao {
@@ -26,6 +24,13 @@ public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, String> imp
     private static final Logger LOGGER = Logger.getLogger(ProjectMemberDaoImpl.class);
 
     private final ResultParser<ProjectMember> resultParser = new ProjectMemberResultParser();
+
+    private Connection connection;
+
+    public ProjectMemberDaoImpl(Connection connection) {
+        super(connection);
+        this.connection = connection;
+    }
 
     @Override
     public List<ProjectMember> getMembers(int projectId) {
@@ -49,14 +54,13 @@ public class ProjectMemberDaoImpl extends AbstractDao<ProjectMember, String> imp
 
     @Override
     public void removeMember(ProjectMember projectMember) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_PROJECTMEMBER)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_PROJECTMEMBER)) {
             completeAdd(statement, projectMember);
             statement.executeUpdate();
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecutionExeption(se);
+            throw new QueryExecutionException(se);
         }
     }
 

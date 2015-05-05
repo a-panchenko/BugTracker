@@ -6,6 +6,7 @@ import dao.ResultParser;
 import model.User;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -19,6 +20,10 @@ public class UserDaoImpl extends AbstractDao<User, String> implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private final ResultParser resultParser = new UserResultParser();
+
+    public UserDaoImpl(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public User getUser(String name) {

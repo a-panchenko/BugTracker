@@ -11,10 +11,10 @@ import security.groupmember.EditGroupMemberSecurity;
 import security.groupmember.EditGroupMemberSecurityImpl;
 import security.user.EditUserSecurity;
 import security.user.EditUserSecurityImpl;
-import service.GroupMemberService;
-import service.GroupMemberServiceImpl;
-import service.UserService;
-import service.UserServiceImpl;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
+import service.user.UserService;
+import service.user.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,6 +52,10 @@ public class EditUserController extends HttpServlet {
             LOGGER.error(notAllowed);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
+        catch (Exception e) {
+            LOGGER.error(e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     @Override
@@ -77,6 +81,10 @@ public class EditUserController extends HttpServlet {
         catch (NotAllowedException | EditPasswordException editException) {
             LOGGER.error(editException);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        }
+        catch (Exception e) {
+            LOGGER.error(e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

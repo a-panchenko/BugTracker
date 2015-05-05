@@ -4,10 +4,10 @@ import security.exceptions.EditPasswordException;
 import dto.UserDto;
 import model.User;
 import security.exceptions.NotAllowedException;
-import service.GroupMemberService;
-import service.GroupMemberServiceImpl;
-import service.UserService;
-import service.UserServiceImpl;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
+import service.user.UserService;
+import service.user.UserServiceImpl;
 
 public class EditUserSecurityImpl implements EditUserSecurity {
 

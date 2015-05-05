@@ -4,10 +4,10 @@ import dao.exceptions.NotFoundException;
 import model.Issue;
 import model.Project;
 import org.apache.log4j.Logger;
-import service.IssueService;
-import service.IssueServiceImpl;
-import service.ProjectService;
-import service.ProjectServiceImpl;
+import service.issue.IssueService;
+import service.issue.IssueServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

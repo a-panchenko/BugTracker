@@ -3,15 +3,13 @@ package dao.groupmember;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
-import dao.Utils;
 import model.GroupMember;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> implements GroupMemberDao {
@@ -27,6 +25,10 @@ public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> impleme
     private static final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
 
     private final ResultParser<GroupMember> resultParser = new GroupMemberResultParser();
+
+    public GroupMemberDaoImpl(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public List<GroupMember> getAllMembers() {

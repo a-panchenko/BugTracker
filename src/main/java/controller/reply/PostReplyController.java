@@ -1,8 +1,8 @@
 package controller.reply;
 
 import model.Reply;
-import service.ReplyService;
-import service.ReplyServiceImpl;
+import service.reply.ReplyService;
+import service.reply.ReplyServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

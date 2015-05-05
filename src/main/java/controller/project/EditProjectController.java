@@ -8,7 +8,10 @@ import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
 import security.project.EditProjectSecurity;
 import security.project.EditProjectSecurityImpl;
-import service.*;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

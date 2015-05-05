@@ -1,8 +1,8 @@
 package controller.projectmember;
 
 import model.Project;
-import service.ProjectService;
-import service.ProjectServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

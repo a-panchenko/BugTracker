@@ -1,15 +1,16 @@
 package dao.issue;
 
+import controller.project.ProjectListController;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.Utils;
+import service.DataSourceProvider;
 import dao.ResultParser;
-import dao.exceptions.QueryExecutionExeption;
+import dao.exceptions.QueryExecutionException;
 import model.Issue;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDao {
@@ -27,6 +28,13 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
 
     private final ResultParser<Issue> resultParser = new IssueResultParser();
 
+    private Connection connection;
+
+    public IssueDaoImpl(Connection connection) {
+        super(connection);
+        this.connection = connection;
+    }
+
     @Override
     public Issue getIssue(int issueId) {
         return select(issueId, SELECT_ISSUE_BY_ISSUE_ID, resultParser);
@@ -34,8 +42,7 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
 
     @Override
     public List<Issue> getIssues(int projectId, int page) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ISSUES)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ISSUES)) {
             statement.setInt(1, projectId);
             statement.setInt(2, page * Utils.ROWS_PER_PAGE);
             statement.setInt(3, (page - 1) * Utils.ROWS_PER_PAGE + 1);
@@ -45,7 +52,7 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecutionExeption(se);
+            throw new QueryExecutionException(se);
         }
     }
 

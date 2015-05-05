@@ -1,15 +1,15 @@
 package dao.project;
 
+import controller.project.ProjectListController;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
-import dao.Utils;
 import dao.ResultParser;
-import dao.exceptions.QueryExecutionExeption;
+import dao.Utils;
+import dao.exceptions.QueryExecutionException;
 import model.Project;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements ProjectDao {
@@ -28,6 +28,13 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
     
     private final ResultParser<Project> resultParser = new ProjectResultParser();
 
+    private Connection connection;
+
+    public ProjectDaoImpl(Connection connection) {
+        super(connection);
+        this.connection = connection;
+    }
+
     @Override
     public Project getProject(int projectId) {
         return select(projectId, SELECT_PROJECT_BY_PROJECT_ID, resultParser);
@@ -40,8 +47,7 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
 
     @Override
     public List<Project> getProjects(int page) {
-        try (Connection connection = Utils.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_PROJECTS)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_PROJECTS)) {
             statement.setInt(1, page * Utils.ROWS_PER_PAGE);
             statement.setInt(2, (page - 1) * Utils.ROWS_PER_PAGE + 1);
             try (ResultSet result = statement.executeQuery()) {
@@ -50,7 +56,7 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            throw new QueryExecutionExeption(se);
+            throw new QueryExecutionException(se);
         }
     }
 

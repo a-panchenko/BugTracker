@@ -1,4 +1,4 @@
-package service;
+package service.user;
 
 import model.GroupMember;
 import model.User;

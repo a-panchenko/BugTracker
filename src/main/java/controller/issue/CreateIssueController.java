@@ -9,7 +9,12 @@ import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
 import security.issue.CreateIssueSecurity;
 import security.issue.CreateIssueSecurityImpl;
-import service.*;
+import service.issue.IssueService;
+import service.issue.IssueServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
+import service.projectmember.ProjectMemberService;
+import service.projectmember.ProjectMemberServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

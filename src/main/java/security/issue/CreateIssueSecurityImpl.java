@@ -6,7 +6,12 @@ import model.Issue;
 import model.Project;
 import model.ProjectMember;
 import security.exceptions.NotAllowedException;
-import service.*;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
+import service.projectmember.ProjectMemberService;
+import service.projectmember.ProjectMemberServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Date;

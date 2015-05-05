@@ -3,8 +3,8 @@ package controller.project;
 import dao.Utils;
 import model.Project;
 import org.apache.log4j.Logger;
-import service.ProjectService;
-import service.ProjectServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

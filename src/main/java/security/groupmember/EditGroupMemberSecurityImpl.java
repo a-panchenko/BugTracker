@@ -3,8 +3,8 @@ package security.groupmember;
 import dto.GroupMemberDto;
 import model.GroupMember;
 import security.exceptions.NotAllowedException;
-import service.GroupMemberService;
-import service.GroupMemberServiceImpl;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
 
 public class EditGroupMemberSecurityImpl implements EditGroupMemberSecurity {
 

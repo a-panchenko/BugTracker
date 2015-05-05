@@ -1,34 +1,59 @@
-package service;
+package service.projectmember;
 
+import dao.exceptions.QueryExecutionException;
 import dao.projectmember.ProjectMemberDaoImpl;
 import model.GroupMember;
 import model.Project;
 import model.ProjectMember;
+import service.DataSourceProvider;
+import service.exceptions.TransactionFailException;
+import service.groupmember.GroupMemberServiceImpl;
 
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectMemberServiceImpl implements ProjectMemberService{
+public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public List<ProjectMember> getMembers(int projectId) {
-        return new ProjectMemberDaoImpl().getMembers(projectId);
+        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
+            return new ProjectMemberDaoImpl(connection).getMembers(projectId);
+        }
+        catch (SQLException | QueryExecutionException e) {
+            throw new TransactionFailException(e);
+        }
     }
 
     @Override
     public List<ProjectMember> getMembers(int projectId, String group) {
-        return new ProjectMemberDaoImpl().getMembers(projectId, group);
+        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
+            return new ProjectMemberDaoImpl(connection).getMembers(projectId, group);
+        }
+        catch (SQLException | QueryExecutionException e) {
+            throw new TransactionFailException(e);
+        }
     }
 
     @Override
     public void addMember(ProjectMember projectMember) {
-        new ProjectMemberDaoImpl().addMember(projectMember);
+        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
+            new ProjectMemberDaoImpl(connection).addMember(projectMember);
+        }
+        catch (SQLException | QueryExecutionException e) {
+            throw new TransactionFailException(e);
+        }
     }
 
     @Override
     public void removeMember(ProjectMember projectMember) {
-        new ProjectMemberDaoImpl().removeMember(projectMember);
+        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
+            new ProjectMemberDaoImpl(connection).removeMember(projectMember);
+        }
+        catch (SQLException | QueryExecutionException e) {
+            throw new TransactionFailException(e);
+        }
     }
 
     @Override

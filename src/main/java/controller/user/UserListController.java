@@ -1,8 +1,8 @@
 package controller.user;
 
 import model.GroupMember;
-import service.GroupMemberService;
-import service.GroupMemberServiceImpl;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

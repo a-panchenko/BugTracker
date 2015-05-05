@@ -5,7 +5,12 @@ import model.Issue;
 import model.Project;
 import model.Reply;
 import org.apache.log4j.Logger;
-import service.*;
+import service.issue.IssueService;
+import service.issue.IssueServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
+import service.reply.ReplyService;
+import service.reply.ReplyServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

@@ -1,4 +1,4 @@
-package service;
+package service.issue;
 
 import model.Issue;
 

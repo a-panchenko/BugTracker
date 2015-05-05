@@ -3,7 +3,10 @@ package security.project;
 import dto.ProjectDto;
 import model.Project;
 import security.exceptions.NotAllowedException;
-import service.*;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import java.util.Date;
 

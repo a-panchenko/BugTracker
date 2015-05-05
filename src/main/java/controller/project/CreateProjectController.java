@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
 import security.project.CreateProjectSecurity;
 import security.project.CreateProjectSecurityImpl;
-import service.ProjectService;
-import service.ProjectServiceImpl;
+import service.project.ProjectService;
+import service.project.ProjectServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

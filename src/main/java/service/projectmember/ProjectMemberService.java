@@ -1,4 +1,4 @@
-package service;
+package service.projectmember;
 
 import model.Project;
 import model.ProjectMember;

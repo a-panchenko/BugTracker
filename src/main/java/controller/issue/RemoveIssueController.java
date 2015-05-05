@@ -1,8 +1,8 @@
 package controller.issue;
 
 import org.apache.log4j.Logger;
-import service.IssueService;
-import service.IssueServiceImpl;
+import service.issue.IssueService;
+import service.issue.IssueServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

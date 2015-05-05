@@ -2,8 +2,8 @@ package controller.groupmember;
 
 import model.GroupMember;
 import org.apache.log4j.Logger;
-import service.GroupMemberService;
-import service.GroupMemberServiceImpl;
+import service.groupmember.GroupMemberService;
+import service.groupmember.GroupMemberServiceImpl;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

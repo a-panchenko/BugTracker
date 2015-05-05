@@ -2,7 +2,6 @@ package dao.reply;
 
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
-import dao.Utils;
 import dao.issue.IssueDaoImpl;
 import dao.ResultParser;
 import model.Reply;
@@ -10,9 +9,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReplyDaoImpl extends AbstractDao<Reply, Integer> implements ReplyDao {
@@ -26,6 +23,10 @@ public class ReplyDaoImpl extends AbstractDao<Reply, Integer> implements ReplyDa
     private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
 
     private final ResultParser<Reply> resultParser = new ReplyResultParser();
+
+    public ReplyDaoImpl(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public Reply getReply(int replyId) {
