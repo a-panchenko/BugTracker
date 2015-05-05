@@ -1,5 +1,4 @@
 <%@ page import="model.Project" %>
-<%@ page import="service.ProjectServiceImpl" %>
 <%@ page import="model.Issue" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>

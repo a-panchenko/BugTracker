@@ -4,6 +4,7 @@ import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.Utils;
 import dao.ResultParser;
+import dao.exceptions.QueryExecutionExeption;
 import model.Issue;
 import org.apache.log4j.Logger;
 
@@ -44,7 +45,7 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return new ArrayList<Issue>();
+            throw new QueryExecutionExeption(se);
         }
     }
 

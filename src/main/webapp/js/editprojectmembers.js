@@ -11,13 +11,11 @@ function addMembers(id) {
             id: id,
             users: users
         },
-        success: function() {
-            getProjectMembers(id)
-        },
         error: function() {
             console.error("Error while add members");
         }
     });
+    getProjectMembers(id);
 }
 
 function getProjectMembers(id) {

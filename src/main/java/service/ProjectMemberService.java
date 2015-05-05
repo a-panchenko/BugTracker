@@ -14,8 +14,6 @@ public interface ProjectMemberService {
 
     void addMember(ProjectMember projectMember);
 
-    void removeMembers(int projectId);
-
     void removeMember(ProjectMember projectMember);
 
     List<String> getMembersToAssign(Project project, String username);

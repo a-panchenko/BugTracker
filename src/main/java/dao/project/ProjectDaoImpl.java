@@ -4,6 +4,7 @@ import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.Utils;
 import dao.ResultParser;
+import dao.exceptions.QueryExecutionExeption;
 import model.Project;
 import org.apache.log4j.Logger;
 
@@ -49,7 +50,7 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
         }
         catch (SQLException se) {
             LOGGER.error(se);
-            return new ArrayList<Project>();
+            throw new QueryExecutionExeption(se);
         }
     }
 

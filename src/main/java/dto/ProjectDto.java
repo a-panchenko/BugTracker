@@ -7,7 +7,6 @@ public class ProjectDto {
     private String description;
     private String projectLeed;
     private String close;
-    private String[] members;
 
     public String getId() {
         return id;
@@ -49,13 +48,5 @@ public class ProjectDto {
 
     public void setClose(String close) {
         this.close = close;
-    }
-
-    public String[] getMembers() {
-        return members;
-    }
-
-    public void setMembers(String[] members) {
-        this.members = members;
     }
 }

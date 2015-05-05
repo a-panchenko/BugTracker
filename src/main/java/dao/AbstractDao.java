@@ -1,5 +1,7 @@
 package dao;
 
+import dao.exceptions.NotFoundException;
+import dao.exceptions.QueryExecutionExeption;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -22,13 +24,13 @@ public class AbstractDao<T, PK> {
                     return resultParser.extractSingle(result);
                 }
                 else {
-                    return null;
+                    throw new NotFoundException();
                 }
             }
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
-            return null;
+            throw new QueryExecutionExeption(se);
         }
     }
 
@@ -46,7 +48,7 @@ public class AbstractDao<T, PK> {
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
-            return new ArrayList<T>();
+            throw new QueryExecutionExeption(se);
         }
     }
 
@@ -58,6 +60,7 @@ public class AbstractDao<T, PK> {
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
+            throw new QueryExecutionExeption(se);
         }
     }
 
@@ -69,6 +72,7 @@ public class AbstractDao<T, PK> {
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
+            throw new QueryExecutionExeption(se);
         }
     }
 
@@ -80,6 +84,7 @@ public class AbstractDao<T, PK> {
         }
         catch (SQLException se) {
             LOGGER.error(sql, se);
+            throw new QueryExecutionExeption(se);
         }
     }
 }

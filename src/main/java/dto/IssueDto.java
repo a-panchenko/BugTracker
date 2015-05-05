@@ -11,10 +11,6 @@ public class IssueDto {
     private String creator;
     private String assigned;
 
-    public IssueDto() {
-
-    }
-
     public String getProjectId() {
         return projectId;
     }

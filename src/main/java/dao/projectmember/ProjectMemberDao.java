@@ -12,7 +12,5 @@ public interface ProjectMemberDao {
 
     void addMember(ProjectMember projectMember);
 
-    void removeMembers(int projectId);
-
     void removeMember(ProjectMember projectMember);
 }

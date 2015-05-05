@@ -1,6 +1,8 @@
 package service;
 
+import dao.groupmember.GroupMemberDaoImpl;
 import dao.user.UserDaoImpl;
+import model.GroupMember;
 import model.User;
 
 public class UserServiceImpl implements UserService {
@@ -11,13 +13,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(User user, GroupMember groupMember) {
         new UserDaoImpl().addUser(user);
+        new GroupMemberDaoImpl().addMember(groupMember);
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user, GroupMember groupMember) {
         new UserDaoImpl().updateUser(user);
+        new GroupMemberDaoImpl().updateMember(groupMember);
     }
 
     @Override

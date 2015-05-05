@@ -27,11 +27,6 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     }
 
     @Override
-    public void removeMembers(int projectId) {
-        new ProjectMemberDaoImpl().removeMembers(projectId);
-    }
-
-    @Override
     public void removeMember(ProjectMember projectMember) {
         new ProjectMemberDaoImpl().removeMember(projectMember);
     }
