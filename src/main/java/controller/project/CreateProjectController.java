@@ -34,7 +34,7 @@ public class CreateProjectController extends HttpServlet {
             projectDto.setProjectLeed(request.getParameter("projectLeed"));
             Project project = createProjectSecurity.secureCreateProject(projectDto);
             projectService.addProject(project);
-            response.sendRedirect("/BugTracker/myprojects");
+            response.sendRedirect("/BugTracker/projects");
         }
         catch (NotAllowedException notAllowed) {
             LOGGER.error(notAllowed);

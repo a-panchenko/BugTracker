@@ -15,6 +15,8 @@
                 word-break: break-all;
             }
         </style>
+        <script type="text/javascript" src="js/jquery-2.1.3.js"></script>
+        <script type="text/javascript" src="js/reply.js"></script>
     </head>
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
@@ -86,35 +88,19 @@
                             </tr>
                         </table>
                     </c:if>
-                    <c:if test="${not empty replies}">
-                        <p>Replies:
-                            <table border="1" width="80%">
-                                <tr>
-                                    <td>Date</td>
-                                    <td>Posted By</td>
-                                    <td>Message</td>
-                                </tr>
-                                <c:forEach var="reply" items="${replies}">
-                                    <tr>
-                                        <td><%= dateFormat.format(((Reply) pageContext.getAttribute("reply")).getDate()) %></td>
-                                        <td>
-                                            <a href="/BugTracker/user?name=${reply.poster}"> ${reply.poster} </a>
-                                        </td>
-                                        <td width="80%"> ${reply.message} </td>
-                                    </tr>
-                                </c:forEach>
-                            </table>
-                        </p>
-                    </c:if>
-                    <form action="postreply" method="post">
+                    <p>
+                        <textarea id="message" rows="5" cols="50" placeholder="post reply" required></textarea>
                         <br>
-                        <textarea name="message" rows="5" cols="50" placeholder="post reply" required></textarea>
-                        <input type="hidden" name="issueId" value="${issue.id}">
-                        <br>
-                        <input type="submit" value="Post"/>
-                    </form>
+                        <input type="button" value="Post" onclick="addReply(${issue.id})"/>
+                    </p>
+                    <div id="replies"></div>
                 </td>
             </tr>
         </table>
+        <script>
+            $(document).ready(function() {
+                $("replies").load(getReplies(${issue.id}))
+            });
+        </script>
     </body>
 </html>

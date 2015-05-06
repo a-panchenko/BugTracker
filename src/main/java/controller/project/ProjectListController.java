@@ -31,7 +31,7 @@ public class ProjectListController extends HttpServlet {
             request.setAttribute("currentPage", page);
             int pagesCount = (int) Math.ceil(((double) projectService.getAllProjects().size()) / Utils.ROWS_PER_PAGE);
             request.setAttribute("pagesCount", pagesCount);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("myprojects.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("projects.jsp");
             dispatcher.forward(request, response);
         }
         catch (Exception e) {

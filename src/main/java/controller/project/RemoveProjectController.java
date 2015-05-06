@@ -22,7 +22,7 @@ public class RemoveProjectController extends HttpServlet {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             projectService.removeProject(id);
-            response.sendRedirect("/BugTracker/myprojects");
+            response.sendRedirect("/BugTracker/projects");
         }
         catch (Exception e) {
             LOGGER.error(e);

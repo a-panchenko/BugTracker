@@ -7,14 +7,14 @@
             <a href="/BugTracker/user?name=${pageContext.request.remoteUser}">${pageContext.request.remoteUser}</a>
         </div>
         <div align="center">
-            <a href="/BugTracker/myprojects">Projects</a>
+            <a href="/BugTracker/projects">Projects</a>
             <%
                 if (request.isUserInRole("administrator")) {
             %>
                     <a href="/BugTracker/admin">Admin Panel</a>
             <%
-            }
-        %>
+                }
+            %>
         </div>
         <div align="right">
             <a href="/BugTracker/logout">Logout</a>
