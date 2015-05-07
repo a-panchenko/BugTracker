@@ -20,6 +20,13 @@
     <body>
         <table width="100%" height="100%" border="1" cellpadding="20%">
             <jsp:include page="jsp/common/header.jsp"/>
+            <c:if test="${not empty project}">
+                <tr>
+                    <td colspan="2" height="5%">
+                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a>
+                    </td>
+                </tr>
+            </c:if>
             <tr valign="top">
                 <td width="20%">
                     <c:if test="${not empty project}">
