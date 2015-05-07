@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -15,7 +16,29 @@
             <c:if test="${not empty project && not empty issue}">
                 <tr>
                     <td colspan="2" height="5%">
-                        <a href="/BugTracker/projects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a> > Edit Issue
+                        <a href="/BugTracker/projects">
+                            Projects
+                        </a> >
+                                <a href="/BugTracker/project?id=${project.id}">
+                                    <c:choose>
+                                        <c:when test="${fn:length(project.title) > 15}">
+                                            ${fn:substring(project.title, 0, 15)}...
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${project.title}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a> >
+                                        <a href="/BugTracker/issue?id=${issue.id}">
+                                            <c:choose>
+                                                <c:when test="${fn:length(issue.title) > 15}">
+                                                    ${fn:substring(issue.title, 0, 15)}...
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${issue.title}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </a> > Edit Issue
                     </td>
                 </tr>
             </c:if>
