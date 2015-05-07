@@ -22,7 +22,7 @@ public class RemoveIssueController extends HttpServlet {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             issueService.removeIssue(id);
-            response.sendRedirect("/BugTracker/myprojects");
+            response.sendRedirect("/BugTracker/projects");
         }
         catch (Exception e) {
             LOGGER.error(e);

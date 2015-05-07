@@ -1,5 +1,4 @@
 <%@ page import="model.Issue" %>
-<%@ page import="model.Reply" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -24,7 +23,7 @@
             <c:if test="${not empty project}">
                 <tr>
                     <td colspan="2" height="5%">
-                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a>
+                        <a href="/BugTracker/projects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a>
                     </td>
                 </tr>
             </c:if>

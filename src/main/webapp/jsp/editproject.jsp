@@ -13,7 +13,7 @@
             <c:if test="${not empty project}">
                 <tr>
                     <td colspan="2" height="5%">
-                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a>
+                        <a href="/BugTracker/projects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > Edit Project
                     </td>
                 </tr>
             </c:if>

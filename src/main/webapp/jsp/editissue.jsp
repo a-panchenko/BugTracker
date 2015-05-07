@@ -15,7 +15,7 @@
             <c:if test="${not empty project && not empty issue}">
                 <tr>
                     <td colspan="2" height="5%">
-                        <a href="/BugTracker/myprojects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a>
+                        <a href="/BugTracker/projects">Projects</a> > <a href="/BugTracker/project?id=${project.id}">${project.title}</a> > <a href="/BugTracker/issue?id=${issue.id}">${issue.title}</a> > Edit Issue
                     </td>
                 </tr>
             </c:if>
