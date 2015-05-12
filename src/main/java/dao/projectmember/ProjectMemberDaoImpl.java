@@ -3,7 +3,6 @@ package dao.projectmember;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
-import service.DataSourceProvider;
 import dao.exceptions.QueryExecutionException;
 import model.ProjectMember;
 import org.apache.log4j.Logger;

@@ -43,21 +43,11 @@
                                 <br><textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
                             </p>
                             <p>Assigned:
-                                <c:if test="${not empty projectMembersToAssign}">
+                                <c:if test="${not empty membersToAssign}">
                                     <select name="assigned">
                                         <option/>
-                                        <c:forEach var="memberName" items="${projectMembersToAssign}">
-                                            <option>${memberName}</option>
-                                        </c:forEach>
-                                    </select>
-                                </c:if>
-                            </p>
-                            <p>Created By:
-                                <c:if test="${not empty possibleCreators}">
-                                    <select name="creator">
-                                        <option/>
-                                        <c:forEach var="creator" items="${possibleCreators}">
-                                            <option>${creator}</option>
+                                        <c:forEach var="name" items="${membersToAssign}">
+                                            <option>${name}</option>
                                         </c:forEach>
                                     </select>
                                 </c:if>

@@ -115,7 +115,7 @@
     </servlet>
     <servlet>
         <servlet-name>projectMembersServlet</servlet-name>
-        <servlet-class>controller.projectmember.ProjectMemberController</servlet-class>
+        <servlet-class>controller.projectmember.GetProjectMembersController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editProjectMembers</servlet-name>

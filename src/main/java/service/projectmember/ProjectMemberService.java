@@ -3,8 +3,8 @@ package service.projectmember;
 import model.Project;
 import model.ProjectMember;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 public interface ProjectMemberService {
 
@@ -16,7 +16,6 @@ public interface ProjectMemberService {
 
     void removeMember(ProjectMember projectMember);
 
-    List<String> getMembersToAssign(Project project, String username);
+    Set<String> getMembersToAssign(Project project, String username);
 
-    List<String> getPossibleCreators(Project project, String username);
 }

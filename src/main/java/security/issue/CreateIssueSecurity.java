@@ -5,5 +5,5 @@ import model.Issue;
 
 public interface CreateIssueSecurity {
 
-    Issue secureCreateIssue(IssueDto issueDto, String username);
+    Issue secureCreateIssue(IssueDto issueDto);
 }

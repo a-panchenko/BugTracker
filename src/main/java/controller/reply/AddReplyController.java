@@ -36,7 +36,7 @@ public class AddReplyController extends HttpServlet {
         }
         catch (NotAllowedException notAllowed) {
             LOGGER.error(notAllowed);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, notAllowed.getMessage());
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
         catch (Exception e) {
             LOGGER.error(e);

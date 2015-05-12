@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
 import security.issue.CreateIssueSecurity;
 import security.issue.CreateIssueSecurityImpl;
+import security.issue.IssueSecurity;
+import security.issue.IssueSecurityImpl;
 import service.issue.IssueService;
 import service.issue.IssueServiceImpl;
 import service.project.ProjectService;
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 public class CreateIssueController extends HttpServlet {
 
@@ -31,6 +33,7 @@ public class CreateIssueController extends HttpServlet {
     private ProjectService projectService = new ProjectServiceImpl();
     private IssueService issueService = new IssueServiceImpl();
 
+    private IssueSecurity issueSecurity = new IssueSecurityImpl();
     private CreateIssueSecurity createIssueSecurity = new CreateIssueSecurityImpl();
 
     @Override
@@ -39,12 +42,15 @@ public class CreateIssueController extends HttpServlet {
         try {
             int projectId = Integer.valueOf(request.getParameter("id"));
             Project project = projectService.getProject(projectId);
-            request.setAttribute("project", project);
-            List<String> projectMembersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
-            request.setAttribute("projectMembersToAssign", projectMembersToAssign);
-            List<String> possibleCreators = projectMemberService.getPossibleCreators(project, request.getRemoteUser());
-            request.setAttribute("possibleCreators", possibleCreators);
-            request.getRequestDispatcher("createissue.jsp").forward(request, response);
+            if (issueSecurity.isAllowedToEditIssue(request.getRemoteUser(), project)) {
+                request.setAttribute("project", project);
+                Set<String> membersToAssign = projectMemberService.getMembersToAssign(project, request.getRemoteUser());
+                request.setAttribute("membersToAssign", membersToAssign);
+                request.getRequestDispatcher("createissue.jsp").forward(request, response);
+            }
+            else {
+                throw new NotAllowedException();
+            }
         }
         catch (NotAllowedException notAllowed) {
             LOGGER.error(notAllowed);
@@ -66,13 +72,13 @@ public class CreateIssueController extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             IssueDto issueDto = new IssueDto();
+            issueDto.setRequestPerformer(request.getRemoteUser());
             issueDto.setProjectId(request.getParameter("projectId"));
             issueDto.setTitle(request.getParameter("title"));
             issueDto.setDescription(request.getParameter("description"));
             issueDto.setPriority(request.getParameter("priority"));
-            issueDto.setCreator(request.getParameter("creator"));
             issueDto.setAssigned(request.getParameter("assigned"));
-            Issue issue = createIssueSecurity.secureCreateIssue(issueDto, request.getRemoteUser());
+            Issue issue = createIssueSecurity.secureCreateIssue(issueDto);
             issueService.addIssue(issue);
             response.sendRedirect("/BugTracker/project?id=" + request.getParameter("projectId"));
         }

@@ -13,54 +13,33 @@ import service.project.ProjectServiceImpl;
 import service.projectmember.ProjectMemberService;
 import service.projectmember.ProjectMemberServiceImpl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-public class CreateIssueSecurityImpl implements CreateIssueSecurity {
+public class CreateIssueSecurityImpl extends IssueSecurityImpl implements CreateIssueSecurity {
 
     private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
     private ProjectService projectService = new ProjectServiceImpl();
-    private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    public Issue secureCreateIssue(IssueDto issueDto, String username) {
+    public Issue secureCreateIssue(IssueDto issueDto) {
         Issue issue = new Issue();
-        setProjectId(issueDto, issue, username);
+        setProjectId(issueDto, issue);
+        setCreator(issueDto, issue);
         setTitle(issueDto, issue);
         setDescription(issueDto, issue);
         setPriority(issueDto, issue);
         issue.setStatus("open");
         issue.setCreationDate(new Date());
-        setCreator(issueDto, issue, username);
-        setAssigned(issueDto, issue, username);
+        setAssigned(issueDto, issue);
         return issue;
     }
 
-    private void checkAllowedToCreateIssue(Project project, String username) {
-        List<String> allowed = getAllowed(project);
-        if (! allowed.contains(username) && ! groupMemberService.isUserInGroup(username, "administrators")) {
-            throw new NotAllowedException();
-        }
-    }
-
-    private List<String> getAllowed(Project project) {
-        List<String> allowed = new ArrayList<>();
-        for (ProjectMember projectMember : projectMemberService.getMembers(project.getId())) {
-            allowed.add(projectMember.getName());
-        }
-        allowed.add(project.getProjectLeed());
-        return allowed;
-    }
-
-    private void setProjectId(IssueDto issueDto, Issue issue, String username) {
+    private void setProjectId(IssueDto issueDto, Issue issue) {
         int projectId = Integer.valueOf(issueDto.getProjectId());
-        Project project = projectService.getProject(projectId);
-        checkAllowedToCreateIssue(project, username);
         issue.setProjectId(projectId);
     }
 
     private void setTitle(IssueDto issueDto, Issue issue) {
-        if (issueDto.getTitle() != null) {
+        if (issueDto.getTitle() != null && ! issueDto.getTitle().isEmpty()) {
             issue.setTitle(issueDto.getTitle());
         }
         else {
@@ -69,7 +48,7 @@ public class CreateIssueSecurityImpl implements CreateIssueSecurity {
     }
 
     private void setDescription(IssueDto issueDto, Issue issue) {
-        if (issueDto.getDescription() != null) {
+        if (issueDto.getDescription() != null && ! issueDto.getDescription().isEmpty()) {
             issue.setDescription(issueDto.getDescription());
         }
         else {
@@ -86,31 +65,35 @@ public class CreateIssueSecurityImpl implements CreateIssueSecurity {
         }
     }
 
-    private void setCreator(IssueDto issueDto, Issue issue, String username) {
-        String creator = issueDto.getCreator();
-        if (! creator.isEmpty()) {
-            Project project = projectService.getProject(issue.getProjectId());
-            List<String> allowed = projectMemberService.getPossibleCreators(project, username);
-            if (allowed.contains(creator)) {
+    private void setCreator(IssueDto issueDto, Issue issue) {
+        String creator = issueDto.getRequestPerformer();
+        if (creator != null && ! creator.isEmpty()) {
+            Project project = projectService.getProject(Integer.valueOf(issueDto.getProjectId()));
+            if (isAllowedToEditIssue(issueDto.getRequestPerformer(), project)) {
                 issue.setCreator(creator);
             }
             else {
-                throw new InvalidAssignedMemberException();
+                throw new NotAllowedException();
             }
+        }
+        else {
+            throw new NotAllowedException();
         }
     }
 
-    private void setAssigned(IssueDto issueDto, Issue issue, String username) {
+    private void setAssigned(IssueDto issueDto, Issue issue) {
         String assigned = issueDto.getAssigned();
-        if (! assigned.isEmpty()) {
-            Project project = projectService.getProject(issue.getProjectId());
-            List<String> allowed = projectMemberService.getMembersToAssign(project, username);
-            if (allowed.contains(assigned)) {
-                issue.setAssigned(assigned);
-            }
-            else {
-                throw new InvalidAssignedMemberException();
-            }
+        if (assigned != null && ! assigned.isEmpty()) {
+            checkAssigned(issueDto);
+            issue.setAssigned(assigned);
+        }
+    }
+
+    private void checkAssigned(IssueDto issueDto) {
+        Project project = projectService.getProject(Integer.valueOf(issueDto.getProjectId()));
+        Set<String> allowed = projectMemberService.getMembersToAssign(project, issueDto.getRequestPerformer());
+        if (! allowed.contains(issueDto.getAssigned())) {
+            throw new InvalidAssignedMemberException();
         }
     }
 }

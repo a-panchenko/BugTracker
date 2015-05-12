@@ -2,7 +2,6 @@ package controller.project;
 
 import dao.exceptions.NotFoundException;
 import dto.ProjectDto;
-import model.GroupMember;
 import model.Project;
 import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class EditProjectController extends HttpServlet {
 
@@ -35,15 +33,19 @@ public class EditProjectController extends HttpServlet {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             Project project = projectService.getProject(id);
-            request.setAttribute("project", project);
-            request.setAttribute("availableMembers", groupMemberService.getAvailableMembers());
-            List<GroupMember> currentMembers = groupMemberService.getMembersByProjectId(id);
-            request.setAttribute("currentMembers", currentMembers);
-            if (request.isUserInRole("administrator")) {
-                request.setAttribute("projectManagers", groupMemberService.getProjectManagers());
+            if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+                request.setAttribute("project", project);
+                request.setAttribute("availableMembers", groupMemberService.getAvailableMembers());
+                request.setAttribute("currentMembers", groupMemberService.getMembersByProjectId(id));
+                if (request.isUserInRole("administrator")) {
+                    request.setAttribute("projectManagers", groupMemberService.getProjectManagers());
+                }
+                RequestDispatcher dispatcher = request.getRequestDispatcher("editproject.jsp");
+                dispatcher.forward(request, response);
             }
-            RequestDispatcher dispatcher = request.getRequestDispatcher("editproject.jsp");
-            dispatcher.forward(request, response);
+            else {
+                throw new NotAllowedException();
+            }
         }
         catch (NotFoundException notFound) {
             LOGGER.error(notFound);
@@ -60,7 +62,8 @@ public class EditProjectController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
             ProjectDto projectDto = new ProjectDto();
@@ -76,6 +79,10 @@ public class EditProjectController extends HttpServlet {
         catch (NotFoundException notFound) {
             LOGGER.error(notFound);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+        catch (NotAllowedException notAllowed) {
+            LOGGER.error(notAllowed);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
         catch (Exception e) {
             LOGGER.error(e);

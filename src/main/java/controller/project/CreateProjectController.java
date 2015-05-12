@@ -31,7 +31,7 @@ public class CreateProjectController extends HttpServlet {
             ProjectDto projectDto = new ProjectDto();
             projectDto.setTitle(request.getParameter("title"));
             projectDto.setDescription(request.getParameter("description"));
-            projectDto.setProjectLeed(request.getParameter("projectLeed"));
+            projectDto.setProjectLeed(request.getRemoteUser());
             Project project = createProjectSecurity.secureCreateProject(projectDto);
             projectService.addProject(project);
             response.sendRedirect("/BugTracker/projects");

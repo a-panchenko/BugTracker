@@ -2,7 +2,6 @@ package service.projectmember;
 
 import dao.exceptions.QueryExecutionException;
 import dao.projectmember.ProjectMemberDaoImpl;
-import model.GroupMember;
 import model.Project;
 import model.ProjectMember;
 import service.DataSourceProvider;
@@ -11,8 +10,9 @@ import service.groupmember.GroupMemberServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProjectMemberServiceImpl implements ProjectMemberService {
 
@@ -57,28 +57,18 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public List<String> getMembersToAssign(Project project, String username) {
-        List<String> membersToAssign = new ArrayList<>();
+    public Set<String> getMembersToAssign(Project project, String username) {
+        Set<String> membersToAssign = new HashSet<>();
         for (ProjectMember projectMember : getMembers(project.getId(), "debugers")) {
             membersToAssign.add(projectMember.getName());
         }
-        GroupMember groupMember = new GroupMemberServiceImpl().getMemberByName(username);
-        if (project.getProjectLeed().equals(username) || groupMember.getGroup().equals("administrators")) {
+        if (username.equals(project.getProjectLeed())) {
             membersToAssign.add(project.getProjectLeed());
         }
+        if (new GroupMemberServiceImpl().isUserInGroup(username, "administrators")) {
+            membersToAssign.add(project.getProjectLeed());
+            membersToAssign.add(username);
+        }
         return membersToAssign;
-    }
-
-    @Override
-    public List<String> getPossibleCreators(Project project, String username) {
-        List<String> possibleCreators = new ArrayList<>();
-        for (ProjectMember projectMember : getMembers(project.getId(), "testers")) {
-            possibleCreators.add(projectMember.getName());
-        }
-        GroupMember groupMember = new GroupMemberServiceImpl().getMemberByName(username);
-        if (project.getProjectLeed().equals(username) || groupMember.getGroup().equals("administrators")) {
-            possibleCreators.add(project.getProjectLeed());
-        }
-        return possibleCreators;
     }
 }

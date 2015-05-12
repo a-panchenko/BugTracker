@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class ProjectMemberController extends HttpServlet {
+public class GetProjectMembersController extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(ProjectMemberController.class);
+    private static final Logger LOGGER = Logger.getLogger(GetProjectMembersController.class);
 
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 

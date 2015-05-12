@@ -8,8 +8,8 @@ public class IssueDto {
     private String description;
     private String priority;
     private String status;
-    private String creator;
     private String assigned;
+    private String requestPerformer;
 
     public String getProjectId() {
         return projectId;
@@ -51,14 +51,6 @@ public class IssueDto {
         this.status = status;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     public String getAssigned() {
         return assigned;
     }
@@ -73,5 +65,13 @@ public class IssueDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getRequestPerformer() {
+        return requestPerformer;
+    }
+
+    public void setRequestPerformer(String requestPerformer) {
+        this.requestPerformer = requestPerformer;
     }
 }

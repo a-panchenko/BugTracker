@@ -1,6 +1,5 @@
 package controller.projectmember;
 
-import dao.exceptions.QueryExecutionException;
 import model.ProjectMember;
 import org.apache.log4j.Logger;
 import service.projectmember.ProjectMemberService;
@@ -27,7 +26,7 @@ public class AddProjectMembersController extends HttpServlet {
             try {
                 projectMemberService.addMember(member);
             }
-            catch (QueryExecutionException e) {
+            catch (Exception e) {
                 LOGGER.error(e);
             }
         }

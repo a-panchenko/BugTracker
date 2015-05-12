@@ -4,12 +4,10 @@ import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
 import model.GroupMember;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 
 public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> implements GroupMemberDao {
@@ -21,8 +19,6 @@ public class GroupMemberDaoImpl extends AbstractDao<GroupMember, String> impleme
     private static final String SELECT_GROUPMEMBER_WHERE_NAME_LIKE = "SELECT * FROM GROUPMEMBERS WHERE g_member LIKE ? AND g_name = ?";
     private static final String INSERT_INTO_GROUPMEMBERS = "INSERT INTO GROUPMEMBERS (g_name, g_member) VALUES (?, ?)";
     private static final String UPDATE_GROUPMEMBER = "UPDATE GROUPMEMBERS SET g_name = ? WHERE g_member = ?";
-
-    private static final Logger LOGGER = Logger.getLogger(GroupMemberDaoImpl.class);
 
     private final ResultParser<GroupMember> resultParser = new GroupMemberResultParser();
 

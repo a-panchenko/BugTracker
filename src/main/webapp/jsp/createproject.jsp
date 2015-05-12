@@ -24,7 +24,6 @@
                             <br>
                             <textarea name="description" rows="10" cols="50" placeholder="description" required></textarea>
                         </p>
-                        <input type="hidden" name="projectLeed" value="${pageContext.request.remoteUser}">
                         <input type="submit" value="Create Project"/>
                     </form>
                 </td>

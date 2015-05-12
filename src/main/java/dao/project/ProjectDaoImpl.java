@@ -1,6 +1,5 @@
 package dao.project;
 
-import controller.project.ProjectListController;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;

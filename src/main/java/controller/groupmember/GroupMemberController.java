@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-
 public class GroupMemberController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(GroupMemberController.class);

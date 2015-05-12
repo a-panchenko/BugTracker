@@ -1,6 +1,9 @@
 <%@ page import="model.Issue" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="security.issue.IssueSecurity" %>
+<%@ page import="security.issue.IssueSecurityImpl" %>
+<%@ page import="model.Project" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -52,9 +55,15 @@
             </c:if>
             <tr valign="top">
                 <td width="20%">
-                    <c:if test="${not empty issue}">
-                        <div align="center"><a href="/BugTracker/editissue?id=${issue.id}">Edit Issue</a></div>
+                    <c:if test="${not empty project && not empty issue}">
                         <%
+                            IssueSecurity issueSecurity = new IssueSecurityImpl();
+                            Project project = (Project) request.getAttribute("project");
+                            if (issueSecurity.isAllowedToEditIssue(request.getRemoteUser(), project)) {
+                        %>
+                                <div align="center"><a href="/BugTracker/editissue?id=${issue.id}">Edit Issue</a></div>
+                        <%
+                            }
                             if (request.isUserInRole("administrator")) {
                         %>
                                 <div align="center"><a href="/BugTracker/removeissue?id=${issue.id}">Remove Issue</a></div>

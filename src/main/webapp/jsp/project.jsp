@@ -2,6 +2,8 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="model.Issue" %>
+<%@ page import="security.issue.IssueSecurity" %>
+<%@ page import="security.issue.IssueSecurityImpl" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -42,9 +44,15 @@
             <tr valign="top">
                 <td width="20%">
                     <c:if test="${not empty project}">
-                        <div align="center"><a href="/BugTracker/createissue?id=${project.id}">Create Issue</a></div>
                         <%
-                            if (request.isUserInRole("administrator") || request.isUserInRole("project-manager")) {
+                            IssueSecurity issueSecurity = new IssueSecurityImpl();
+                            Project project = (Project) request.getAttribute("project");
+                            if (issueSecurity.isAllowedToEditIssue(request.getRemoteUser(), project)) {
+                        %>
+                                <div align="center"><a href="/BugTracker/createissue?id=${project.id}">Create Issue</a></div>
+                        <%
+                            }
+                            if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
                         %>
                                 <div align="center"><a href="/BugTracker/editproject?id=${project.id}">Edit Project</a></div>
                                 <div align="center"><a href="/BugTracker/editprojectmembers?id=${project.id}">Edit Members</a></div>
@@ -127,17 +135,17 @@
                                         <td> ${issue.status} </td>
                                         <td> <%= dateFormat.format(((Issue) pageContext.getAttribute("issue")).getCreationDate()) %> </td>
                                         <td>
-                                            <c:if test="${issue.solvingDate}">
+                                            <c:if test="${not empty issue.solvingDate}">
                                                 <%= dateFormat.format(((Issue) pageContext.getAttribute("issue")).getSolvingDate()) %>
                                             </c:if>
                                         </td>
                                         <td>
-                                            <c:if test="${issue.creator}">
+                                            <c:if test="${not empty issue.creator}">
                                                 <a href="/BugTracker/user?name=${issue.creator}"> ${issue.creator} </a>
                                             </c:if>
                                         </td>
                                         <td>
-                                            <c:if test="${issue.assigned}">
+                                            <c:if test="${not empty issue.assigned}">
                                                 <a href="/BugTracker/user?name=${issue.assigned}"> ${issue.assigned} </a>
                                             </c:if>
                                         </td>

@@ -1,10 +1,8 @@
 package dao.issue;
 
-import controller.project.ProjectListController;
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.Utils;
-import service.DataSourceProvider;
 import dao.ResultParser;
 import dao.exceptions.QueryExecutionException;
 import model.Issue;

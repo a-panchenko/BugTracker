@@ -4,7 +4,6 @@ import dao.AbstractDao;
 import dao.PlaceholderCompleter;
 import dao.ResultParser;
 import model.User;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,8 +15,6 @@ public class UserDaoImpl extends AbstractDao<User, String> implements UserDao {
     private static final String INSERT_INTO_USER = "INSERT INTO USERS (u_name, u_password) VALUES (?, ?)";
     private static final String UPDATE_USER = "UPDATE USERS SET u_password = ? WHERE u_name = ?";
     private static final String DELETE_USER = "DELETE USERS WHERE u_name = ?";
-
-    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private final ResultParser resultParser = new UserResultParser();
 

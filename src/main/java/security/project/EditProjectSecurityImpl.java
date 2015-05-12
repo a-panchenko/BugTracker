@@ -16,26 +16,23 @@ public class EditProjectSecurityImpl  implements EditProjectSecurity {
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
     public Project secureEditProject(ProjectDto projectDto, String username) {
-        Project project = getPresentProject(projectDto, username);
-        editTitle(projectDto, project);
-        editDescription(projectDto, project);
-        editEndDate(projectDto, project);
-        editProjectLeed(projectDto, project, username);
-        return project;
-    }
-
-    private Project getPresentProject(ProjectDto projectDto, String username) {
         int id = Integer.valueOf(projectDto.getId());
         Project project = projectService.getProject(id);
-        if (! groupMemberService.isUserInGroup(username, "administrators") && ! username.equals(project.getProjectLeed())) {
+        if (groupMemberService.isUserInGroup(username, "administrators") || username.equals(project.getProjectLeed())) {
+            editTitle(projectDto, project);
+            editDescription(projectDto, project);
+            editEndDate(projectDto, project);
+            editProjectLeed(projectDto, project, username);
+            return project;
+        }
+        else {
             throw new NotAllowedException();
         }
-        return project;
     }
 
     private void editTitle(ProjectDto projectDto, Project project) {
         String title = projectDto.getTitle();
-        if (title != null) {
+        if (title != null && ! title.isEmpty()) {
             project.setTitle(title);
         }
         else {
@@ -45,7 +42,7 @@ public class EditProjectSecurityImpl  implements EditProjectSecurity {
 
     private void editDescription(ProjectDto projectDto, Project project) {
         String description = projectDto.getDescription();
-        if (description != null) {
+        if (description != null && ! description.isEmpty()) {
             project.setDescription(description);
         }
         else {

@@ -2,10 +2,8 @@ package dao.reply;
 
 import dao.AbstractDao;
 import dao.PlaceholderCompleter;
-import dao.issue.IssueDaoImpl;
 import dao.ResultParser;
 import model.Reply;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +17,6 @@ public class ReplyDaoImpl extends AbstractDao<Reply, Integer> implements ReplyDa
     private static final String DELETE_REPLY_BY_REPLY_ID = "DELETE FROM REPLY WHERE reply_id = ?";
     private static final String INSERT_INTO_REPLY = "INSERT INTO REPLY (issue_id, message, post_date, poster) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_REPLY = "UPDATE REPLY SET issue_id = ?, message = ?, post_date = ?, poster = ? WHERE reply_id = ?";
-
-    private static final Logger LOGGER = Logger.getLogger(IssueDaoImpl.class);
 
     private final ResultParser<Reply> resultParser = new ReplyResultParser();
 
