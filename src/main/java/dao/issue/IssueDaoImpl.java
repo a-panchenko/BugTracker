@@ -27,11 +27,8 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
 
     private final ResultParser<Issue> resultParser = new IssueResultParser();
 
-    private Connection connection;
-
     public IssueDaoImpl(Connection connection) {
         super(connection);
-        this.connection = connection;
     }
 
     @Override

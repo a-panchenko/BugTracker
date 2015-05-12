@@ -27,11 +27,8 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
     
     private final ResultParser<Project> resultParser = new ProjectResultParser();
 
-    private Connection connection;
-
     public ProjectDaoImpl(Connection connection) {
         super(connection);
-        this.connection = connection;
     }
 
     @Override

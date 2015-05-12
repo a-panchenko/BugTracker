@@ -1,9 +1,7 @@
 package controller.project;
 
-import dao.exceptions.NotFoundException;
 import dto.ProjectDto;
 import model.Project;
-import org.apache.log4j.Logger;
 import security.exceptions.NotAllowedException;
 import security.project.EditProjectSecurity;
 import security.project.EditProjectSecurityImpl;
@@ -21,8 +19,6 @@ import java.io.IOException;
 
 public class EditProjectController extends HttpServlet {
 
-    private final Logger LOGGER = Logger.getLogger(EditProjectController.class);
-
     private ProjectService projectService = new ProjectServiceImpl();
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
@@ -30,63 +26,35 @@ public class EditProjectController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            Project project = projectService.getProject(id);
-            if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
-                request.setAttribute("project", project);
-                request.setAttribute("availableMembers", groupMemberService.getAvailableMembers());
-                request.setAttribute("currentMembers", groupMemberService.getMembersByProjectId(id));
-                if (request.isUserInRole("administrator")) {
-                    request.setAttribute("projectManagers", groupMemberService.getProjectManagers());
-                }
-                RequestDispatcher dispatcher = request.getRequestDispatcher("editproject.jsp");
-                dispatcher.forward(request, response);
+        int id = Integer.valueOf(request.getParameter("id"));
+        Project project = projectService.getProject(id);
+        if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+            request.setAttribute("project", project);
+            request.setAttribute("availableMembers", groupMemberService.getAvailableMembers());
+            request.setAttribute("currentMembers", groupMemberService.getMembersByProjectId(id));
+            if (request.isUserInRole("administrator")) {
+                request.setAttribute("projectManagers", groupMemberService.getProjectManagers());
             }
-            else {
-                throw new NotAllowedException();
-            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("editproject.jsp");
+            dispatcher.forward(request, response);
         }
-        catch (NotFoundException notFound) {
-            LOGGER.error(notFound);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-        catch (NotAllowedException notAllowed) {
-            LOGGER.error(notAllowed);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-        }
-        catch (Exception e) {
-            LOGGER.error(e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        else {
+            throw new NotAllowedException();
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            request.setCharacterEncoding("UTF-8");
-            ProjectDto projectDto = new ProjectDto();
-            projectDto.setId(request.getParameter("id"));
-            projectDto.setTitle(request.getParameter("title"));
-            projectDto.setDescription(request.getParameter("description"));
-            projectDto.setClose(request.getParameter("close"));
-            projectDto.setProjectLeed(request.getParameter("projectManagers"));
-            Project project = editProjectSecurity.secureEditProject(projectDto, request.getRemoteUser());
-            projectService.editProject(project);
-            response.sendRedirect("/BugTracker/project?id=" + request.getParameter("id"));
-        }
-        catch (NotFoundException notFound) {
-            LOGGER.error(notFound);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-        catch (NotAllowedException notAllowed) {
-            LOGGER.error(notAllowed);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-        }
-        catch (Exception e) {
-            LOGGER.error(e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
+        request.setCharacterEncoding("UTF-8");
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.setId(request.getParameter("id"));
+        projectDto.setTitle(request.getParameter("title"));
+        projectDto.setDescription(request.getParameter("description"));
+        projectDto.setClose(request.getParameter("close"));
+        projectDto.setProjectLeed(request.getParameter("projectManagers"));
+        Project project = editProjectSecurity.secureEditProject(projectDto, request.getRemoteUser());
+        projectService.editProject(project);
+        response.sendRedirect("/BugTracker/project?id=" + request.getParameter("id"));
     }
 }
