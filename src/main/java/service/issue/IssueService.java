@@ -14,5 +14,7 @@ public interface IssueService {
 
     List<Issue> getIssues(int projectId, int page);
 
+    List<Issue> getIssues(int projectId);
+
     Issue getIssue(int issueId);
 }

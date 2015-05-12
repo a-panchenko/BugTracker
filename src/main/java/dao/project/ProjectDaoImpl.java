@@ -46,17 +46,11 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
 
     @Override
     public List<Project> getProjects(int page) {
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_PROJECTS)) {
-            statement.setInt(1, page * Utils.ROWS_PER_PAGE);
-            statement.setInt(2, (page - 1) * Utils.ROWS_PER_PAGE + 1);
-            try (ResultSet result = statement.executeQuery()) {
-                return resultParser.extractAll(result);
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            throw new QueryExecutionException(se);
-        }
+        return select(
+                SELECT_PROJECTS,
+                resultParser,
+                page * Utils.ROWS_PER_PAGE,
+                (page - 1) * Utils.ROWS_PER_PAGE + 1);
     }
 
     @Override

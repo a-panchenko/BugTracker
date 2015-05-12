@@ -48,6 +48,15 @@ public class IssueServiceImpl implements IssueService {
         }
     }
 
+    public List<Issue> getIssues(int projectId) {
+        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
+            return new IssueDaoImpl(connection).getIssues(projectId);
+        }
+        catch (SQLException | QueryExecutionException e) {
+            throw new TransactionFailException(e);
+        }
+    }
+
     public Issue getIssue(int issueId) {
         try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
             return new IssueDaoImpl(connection).getIssue(issueId);

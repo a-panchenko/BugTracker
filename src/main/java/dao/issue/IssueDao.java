@@ -10,6 +10,8 @@ public interface IssueDao {
 
     List<Issue> getIssues(int projectId, int page);
 
+    List<Issue> getIssues(int projectId);
+
     void addIssue(Issue issue);
 
     void removeIssue(int issueId);

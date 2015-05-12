@@ -1,5 +1,6 @@
 package controller.project;
 
+import dao.Utils;
 import dao.exceptions.NotFoundException;
 import model.Issue;
 import model.Project;
@@ -31,6 +32,12 @@ public class ProjectController extends HttpServlet {
             Project project = projectService.getProject(id);
             String pageValue = request.getParameter("page");
             int page = (pageValue == null) ? 1 : Integer.valueOf(pageValue);
+            request.setAttribute("currentPage", page);
+
+            //pagination: 20 rows per page
+            int pagesCount = (int) Math.ceil(((double) issueService.getIssues(id).size()) / Utils.ROWS_PER_PAGE);
+
+            request.setAttribute("pagesCount", pagesCount);
             request.setAttribute("project", project);
             List<Issue> issues = issueService.getIssues(id, page);
             request.setAttribute("issues", issues);

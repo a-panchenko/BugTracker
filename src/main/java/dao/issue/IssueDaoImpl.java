@@ -16,6 +16,7 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
     private static final String SELECT_ISSUE_BY_ISSUE_ID = "SELECT * FROM ISSUE WHERE issue_id = ?";
     private static final String SELECT_ISSUES = "SELECT * FROM (SELECT /*+ FIRST_ROWS(20) */ a.*, ROWNUM rnum FROM " +
             "(SELECT * FROM ISSUE WHERE project_id = ? ORDER BY issue_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
+    private static final String SELECT_ISSUES_BY_PROJECT_ID = "SELECT * FROM ISSUE WHERE project_id = ?";
     private static final String INSERT_INTO_ISSUE = "INSERT INTO " +
             "ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator, assigned) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_ISSUE = "UPDATE ISSUE SET project_id = ?, issue_title = ?, " +
@@ -40,18 +41,17 @@ public class IssueDaoImpl extends AbstractDao<Issue, Integer> implements IssueDa
 
     @Override
     public List<Issue> getIssues(int projectId, int page) {
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_ISSUES)) {
-            statement.setInt(1, projectId);
-            statement.setInt(2, page * Utils.ROWS_PER_PAGE);
-            statement.setInt(3, (page - 1) * Utils.ROWS_PER_PAGE + 1);
-            try (ResultSet result = statement.executeQuery()) {
-                return resultParser.extractAll(result);
-            }
-        }
-        catch (SQLException se) {
-            LOGGER.error(se);
-            throw new QueryExecutionException(se);
-        }
+        return select(
+                SELECT_ISSUES,
+                resultParser,
+                projectId,
+                page * Utils.ROWS_PER_PAGE,
+                (page - 1) * Utils.ROWS_PER_PAGE + 1);
+    }
+
+    @Override
+    public List<Issue> getIssues(int projectId) {
+        return select(SELECT_ISSUES_BY_PROJECT_ID, resultParser, projectId);
     }
 
     @Override

@@ -152,6 +152,7 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <jsp:include page="jsp/common/pagination.jsp"/>
                         </c:if>
                     </c:if>
                 </td>
