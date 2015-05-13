@@ -2,6 +2,7 @@ package security.reply;
 
 import dto.ReplyDto;
 import model.*;
+import security.Security;
 import security.exceptions.NotAllowedException;
 import service.groupmember.GroupMemberService;
 import service.groupmember.GroupMemberServiceImpl;
@@ -16,29 +17,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AddReplySecurityImpl implements AddReplySecurity {
+public class AddReplySecurityImpl implements Security<Reply, ReplyDto> {
 
     private ProjectService projectService = new ProjectServiceImpl();
     private IssueService issueService = new IssueServiceImpl();
     private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    public Reply secureAddReply(ReplyDto replyDto, String username) {
+    public Reply secure(ReplyDto replyDto) {
         Reply reply = new Reply();
-        setIssueId(replyDto, reply);
+        reply.setIssueId(replyDto.getIssueId());
         setMessage(replyDto, reply);
-        setPoster(reply, username);
+        setPoster(replyDto, reply);
         reply.setDate(new Date());
         return reply;
-    }
-
-    private void setIssueId(ReplyDto replyDto, Reply reply) {
-        if (replyDto.getIssueId() != null) {
-            reply.setIssueId(Integer.valueOf(replyDto.getIssueId()));
-        }
-        else {
-            throw new NotAllowedException();
-        }
     }
 
     private void setMessage(ReplyDto replyDto, Reply reply) {
@@ -50,7 +42,7 @@ public class AddReplySecurityImpl implements AddReplySecurity {
         }
     }
 
-    private void setPoster(Reply reply, String username) {
+    private void setPoster(ReplyDto replyDto, Reply reply) {
         Issue issue = issueService.getIssue(reply.getIssueId());
         Project project = projectService.getProject(issue.getProjectId());
         List<ProjectMember> projectMembers = projectMemberService.getMembers(project.getId());
@@ -59,8 +51,9 @@ public class AddReplySecurityImpl implements AddReplySecurity {
             allowed.add(projectMember.getName());
         }
         allowed.add(project.getProjectLeed());
-        if (allowed.contains(username) || groupMemberService.isUserInGroup(username, "administrators")) {
-            reply.setPoster(username);
+        if (allowed.contains(replyDto.getRequestPerformer())
+                || groupMemberService.isUserInGroup(replyDto.getRequestPerformer(), "administrators")) {
+            reply.setPoster(replyDto.getRequestPerformer());
         }
         else {
             throw new NotAllowedException();

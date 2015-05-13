@@ -4,10 +4,9 @@ import dto.GroupMemberDto;
 import dto.UserDto;
 import model.GroupMember;
 import model.User;
+import security.Security;
 import security.exceptions.NotAllowedException;
-import security.groupmember.EditGroupMemberSecurity;
 import security.groupmember.EditGroupMemberSecurityImpl;
-import security.user.EditUserSecurity;
 import security.user.EditUserSecurityImpl;
 import service.groupmember.GroupMemberService;
 import service.groupmember.GroupMemberServiceImpl;
@@ -26,8 +25,8 @@ public class EditUserController extends HttpServlet {
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
     private UserService userService = new UserServiceImpl();
 
-    private EditUserSecurity editUserSecurity = new EditUserSecurityImpl();
-    private EditGroupMemberSecurity editGroupMemberSecurity = new EditGroupMemberSecurityImpl();
+    private Security<User, UserDto> editUserSecurity = new EditUserSecurityImpl();
+    private Security<GroupMember, GroupMemberDto> editGroupMemberSecurity = new EditGroupMemberSecurityImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -50,15 +49,17 @@ public class EditUserController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         UserDto userDto = new UserDto();
-        userDto.setUsername(request.getParameter("name"));
+        userDto.setName(request.getParameter("name"));
         userDto.setPassword(request.getParameter("newPassword"));
         userDto.setOldPassword(request.getParameter("oldPassword"));
-        User user = editUserSecurity.secureEditUser(userDto, request.getRemoteUser());
+        userDto.setRequestPerformer(request.getRemoteUser());
+        User user = editUserSecurity.secure(userDto);
 
         GroupMemberDto groupMemberDto = new GroupMemberDto();
-        groupMemberDto.setUsername(request.getParameter("name"));
+        groupMemberDto.setName(request.getParameter("name"));
         groupMemberDto.setGroup(request.getParameter("group"));
-        GroupMember groupMember = editGroupMemberSecurity.secureEditGroupMember(groupMemberDto, request.getRemoteUser());
+        groupMemberDto.setRequestPerformer(request.getRemoteUser());
+        GroupMember groupMember = editGroupMemberSecurity.secure(groupMemberDto);
 
         userService.updateUser(user, groupMember);
         response.sendRedirect("/BugTracker/user?name=" + request.getParameter("name"));

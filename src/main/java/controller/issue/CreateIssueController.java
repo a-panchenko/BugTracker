@@ -3,8 +3,8 @@ package controller.issue;
 import dto.IssueDto;
 import model.Issue;
 import model.Project;
+import security.Security;
 import security.exceptions.NotAllowedException;
-import security.issue.CreateIssueSecurity;
 import security.issue.CreateIssueSecurityImpl;
 import security.issue.IssueSecurity;
 import security.issue.IssueSecurityImpl;
@@ -29,7 +29,7 @@ public class CreateIssueController extends HttpServlet {
     private IssueService issueService = new IssueServiceImpl();
 
     private IssueSecurity issueSecurity = new IssueSecurityImpl();
-    private CreateIssueSecurity createIssueSecurity = new CreateIssueSecurityImpl();
+    private Security<Issue, IssueDto> createIssueSecurity = new CreateIssueSecurityImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,12 +53,12 @@ public class CreateIssueController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         IssueDto issueDto = new IssueDto();
         issueDto.setRequestPerformer(request.getRemoteUser());
-        issueDto.setProjectId(request.getParameter("projectId"));
+        issueDto.setProjectId(Integer.valueOf(request.getParameter("projectId")));
         issueDto.setTitle(request.getParameter("title"));
         issueDto.setDescription(request.getParameter("description"));
         issueDto.setPriority(request.getParameter("priority"));
         issueDto.setAssigned(request.getParameter("assigned"));
-        Issue issue = createIssueSecurity.secureCreateIssue(issueDto);
+        Issue issue = createIssueSecurity.secure(issueDto);
         issueService.addIssue(issue);
         response.sendRedirect("/BugTracker/project?id=" + request.getParameter("projectId"));
     }

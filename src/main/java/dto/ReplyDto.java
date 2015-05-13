@@ -1,23 +1,16 @@
 package dto;
 
-public class ReplyDto {
+import model.Reply;
 
-    private String issueId;
-    private String message;
+public class ReplyDto extends Reply {
 
-    public String getIssueId() {
-        return issueId;
+    private String requestPerformer;
+
+    public String getRequestPerformer() {
+        return requestPerformer;
     }
 
-    public void setIssueId(String issueId) {
-        this.issueId = issueId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setRequestPerformer(String requestPerformer) {
+        this.requestPerformer = requestPerformer;
     }
 }

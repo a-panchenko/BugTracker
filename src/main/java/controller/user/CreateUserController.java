@@ -4,9 +4,8 @@ import dto.GroupMemberDto;
 import dto.UserDto;
 import model.GroupMember;
 import model.User;
-import security.groupmember.CreateGroupMemberSecurity;
+import security.Security;
 import security.groupmember.CreateGroupMemberSecurityImpl;
-import security.user.CreateUserSecurity;
 import security.user.CreateUserSecurityImpl;
 import service.user.UserService;
 import service.user.UserServiceImpl;
@@ -21,21 +20,24 @@ public class CreateUserController extends HttpServlet {
 
     private UserService userService = new UserServiceImpl();
 
-    private CreateUserSecurity createUserSecurity = new CreateUserSecurityImpl();
-    private CreateGroupMemberSecurity createGroupMemberSecurity = new CreateGroupMemberSecurityImpl();
+    private Security<User, UserDto> createUserSecurity = new CreateUserSecurityImpl();
+    private Security<GroupMember, GroupMemberDto> createGroupMemberSecurity = new CreateGroupMemberSecurityImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+
         UserDto userDto = new UserDto();
-        userDto.setUsername(request.getParameter("username"));
+        userDto.setName(request.getParameter("username"));
         userDto.setPassword(request.getParameter("password"));
-        User user = createUserSecurity.secureCreateUser(userDto);
+        User user = createUserSecurity.secure(userDto);
+
         GroupMemberDto groupMemberDto = new GroupMemberDto();
-        groupMemberDto.setUsername(request.getParameter("username"));
+        groupMemberDto.setName(request.getParameter("username"));
         groupMemberDto.setGroup(request.getParameter("group"));
-        GroupMember groupMember = createGroupMemberSecurity.secureCreateGroupMember(groupMemberDto, request.getRemoteUser());
+        GroupMember groupMember = createGroupMemberSecurity.secure(groupMemberDto);
+
         userService.addUser(user, groupMember);
         response.sendRedirect("/BugTracker/admin");
     }

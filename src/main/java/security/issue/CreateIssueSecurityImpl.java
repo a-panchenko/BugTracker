@@ -1,13 +1,11 @@
 package security.issue;
 
+import security.Security;
 import security.exceptions.InvalidAssignedMemberException;
 import dto.IssueDto;
 import model.Issue;
 import model.Project;
-import model.ProjectMember;
 import security.exceptions.NotAllowedException;
-import service.groupmember.GroupMemberService;
-import service.groupmember.GroupMemberServiceImpl;
 import service.project.ProjectService;
 import service.project.ProjectServiceImpl;
 import service.projectmember.ProjectMemberService;
@@ -15,14 +13,14 @@ import service.projectmember.ProjectMemberServiceImpl;
 
 import java.util.*;
 
-public class CreateIssueSecurityImpl extends IssueSecurityImpl implements CreateIssueSecurity {
+public class CreateIssueSecurityImpl extends IssueSecurityImpl implements Security<Issue, IssueDto> {
 
     private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
     private ProjectService projectService = new ProjectServiceImpl();
 
-    public Issue secureCreateIssue(IssueDto issueDto) {
+    public Issue secure(IssueDto issueDto) {
         Issue issue = new Issue();
-        setProjectId(issueDto, issue);
+        issue.setProjectId(issueDto.getProjectId());
         setCreator(issueDto, issue);
         setTitle(issueDto, issue);
         setDescription(issueDto, issue);
@@ -31,11 +29,6 @@ public class CreateIssueSecurityImpl extends IssueSecurityImpl implements Create
         issue.setCreationDate(new Date());
         setAssigned(issueDto, issue);
         return issue;
-    }
-
-    private void setProjectId(IssueDto issueDto, Issue issue) {
-        int projectId = Integer.valueOf(issueDto.getProjectId());
-        issue.setProjectId(projectId);
     }
 
     private void setTitle(IssueDto issueDto, Issue issue) {
@@ -68,7 +61,7 @@ public class CreateIssueSecurityImpl extends IssueSecurityImpl implements Create
     private void setCreator(IssueDto issueDto, Issue issue) {
         String creator = issueDto.getRequestPerformer();
         if (creator != null && ! creator.isEmpty()) {
-            Project project = projectService.getProject(Integer.valueOf(issueDto.getProjectId()));
+            Project project = projectService.getProject(issueDto.getProjectId());
             if (isAllowedToEditIssue(issueDto.getRequestPerformer(), project)) {
                 issue.setCreator(creator);
             }
@@ -90,7 +83,7 @@ public class CreateIssueSecurityImpl extends IssueSecurityImpl implements Create
     }
 
     private void checkAssigned(IssueDto issueDto) {
-        Project project = projectService.getProject(Integer.valueOf(issueDto.getProjectId()));
+        Project project = projectService.getProject(issueDto.getProjectId());
         Set<String> allowed = projectMemberService.getMembersToAssign(project, issueDto.getRequestPerformer());
         if (! allowed.contains(issueDto.getAssigned())) {
             throw new InvalidAssignedMemberException();

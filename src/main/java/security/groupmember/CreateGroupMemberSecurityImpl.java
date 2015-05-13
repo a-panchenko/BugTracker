@@ -2,11 +2,12 @@ package security.groupmember;
 
 import dto.GroupMemberDto;
 import model.GroupMember;
+import security.Security;
 import security.exceptions.NotAllowedException;
 
-public class CreateGroupMemberSecurityImpl implements CreateGroupMemberSecurity {
+public class CreateGroupMemberSecurityImpl implements Security<GroupMember, GroupMemberDto> {
 
-    public GroupMember secureCreateGroupMember(GroupMemberDto groupMemberDto, String username) {
+    public GroupMember secure(GroupMemberDto groupMemberDto) {
         GroupMember groupMember = new GroupMember();
         setName(groupMemberDto, groupMember);
         setGroup(groupMemberDto, groupMember);
@@ -14,8 +15,8 @@ public class CreateGroupMemberSecurityImpl implements CreateGroupMemberSecurity 
     }
 
     private void setName(GroupMemberDto groupMemberDto, GroupMember groupMember) {
-        if (groupMemberDto.getUsername() != null) {
-            groupMember.setName(groupMemberDto.getUsername());
+        if (groupMemberDto.getName() != null) {
+            groupMember.setName(groupMemberDto.getName());
         }
         else {
             throw new NotAllowedException();

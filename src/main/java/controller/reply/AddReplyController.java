@@ -2,7 +2,7 @@ package controller.reply;
 
 import dto.ReplyDto;
 import model.Reply;
-import security.reply.AddReplySecurity;
+import security.Security;
 import security.reply.AddReplySecurityImpl;
 import service.reply.ReplyService;
 import service.reply.ReplyServiceImpl;
@@ -17,16 +17,17 @@ public class AddReplyController extends HttpServlet {
 
     private ReplyService replyService = new ReplyServiceImpl();
 
-    private AddReplySecurity addReplySecurity = new AddReplySecurityImpl();
+    private Security<Reply, ReplyDto> addReplySecurity = new AddReplySecurityImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         ReplyDto replyDto = new ReplyDto();
-        replyDto.setIssueId(request.getParameter("issueId"));
+        replyDto.setIssueId(Integer.valueOf(request.getParameter("issueId")));
         replyDto.setMessage(request.getParameter("message"));
-        Reply reply = addReplySecurity.secureAddReply(replyDto, request.getRemoteUser());
+        replyDto.setRequestPerformer(request.getRemoteUser());
+        Reply reply = addReplySecurity.secure(replyDto);
         replyService.addReply(reply);
     }
 }

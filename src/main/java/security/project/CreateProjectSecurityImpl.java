@@ -2,17 +2,18 @@ package security.project;
 
 import dto.ProjectDto;
 import model.Project;
+import security.Security;
 import security.exceptions.NotAllowedException;
 import service.groupmember.GroupMemberService;
 import service.groupmember.GroupMemberServiceImpl;
 
 import java.util.Date;
 
-public class CreateProjectSecurityImpl implements CreateProjectSecurity {
+public class CreateProjectSecurityImpl implements Security<Project, ProjectDto> {
 
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    public Project secureCreateProject(ProjectDto projectDto) {
+    public Project secure(ProjectDto projectDto) {
         Project project = new Project();
         setTitle(projectDto, project);
         setDescription(projectDto, project);

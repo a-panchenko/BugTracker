@@ -1,26 +1,11 @@
 package dto;
 
-public class UserDto {
+import model.User;
 
-    private String username;
-    private String password;
+public class UserDto extends User {
+
     private String oldPassword;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private String requestPerformer;
 
     public String getOldPassword() {
         return oldPassword;
@@ -28,5 +13,13 @@ public class UserDto {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    public String getRequestPerformer() {
+        return requestPerformer;
+    }
+
+    public void setRequestPerformer(String requestPerformer) {
+        this.requestPerformer = requestPerformer;
     }
 }

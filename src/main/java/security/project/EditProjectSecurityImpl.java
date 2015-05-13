@@ -2,6 +2,7 @@ package security.project;
 
 import dto.ProjectDto;
 import model.Project;
+import security.Security;
 import security.exceptions.NotAllowedException;
 import service.groupmember.GroupMemberService;
 import service.groupmember.GroupMemberServiceImpl;
@@ -10,19 +11,20 @@ import service.project.ProjectServiceImpl;
 
 import java.util.Date;
 
-public class EditProjectSecurityImpl  implements EditProjectSecurity {
+public class EditProjectSecurityImpl implements Security<Project, ProjectDto> {
 
     private ProjectService projectService = new ProjectServiceImpl();
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    public Project secureEditProject(ProjectDto projectDto, String username) {
-        int id = Integer.valueOf(projectDto.getId());
+    public Project secure(ProjectDto projectDto) {
+        int id = projectDto.getId();
         Project project = projectService.getProject(id);
-        if (groupMemberService.isUserInGroup(username, "administrators") || username.equals(project.getProjectLeed())) {
+        if (groupMemberService.isUserInGroup(projectDto.getRequestPerformer(), "administrators")
+                || projectDto.getRequestPerformer().equals(project.getProjectLeed())) {
             editTitle(projectDto, project);
             editDescription(projectDto, project);
             editEndDate(projectDto, project);
-            editProjectLeed(projectDto, project, username);
+            editProjectLeed(projectDto, project);
             return project;
         }
         else {
@@ -59,8 +61,8 @@ public class EditProjectSecurityImpl  implements EditProjectSecurity {
         }
     }
 
-    private void editProjectLeed(ProjectDto projectDto, Project project, String username) {
-        if (groupMemberService.isUserInGroup(username, "administrators")) {
+    private void editProjectLeed(ProjectDto projectDto, Project project) {
+        if (groupMemberService.isUserInGroup(projectDto.getRequestPerformer(), "administrators")) {
             project.setProjectLeed(projectDto.getProjectLeed());
         }
     }

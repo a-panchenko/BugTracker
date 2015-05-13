@@ -3,8 +3,8 @@ package controller.issue;
 import dto.IssueDto;
 import model.Issue;
 import model.Project;
+import security.Security;
 import security.exceptions.NotAllowedException;
-import security.issue.EditIssueSecurity;
 import security.issue.EditIssueSecurityImpl;
 import security.issue.IssueSecurity;
 import security.issue.IssueSecurityImpl;
@@ -30,7 +30,7 @@ public class EditIssueController extends HttpServlet {
     private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
 
     private IssueSecurity issueSecurity = new IssueSecurityImpl();
-    private EditIssueSecurity editIssueSecurity = new EditIssueSecurityImpl();
+    private Security<Issue, IssueDto> editIssueSecurity = new EditIssueSecurityImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -55,14 +55,14 @@ public class EditIssueController extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         IssueDto issueDto = new IssueDto();
-        issueDto.setId(request.getParameter("id"));
+        issueDto.setId(Integer.valueOf(request.getParameter("id")));
         issueDto.setTitle(request.getParameter("title"));
         issueDto.setDescription(request.getParameter("description"));
         issueDto.setPriority(request.getParameter("priority"));
         issueDto.setStatus(request.getParameter("status"));
         issueDto.setAssigned(request.getParameter("assigned"));
         issueDto.setRequestPerformer(request.getRemoteUser());
-        Issue issue = editIssueSecurity.secureEditIssue(issueDto);
+        Issue issue = editIssueSecurity.secure(issueDto);
         issueService.editIssue(issue);
         response.sendRedirect("/BugTracker/issue?id=" + issue.getId());
     }

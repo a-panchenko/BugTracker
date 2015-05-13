@@ -2,7 +2,7 @@ package controller.project;
 
 import dto.ProjectDto;
 import model.Project;
-import security.project.CreateProjectSecurity;
+import security.Security;
 import security.project.CreateProjectSecurityImpl;
 import service.project.ProjectService;
 import service.project.ProjectServiceImpl;
@@ -17,7 +17,7 @@ public class CreateProjectController extends HttpServlet {
 
     private ProjectService projectService = new ProjectServiceImpl();
 
-    private CreateProjectSecurity createProjectSecurity = new CreateProjectSecurityImpl();
+    private Security<Project, ProjectDto> createProjectSecurity = new CreateProjectSecurityImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -27,7 +27,7 @@ public class CreateProjectController extends HttpServlet {
         projectDto.setTitle(request.getParameter("title"));
         projectDto.setDescription(request.getParameter("description"));
         projectDto.setProjectLeed(request.getRemoteUser());
-        Project project = createProjectSecurity.secureCreateProject(projectDto);
+        Project project = createProjectSecurity.secure(projectDto);
         projectService.addProject(project);
         response.sendRedirect("/BugTracker/projects");
     }

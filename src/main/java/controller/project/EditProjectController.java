@@ -2,8 +2,8 @@ package controller.project;
 
 import dto.ProjectDto;
 import model.Project;
+import security.Security;
 import security.exceptions.NotAllowedException;
-import security.project.EditProjectSecurity;
 import security.project.EditProjectSecurityImpl;
 import service.groupmember.GroupMemberService;
 import service.groupmember.GroupMemberServiceImpl;
@@ -22,7 +22,7 @@ public class EditProjectController extends HttpServlet {
     private ProjectService projectService = new ProjectServiceImpl();
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    private EditProjectSecurity editProjectSecurity = new EditProjectSecurityImpl();
+    private Security<Project, ProjectDto> editProjectSecurity = new EditProjectSecurityImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,12 +48,13 @@ public class EditProjectController extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         ProjectDto projectDto = new ProjectDto();
-        projectDto.setId(request.getParameter("id"));
+        projectDto.setId(Integer.valueOf(request.getParameter("id")));
         projectDto.setTitle(request.getParameter("title"));
         projectDto.setDescription(request.getParameter("description"));
         projectDto.setClose(request.getParameter("close"));
         projectDto.setProjectLeed(request.getParameter("projectManagers"));
-        Project project = editProjectSecurity.secureEditProject(projectDto, request.getRemoteUser());
+        projectDto.setRequestPerformer(request.getRemoteUser());
+        Project project = editProjectSecurity.secure(projectDto);
         projectService.editProject(project);
         response.sendRedirect("/BugTracker/project?id=" + request.getParameter("id"));
     }

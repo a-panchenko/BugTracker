@@ -1,23 +1,16 @@
 package dto;
 
-public class GroupMemberDto {
+import model.GroupMember;
 
-    private String username;
-    private String group;
+public class GroupMemberDto extends GroupMember {
 
-    public String getUsername() {
-        return username;
+    private String requestPerformer;
+
+    public String getRequestPerformer() {
+        return requestPerformer;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
+    public void setRequestPerformer(String requestPerformer) {
+        this.requestPerformer = requestPerformer;
     }
 }

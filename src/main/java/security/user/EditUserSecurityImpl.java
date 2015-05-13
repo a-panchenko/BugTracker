@@ -1,5 +1,6 @@
 package security.user;
 
+import security.Security;
 import security.exceptions.EditPasswordException;
 import dto.UserDto;
 import model.User;
@@ -9,25 +10,25 @@ import service.groupmember.GroupMemberServiceImpl;
 import service.user.UserService;
 import service.user.UserServiceImpl;
 
-public class EditUserSecurityImpl implements EditUserSecurity {
+public class EditUserSecurityImpl implements Security<User, UserDto> {
 
     private UserService userService = new UserServiceImpl();
     private GroupMemberService groupMemberService = new GroupMemberServiceImpl();
 
-    public User secureEditUser(UserDto userDto, String username) {
-        User user = userService.getUser(userDto.getUsername());
+    public User secure(UserDto userDto) {
+        User user = userService.getUser(userDto.getName());
         if (userDto.getPassword() != null) {
-            editPassword(userDto, user, username);
+            editPassword(userDto, user);
         }
         return user;
     }
 
-    private void editPassword(UserDto userDto, User user, String username) {
-        if (groupMemberService.isUserInGroup(username, "administrators")) {
+    private void editPassword(UserDto userDto, User user) {
+        if (groupMemberService.isUserInGroup(userDto.getRequestPerformer(), "administrators")) {
             user.setPassword(SHA256.encrypt(userDto.getPassword()));
         }
         else {
-            if (userDto.getUsername().equals(username)) {
+            if (userDto.getName().equals(userDto.getRequestPerformer())) {
                 if (user.getPassword().equals(SHA256.encrypt(userDto.getOldPassword()))) {
                     user.setPassword(SHA256.encrypt(userDto.getPassword()));
                 }

@@ -2,10 +2,11 @@ package security.user;
 
 import dto.UserDto;
 import model.User;
+import security.Security;
 
-public class CreateUserSecurityImpl implements CreateUserSecurity {
+public class CreateUserSecurityImpl implements Security<User, UserDto> {
 
-    public User secureCreateUser(UserDto userDto) {
+    public User secure(UserDto userDto) {
         User user = new User();
         setName(userDto, user);
         setPassword(userDto, user);
@@ -13,8 +14,8 @@ public class CreateUserSecurityImpl implements CreateUserSecurity {
     }
 
     private void setName(UserDto userDto, User user) {
-        if (userDto.getUsername() != null) {
-            user.setName(userDto.getUsername());
+        if (userDto.getName() != null) {
+            user.setName(userDto.getName());
         }
     }
 

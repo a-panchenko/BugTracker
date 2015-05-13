@@ -3,6 +3,7 @@ package security.issue;
 import dto.IssueDto;
 import model.Issue;
 import model.Project;
+import security.Security;
 import security.exceptions.InvalidAssignedMemberException;
 import security.exceptions.NotAllowedException;
 import service.issue.IssueService;
@@ -15,14 +16,14 @@ import service.projectmember.ProjectMemberServiceImpl;
 import java.util.Date;
 import java.util.Set;
 
-public class EditIssueSecurityImpl extends IssueSecurityImpl implements EditIssueSecurity {
+public class EditIssueSecurityImpl extends IssueSecurityImpl implements Security<Issue, IssueDto> {
 
     private IssueService issueService = new IssueServiceImpl();
     private ProjectService projectService = new ProjectServiceImpl();
     private ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
 
-    public Issue secureEditIssue(IssueDto issueDto) {
-        Issue issue = issueService.getIssue(Integer.valueOf(issueDto.getId()));
+    public Issue secure(IssueDto issueDto) {
+        Issue issue = issueService.getIssue(issueDto.getId());
         Project project = projectService.getProject(issue.getProjectId());
         if (isAllowedToEditIssue(issueDto.getRequestPerformer(), project)) {
             editAssigned(issueDto, issue, project);
