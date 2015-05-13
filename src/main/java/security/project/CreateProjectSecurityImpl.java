@@ -17,7 +17,7 @@ public class CreateProjectSecurityImpl implements Security<Project, ProjectDto> 
         Project project = new Project();
         setTitle(projectDto, project);
         setDescription(projectDto, project);
-        setProjectLeed(projectDto, project);
+        setProjectLead(projectDto, project);
         project.setStartDate(new Date());
         return project;
     }
@@ -42,11 +42,11 @@ public class CreateProjectSecurityImpl implements Security<Project, ProjectDto> 
         }
     }
 
-    private void setProjectLeed(ProjectDto projectDto, Project project) {
-        String projectLeed = projectDto.getProjectLeed();
-        if (groupMemberService.isUserInGroup(projectLeed, "administrators")
-                || groupMemberService.isUserInGroup(projectLeed, "project-managers")) {
-            project.setProjectLeed(projectLeed);
+    private void setProjectLead(ProjectDto projectDto, Project project) {
+        String projectLead = projectDto.getProjectLead();
+        if (groupMemberService.isUserInGroup(projectLead, "administrators")
+                || groupMemberService.isUserInGroup(projectLead, "project-managers")) {
+            project.setProjectLead(projectLead);
         }
         else {
             throw new NotAllowedException();

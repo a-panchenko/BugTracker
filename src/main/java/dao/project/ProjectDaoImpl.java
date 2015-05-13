@@ -18,9 +18,9 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
             "(SELECT * FROM PROJECT ORDER BY project_id) a WHERE ROWNUM <= ?) WHERE rnum >= ?";
     private static final String SELECT_ALL_PROJECTS = "SELECT * FROM PROJECT";
     private static final String INSERT_INTO_PROJECT = "INSERT INTO " +
-            "PROJECT (project_title, project_description, start_date, project_leed) VALUES (?, ?, ?, ?)";
+            "PROJECT (project_title, project_description, start_date, project_lead) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_PROJECT = "UPDATE PROJECT " +
-            "SET project_title = ?, project_description = ?, start_date = ?, project_leed = ?, end_date = ? WHERE project_id = ?";
+            "SET project_title = ?, project_description = ?, start_date = ?, project_lead = ?, end_date = ? WHERE project_id = ?";
     private static final String DELETE_PROJECT_BY_PROJECT_ID = "DELETE FROM PROJECT WHERE project_id = ?";
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDaoImpl.class);
@@ -86,6 +86,6 @@ public class ProjectDaoImpl extends AbstractDao<Project, Integer> implements Pro
         statement.setString(1, project.getTitle());
         statement.setString(2, project.getDescription());
         statement.setLong(3, project.getStartDate().getTime());
-        statement.setString(4, project.getProjectLeed());
+        statement.setString(4, project.getProjectLead());
     }
 }

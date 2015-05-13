@@ -19,7 +19,7 @@ public class ProjectResultParser extends ResultParser<Project> {
         if (endDate > 0) {
             project.setEndDate(new Date(endDate));
         }
-        project.setProjectLeed(result.getString(6));
+        project.setProjectLead(result.getString(6));
         return project;
     }
 }

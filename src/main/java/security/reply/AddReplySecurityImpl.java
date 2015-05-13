@@ -50,7 +50,7 @@ public class AddReplySecurityImpl implements Security<Reply, ReplyDto> {
         for (ProjectMember projectMember : projectMembers) {
             allowed.add(projectMember.getName());
         }
-        allowed.add(project.getProjectLeed());
+        allowed.add(project.getProjectLead());
         if (allowed.contains(replyDto.getRequestPerformer())
                 || groupMemberService.isUserInGroup(replyDto.getRequestPerformer(), "administrators")) {
             reply.setPoster(replyDto.getRequestPerformer());

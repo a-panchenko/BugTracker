@@ -28,7 +28,7 @@ public class EditProjectController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.valueOf(request.getParameter("id"));
         Project project = projectService.getProject(id);
-        if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+        if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLead())) {
             request.setAttribute("project", project);
             request.setAttribute("availableMembers", groupMemberService.getAvailableMembers());
             request.setAttribute("currentMembers", groupMemberService.getMembersByProjectId(id));
@@ -52,7 +52,7 @@ public class EditProjectController extends HttpServlet {
         projectDto.setTitle(request.getParameter("title"));
         projectDto.setDescription(request.getParameter("description"));
         projectDto.setClose(request.getParameter("close"));
-        projectDto.setProjectLeed(request.getParameter("projectManagers"));
+        projectDto.setProjectLead(request.getParameter("projectManagers"));
         projectDto.setRequestPerformer(request.getRemoteUser());
         Project project = editProjectSecurity.secure(projectDto);
         projectService.editProject(project);

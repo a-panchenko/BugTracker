@@ -20,11 +20,11 @@ public class EditProjectSecurityImpl implements Security<Project, ProjectDto> {
         int id = projectDto.getId();
         Project project = projectService.getProject(id);
         if (groupMemberService.isUserInGroup(projectDto.getRequestPerformer(), "administrators")
-                || projectDto.getRequestPerformer().equals(project.getProjectLeed())) {
+                || projectDto.getRequestPerformer().equals(project.getProjectLead())) {
             editTitle(projectDto, project);
             editDescription(projectDto, project);
             editEndDate(projectDto, project);
-            editProjectLeed(projectDto, project);
+            editProjectLead(projectDto, project);
             return project;
         }
         else {
@@ -61,9 +61,9 @@ public class EditProjectSecurityImpl implements Security<Project, ProjectDto> {
         }
     }
 
-    private void editProjectLeed(ProjectDto projectDto, Project project) {
+    private void editProjectLead(ProjectDto projectDto, Project project) {
         if (groupMemberService.isUserInGroup(projectDto.getRequestPerformer(), "administrators")) {
-            project.setProjectLeed(projectDto.getProjectLeed());
+            project.setProjectLead(projectDto.getProjectLead());
         }
     }
 }

@@ -20,7 +20,7 @@ public class IssueSecurityImpl implements IssueSecurity {
         for (ProjectMember projectMember : projectMemberService.getMembers(project.getId())) {
             allowed.add(projectMember.getName());
         }
-        if (username.equals(project.getProjectLeed())
+        if (username.equals(project.getProjectLead())
                 || groupMemberService.isUserInGroup(username, "administrators")) {
             allowed.add(username);
         }

@@ -62,11 +62,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         for (ProjectMember projectMember : getMembers(project.getId(), "debugers")) {
             membersToAssign.add(projectMember.getName());
         }
-        if (username.equals(project.getProjectLeed())) {
-            membersToAssign.add(project.getProjectLeed());
+        if (username.equals(project.getProjectLead())) {
+            membersToAssign.add(project.getProjectLead());
         }
         if (new GroupMemberServiceImpl().isUserInGroup(username, "administrators")) {
-            membersToAssign.add(project.getProjectLeed());
+            membersToAssign.add(project.getProjectLead());
             membersToAssign.add(username);
         }
         return membersToAssign;

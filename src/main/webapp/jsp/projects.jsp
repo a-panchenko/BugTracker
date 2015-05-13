@@ -32,7 +32,7 @@
                                 <td> Description </td>
                                 <td> Start date </td>
                                 <td> End date </td>
-                                <td> Project Leed </td>
+                                <td> Project Lead </td>
                             </tr>
                             <c:forEach var="project" items="${projects}">
                                 <tr>
@@ -70,8 +70,8 @@
                                             </c:if>
                                         </td>
                                         <td width="10%">
-                                            <c:if test="${not empty project.projectLeed}">
-                                                <a href="/BugTracker/user?name=${project.projectLeed}">${project.projectLeed}</a>
+                                            <c:if test="${not empty project.projectLead}">
+                                                <a href="/BugTracker/user?name=${project.projectLead}">${project.projectLead}</a>
                                             </c:if>
                                         </td>
                                     </tr>

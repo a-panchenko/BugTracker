@@ -52,7 +52,7 @@
                                 <div align="center"><a href="/BugTracker/createissue?id=${project.id}">Create Issue</a></div>
                         <%
                             }
-                            if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLeed())) {
+                            if (request.isUserInRole("administrator") || request.getRemoteUser().equals(project.getProjectLead())) {
                         %>
                                 <div align="center"><a href="/BugTracker/editproject?id=${project.id}">Edit Project</a></div>
                                 <div align="center"><a href="/BugTracker/editprojectmembers?id=${project.id}">Edit Members</a></div>
@@ -76,9 +76,9 @@
                         <p id="description">Description:
                             ${project.description}
                         </p>
-                        <p>Project Leed:
-                            <c:if test="${not empty project.projectLeed}">
-                                <a href="/BugTracker/user?name=${project.projectLeed}">${project.projectLeed}</a>
+                        <p>Project Lead:
+                            <c:if test="${not empty project.projectLead}">
+                                <a href="/BugTracker/user?name=${project.projectLead}">${project.projectLead}</a>
                             </c:if>
                         </p>
                         <%

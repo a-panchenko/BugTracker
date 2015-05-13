@@ -33,9 +33,9 @@ CREATE TABLE PROJECT (
     project_description    VARCHAR2(2000)    NOT NULL,
     start_date             NUMBER(20)        NOT NULL,
     end_date               NUMBER(20),
-    project_leed           VARCHAR2(50),
+    project_lead           VARCHAR2(50),
     CONSTRAINT project_pk         PRIMARY KEY (project_id),
-    CONSTRAINT project_fk         FOREIGN KEY (project_leed) REFERENCES USERS (u_name) ON DELETE SET NULL,
+    CONSTRAINT project_fk         FOREIGN KEY (project_lead) REFERENCES USERS (u_name) ON DELETE SET NULL,
     CONSTRAINT project_title_uniq UNIQUE (project_title));
     
 CREATE SEQUENCE proj_seq;
@@ -119,16 +119,16 @@ VALUES ('user3', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d7517
 INSERT INTO USERS (u_name, u_password, u_description)
 VALUES ('user4', 'b97873a40f73abedd8d685a7cd5e5f85e4a9cfb83eac26886640a0813850122b', 'description4');
 
-INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+INSERT INTO PROJECT (project_title, project_description, start_date, project_lead)
 VALUES ('Project1', 'Description1', '1430024861112', 'user1');
 
-INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+INSERT INTO PROJECT (project_title, project_description, start_date, project_lead)
 VALUES ('Project2', 'Description2', '1430024861112', 'user2');
 
-INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+INSERT INTO PROJECT (project_title, project_description, start_date, project_lead)
 VALUES ('Project3', 'Description3', '1430024861112', 'user1');
 
-INSERT INTO PROJECT (project_title, project_description, start_date, project_leed)
+INSERT INTO PROJECT (project_title, project_description, start_date, project_lead)
 VALUES ('Project4', 'Description4', '1430024861112', 'user2');
 
 INSERT INTO ISSUE (project_id, issue_title, issue_description, priority, status, creation_date, creator)

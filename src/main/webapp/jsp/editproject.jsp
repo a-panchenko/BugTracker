@@ -44,10 +44,10 @@
                                 <textarea name="description" rows="10" cols="50" required>${project.description}</textarea>
                             </p>
                             <c:if test="${not empty projectManagers}">
-                                <p>Project Leed:
+                                <p>Project Lead:
                                     <select name="projectManagers">
                                         <c:forEach var="groupMember" items="${projectManagers}">
-                                            <option <c:if test="${project.projectLeed == groupMember.name}"> selected </c:if> > ${groupMember.name} </option>
+                                            <option <c:if test="${project.projectLead == groupMember.name}"> selected </c:if> > ${groupMember.name} </option>
                                         </c:forEach>
                                     </select>
                                 </p>
