@@ -1,85 +1,85 @@
 package service.groupmember;
 
-import dao.exceptions.QueryExecutionException;
 import dao.groupmember.GroupMemberDaoImpl;
 import model.GroupMember;
-import service.DataSourceProvider;
-import service.exceptions.TransactionFailException;
+import service.AbstractService;
+import service.TransactionScript;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-public class GroupMemberServiceImpl implements GroupMemberService {
+public class GroupMemberServiceImpl extends AbstractService implements GroupMemberService {
 
     @Override
     public List<GroupMember> getAllMembers() {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new GroupMemberDaoImpl(connection).getAllMembers();
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+        return service(new TransactionScript<List<GroupMember>>() {
+            @Override
+            public List<GroupMember> transact(Connection connection) {
+                return new GroupMemberDaoImpl(connection).getAllMembers();
+            }
+        });
     }
 
     @Override
-    public List<GroupMember> getMembersByGroup(String group) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new GroupMemberDaoImpl(connection).getMembersByGroup(group);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<GroupMember> getMembersByGroup(final String group) {
+        return service(new TransactionScript<List<GroupMember>>() {
+            @Override
+            public List<GroupMember> transact(Connection connection) {
+                return new GroupMemberDaoImpl(connection).getMembersByGroup(group);
+            }
+        });
     }
 
     @Override
-    public List<GroupMember> getMembersByProjectId(int projectId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new GroupMemberDaoImpl(connection).getMembersByProjectId(projectId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<GroupMember> getMembersByProjectId(final int projectId) {
+        return service(new TransactionScript<List<GroupMember>>() {
+            @Override
+            public List<GroupMember> transact(Connection connection) {
+                return new GroupMemberDaoImpl(connection).getMembersByProjectId(projectId);
+            }
+        });
     }
 
     @Override
-    public List<GroupMember> getMembersWithNameLike(String name, String group) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new GroupMemberDaoImpl(connection).getMembersWithNameLike(name, group);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<GroupMember> getMembersWithNameLike(final String name, final String group) {
+        return service(new TransactionScript<List<GroupMember>>() {
+            @Override
+            public List<GroupMember> transact(Connection connection) {
+                return new GroupMemberDaoImpl(connection).getMembersWithNameLike(name, group);
+            }
+        });
     }
 
     @Override
-    public void addMember(GroupMember groupMember) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new GroupMemberDaoImpl(connection).addMember(groupMember);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void addMember(final GroupMember groupMember) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new GroupMemberDaoImpl(connection).addMember(groupMember);
+                return null;
+            }
+        });
     }
 
     @Override
-    public void updateMember(GroupMember groupMember) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new GroupMemberDaoImpl(connection).updateMember(groupMember);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void updateMember(final GroupMember groupMember) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new GroupMemberDaoImpl(connection).updateMember(groupMember);
+                return null;
+            }
+        });
     }
 
     @Override
-    public GroupMember getMemberByName(String username) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new GroupMemberDaoImpl(connection).getMemberByName(username);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public GroupMember getMemberByName(final String username) {
+        return service(new TransactionScript<GroupMember>() {
+            @Override
+            public GroupMember transact(Connection connection) {
+                return new GroupMemberDaoImpl(connection).getMemberByName(username);
+            }
+        });
     }
 
     @Override

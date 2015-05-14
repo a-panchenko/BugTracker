@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface IssueService {
 
-    void addIssue(Issue issue);
+    Void addIssue(Issue issue);
 
-    void editIssue(Issue issue);
+    Void editIssue(Issue issue);
 
-    void removeIssue(int issueId);
+    Void removeIssue(int issueId);
 
     List<Issue> getIssues(int projectId, int page);
 

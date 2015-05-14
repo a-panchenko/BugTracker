@@ -12,9 +12,9 @@ public interface ProjectMemberService {
 
     List<ProjectMember> getMembers(int projectId, String group);
 
-    void addMember(ProjectMember projectMember);
+    Void addMember(ProjectMember projectMember);
 
-    void removeMember(ProjectMember projectMember);
+    Void removeMember(ProjectMember projectMember);
 
     Set<String> getMembersToAssign(Project project, String username);
 

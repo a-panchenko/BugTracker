@@ -1,59 +1,59 @@
 package service.projectmember;
 
-import dao.exceptions.QueryExecutionException;
 import dao.projectmember.ProjectMemberDaoImpl;
 import model.Project;
 import model.ProjectMember;
-import service.DataSourceProvider;
-import service.exceptions.TransactionFailException;
+import service.AbstractService;
+import service.TransactionScript;
 import service.groupmember.GroupMemberServiceImpl;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProjectMemberServiceImpl implements ProjectMemberService {
+public class ProjectMemberServiceImpl extends AbstractService implements ProjectMemberService {
 
     @Override
-    public List<ProjectMember> getMembers(int projectId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ProjectMemberDaoImpl(connection).getMembers(projectId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<ProjectMember> getMembers(final int projectId) {
+        return service(new TransactionScript<List<ProjectMember>>() {
+            @Override
+            public List<ProjectMember> transact(Connection connection) {
+                return new ProjectMemberDaoImpl(connection).getMembers(projectId);
+            }
+        });
     }
 
     @Override
-    public List<ProjectMember> getMembers(int projectId, String group) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ProjectMemberDaoImpl(connection).getMembers(projectId, group);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<ProjectMember> getMembers(final int projectId, final String group) {
+        return service(new TransactionScript<List<ProjectMember>>() {
+            @Override
+            public List<ProjectMember> transact(Connection connection) {
+                return new ProjectMemberDaoImpl(connection).getMembers(projectId, group);
+            }
+        });
     }
 
     @Override
-    public void addMember(ProjectMember projectMember) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ProjectMemberDaoImpl(connection).addMember(projectMember);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void addMember(final ProjectMember projectMember) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ProjectMemberDaoImpl(connection).addMember(projectMember);
+                return null;
+            }
+        });
     }
 
     @Override
-    public void removeMember(ProjectMember projectMember) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ProjectMemberDaoImpl(connection).removeMember(projectMember);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void removeMember(final ProjectMember projectMember) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ProjectMemberDaoImpl(connection).removeMember(projectMember);
+                return null;
+            }
+        });
     }
 
     @Override

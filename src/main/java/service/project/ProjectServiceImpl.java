@@ -1,74 +1,75 @@
 package service.project;
 
-import dao.exceptions.QueryExecutionException;
 import dao.project.*;
 import model.Project;
-import service.DataSourceProvider;
-import service.exceptions.TransactionFailException;
+import service.AbstractService;
+import service.TransactionScript;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectServiceImpl extends AbstractService implements ProjectService {
 
     @Override
-    public void addProject(Project project) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ProjectDaoImpl(connection).addProject(project);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void addProject(final Project project) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ProjectDaoImpl(connection).addProject(project);
+                return null;
+            }
+        });
     }
 
     @Override
-    public void editProject(Project project) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ProjectDaoImpl(connection).updateProject(project);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void editProject(final Project project) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ProjectDaoImpl(connection).updateProject(project);
+                return null;
+            }
+        });
     }
 
     @Override
-    public void removeProject(int projectId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ProjectDaoImpl(connection).removeProject(projectId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void removeProject(final int projectId) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ProjectDaoImpl(connection).removeProject(projectId);
+                return null;
+            }
+        });
     }
 
     @Override
-    public List<Project> getProjects(int page) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ProjectDaoImpl(connection).getProjects(page);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<Project> getProjects(final int page) {
+        return service(new TransactionScript<List<Project>>() {
+            @Override
+            public List<Project> transact(Connection connection) {
+                return new ProjectDaoImpl(connection).getProjects(page);
+            }
+        });
     }
 
     @Override
     public List<Project> getAllProjects() {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ProjectDaoImpl(connection).getProjects();
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+        return service(new TransactionScript<List<Project>>() {
+            @Override
+            public List<Project> transact(Connection connection) {
+                return new ProjectDaoImpl(connection).getProjects();
+            }
+        });
     }
 
     @Override
-    public Project getProject(int projectId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ProjectDaoImpl(connection).getProject(projectId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Project getProject(final int projectId) {
+        return service(new TransactionScript<Project>() {
+            @Override
+            public Project transact(Connection connection) {
+                return new ProjectDaoImpl(connection).getProject(projectId);
+            }
+        });
     }
 }

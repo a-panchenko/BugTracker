@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ProjectService {
 
-    void addProject(Project project);
+    Void addProject(Project project);
 
-    void editProject(Project project);
+    Void editProject(Project project);
 
-    void removeProject(int projectId);
+    Void removeProject(int projectId);
 
     List<Project> getAllProjects();
 

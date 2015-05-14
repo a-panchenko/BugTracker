@@ -7,9 +7,9 @@ public interface UserService {
 
     User getUser(String name);
 
-    void addUser(User user, GroupMember groupMember);
+    Void addUser(User user, GroupMember groupMember);
 
-    void updateUser(User user, GroupMember groupMember);
+    Void updateUser(User user, GroupMember groupMember);
 
-    void removeUser(String name);
+    Void removeUser(String name);
 }

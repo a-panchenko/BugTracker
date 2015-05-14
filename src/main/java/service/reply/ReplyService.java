@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ReplyService {
 
-    void addReply(Reply reply);
+    Void addReply(Reply reply);
 
-    void editReply(Reply reply);
+    Void editReply(Reply reply);
 
-    void removeReply(int replyId);
+    Void removeReply(int replyId);
 
     List<Reply> getReplies(int issueId);
 

@@ -18,9 +18,9 @@ public interface GroupMemberService {
 
     List<GroupMember> getMembersWithNameLike(String name, String group);
 
-    void addMember(GroupMember groupMember);
+    Void addMember(GroupMember groupMember);
 
-    void updateMember(GroupMember groupMember);
+    Void updateMember(GroupMember groupMember);
 
     GroupMember getMemberByName(String username);
 

@@ -1,59 +1,60 @@
 package service.reply;
 
-import dao.exceptions.QueryExecutionException;
 import dao.reply.ReplyDaoImpl;
 import model.Reply;
-import service.DataSourceProvider;
-import service.exceptions.TransactionFailException;
+import service.AbstractService;
+import service.TransactionScript;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-public class ReplyServiceImpl implements ReplyService {
+public class ReplyServiceImpl extends AbstractService implements ReplyService {
 
-    public void addReply(Reply reply) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ReplyDaoImpl(connection).addReply(reply);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void addReply(final Reply reply) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ReplyDaoImpl(connection).addReply(reply);
+                return null;
+            }
+        });
     }
 
-    public void editReply(Reply reply) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ReplyDaoImpl(connection).updateReply(reply);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void editReply(final Reply reply) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ReplyDaoImpl(connection).updateReply(reply);
+                return null;
+            }
+        });
     }
 
-    public void removeReply(int replyId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            new ReplyDaoImpl(connection).removeReply(replyId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Void removeReply(final int replyId) {
+        return service(new TransactionScript<Void>() {
+            @Override
+            public Void transact(Connection connection) {
+                new ReplyDaoImpl(connection).removeReply(replyId);
+                return null;
+            }
+        });
     }
 
-    public List<Reply> getReplies(int issueId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ReplyDaoImpl(connection).getReplies(issueId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public List<Reply> getReplies(final int issueId) {
+        return service(new TransactionScript<List<Reply>>() {
+            @Override
+            public List<Reply> transact(Connection connection) {
+                return new ReplyDaoImpl(connection).getReplies(issueId);
+            }
+        });
     }
 
-    public Reply getReply(int replyId) {
-        try (Connection connection = DataSourceProvider.getDataSource().getConnection()) {
-            return new ReplyDaoImpl(connection).getReply(replyId);
-        }
-        catch (SQLException | QueryExecutionException e) {
-            throw new TransactionFailException(e);
-        }
+    public Reply getReply(final int replyId) {
+        return service(new TransactionScript<Reply>() {
+            @Override
+            public Reply transact(Connection connection) {
+                return new ReplyDaoImpl(connection).getReply(replyId);
+            }
+        });
     }
 }
